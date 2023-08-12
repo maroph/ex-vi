@@ -1,0 +1,79 @@
+# yaml-language-server: $schema=https://squidfunk.github.io/mkdocs-material/schema.json
+site_name: My vi Site
+site_url: https://maroph.github.io/ex-vi
+site_description: Dedicated to Bill Joy's vi Implementation
+site_author: Manfred Rosenboom (maroph)
+#
+repo_name: maroph/ex-vi
+repo_url: https://github.com/maroph/ex-vi
+#
+# MkDocs Theme: Material for MkDocs
+# https://squidfunk.github.io/mkdocs-material/
+theme:
+    name: material
+    palette:
+        scheme: default
+        accent: indigo
+    font: false
+    language: en
+    direction: ltr
+    favicon: assets/Vi_logo.ico
+    features:
+        - header.autohide
+        - content.action.edit
+        - content.action.view
+        - content.code.copy
+        - navigation.footer
+        - navigation.indexes
+        - navigation.instant
+        - navigation.tracking
+        - navigation.tabs
+        - navigation.tabs.sticky
+        - search.suggest
+        - search.highlight
+    icon:
+        repo: fontawesome/brands/github
+        edit: material/pencil 
+        view: material/eye
+
+nav:
+    - Home: index.md
+    - Links:
+        - Vi Software:
+            - ex-vi: https://github.com/n-t-roff/heirloom-ex-vi
+            - The Traditional Vi: https://ex-vi.sourceforge.net/
+            - vi 1.1, February 1, 1978: https://github.com/n-t-roff/ex-1.1
+            - GNU Termcap 1.3.1: https://ftp.gnu.org/gnu/termcap/termcap-1.3.1.tar.gz
+        - Documentation:
+          - Learning the vi: https://docstore.mik.ua/orelly/unix/vi/index.htm
+          - Learning the vi and Vim Editors: https://doc.lagout.org/operating%20system%20/linux/Learning%20the%20vi%20and%20Vim%20Editors%2C%207e.pdf
+          - The Termcap Manual: https://www.gnu.org/software/termutils/manual/termcap-1.3/html_mono/termcap.html
+    - Info:
+        - About: info/about.md
+        - GDPR/DSGVO: info/gdpr.md
+        - License: info/license.md
+        - Resources: info/resources.md
+
+docs_dir: docs
+site_dir: site
+
+use_directory_urls: false
+strict: true
+
+copyright: Copyright (c) 2023 <a href="https://github.com/maroph">Manfred Rosenboom</a>
+
+markdown_extensions:
+    - attr_list
+    - pymdownx.highlight:
+        anchor_linenums: true
+    - pymdownx.inlinehilite
+    - pymdownx.snippets
+    - pymdownx.superfences
+
+plugins:
+    - git-revision-date-localized:
+          enable_creation_date: false
+          type: iso_datetime
+    - search:
+        lang: en
+
