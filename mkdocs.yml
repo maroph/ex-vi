@@ -6,6 +6,7 @@ site_author: Manfred Rosenboom (maroph)
 #
 repo_name: maroph/ex-vi
 repo_url: https://github.com/maroph/ex-vi
+edit_uri: edit/main/docs
 #
 # MkDocs Theme: Material for MkDocs
 # https://squidfunk.github.io/mkdocs-material/
