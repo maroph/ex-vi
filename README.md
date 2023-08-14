@@ -1,2 +1,2 @@
 # ex-vi
-Dedicated to Bill Joy's vi Implementation
+Dedicated to Bill Joy's ex and vi implementation

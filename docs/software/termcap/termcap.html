@@ -1,0 +1,4809 @@
+<HTML>
+<HEAD>
+<!-- This HTML file has been created by texi2html 1.52
+     from ../texi/termcap.texi on 7 November 1998 -->
+
+<TITLE>The Termcap Library</TITLE>
+</HEAD>
+<BODY>
+<H1>The Termcap Manual</H1>
+<H2>The Termcap Library and Data Base</H2>
+<H2>Second Edition</H2>
+<H2>December 1992</H2>
+<ADDRESS>Richard M. Stallman</ADDRESS>
+<P>
+<P><HR><P>
+<H1>Table of Contents</H1>
+<UL>
+<LI><A NAME="TOC1" HREF="termcap.html#SEC1">Introduction</A>
+<LI><A NAME="TOC2" HREF="termcap.html#SEC2">The Termcap Library</A>
+<UL>
+<LI><A NAME="TOC3" HREF="termcap.html#SEC3">Preparing to Use the Termcap Library</A>
+<LI><A NAME="TOC4" HREF="termcap.html#SEC4">Finding a Terminal Description: <CODE>tgetent</CODE></A>
+<LI><A NAME="TOC5" HREF="termcap.html#SEC5">Interrogating the Terminal Description</A>
+<LI><A NAME="TOC6" HREF="termcap.html#SEC6">Initialization for Use of Termcap</A>
+<LI><A NAME="TOC7" HREF="termcap.html#SEC7">Padding</A>
+<UL>
+<LI><A NAME="TOC8" HREF="termcap.html#SEC8">Why Pad, and How</A>
+<LI><A NAME="TOC9" HREF="termcap.html#SEC9">When There Is Not Enough Padding</A>
+<LI><A NAME="TOC10" HREF="termcap.html#SEC10">Specifying Padding in a Terminal Description</A>
+<LI><A NAME="TOC11" HREF="termcap.html#SEC11">Performing Padding with <CODE>tputs</CODE></A>
+</UL>
+<LI><A NAME="TOC12" HREF="termcap.html#SEC12">Filling In Parameters</A>
+<UL>
+<LI><A NAME="TOC13" HREF="termcap.html#SEC13">Describing the Encoding</A>
+<LI><A NAME="TOC14" HREF="termcap.html#SEC14">Sending Display Commands with Parameters</A>
+<UL>
+<LI><A NAME="TOC15" HREF="termcap.html#SEC15"><CODE>tparam</CODE></A>
+<LI><A NAME="TOC16" HREF="termcap.html#SEC16"><CODE>tgoto</CODE></A>
+</UL>
+</UL>
+</UL>
+<LI><A NAME="TOC17" HREF="termcap.html#SEC17">The Format of the Data Base</A>
+<UL>
+<LI><A NAME="TOC18" HREF="termcap.html#SEC18">Terminal Description Format</A>
+<LI><A NAME="TOC19" HREF="termcap.html#SEC19">Writing the Capabilities</A>
+<LI><A NAME="TOC20" HREF="termcap.html#SEC20">Terminal Type Name Conventions</A>
+<LI><A NAME="TOC21" HREF="termcap.html#SEC21">Inheriting from Related Descriptions</A>
+<LI><A NAME="TOC22" HREF="termcap.html#SEC22">When Changes in the Data Base Take Effect</A>
+</UL>
+<LI><A NAME="TOC23" HREF="termcap.html#SEC23">Definitions of the Terminal Capabilities</A>
+<UL>
+<LI><A NAME="TOC24" HREF="termcap.html#SEC24">Basic Characteristics</A>
+<LI><A NAME="TOC25" HREF="termcap.html#SEC25">Screen Size</A>
+<LI><A NAME="TOC26" HREF="termcap.html#SEC26">Cursor Motion</A>
+<LI><A NAME="TOC27" HREF="termcap.html#SEC27">Wrapping</A>
+<LI><A NAME="TOC28" HREF="termcap.html#SEC28">Scrolling</A>
+<LI><A NAME="TOC29" HREF="termcap.html#SEC29">Windows</A>
+<LI><A NAME="TOC30" HREF="termcap.html#SEC30">Clearing Parts of the Screen</A>
+<LI><A NAME="TOC31" HREF="termcap.html#SEC31">Insert/Delete Line</A>
+<LI><A NAME="TOC32" HREF="termcap.html#SEC32">Insert/Delete Character</A>
+<LI><A NAME="TOC33" HREF="termcap.html#SEC33">Standout and Appearance Modes</A>
+<LI><A NAME="TOC34" HREF="termcap.html#SEC34">Underlining</A>
+<LI><A NAME="TOC35" HREF="termcap.html#SEC35">Cursor Visibility</A>
+<LI><A NAME="TOC36" HREF="termcap.html#SEC36">Bell</A>
+<LI><A NAME="TOC37" HREF="termcap.html#SEC37">Keypad and Function Keys</A>
+<LI><A NAME="TOC38" HREF="termcap.html#SEC38">Meta Key</A>
+<LI><A NAME="TOC39" HREF="termcap.html#SEC39">Initialization</A>
+<LI><A NAME="TOC40" HREF="termcap.html#SEC40">Padding Capabilities</A>
+<LI><A NAME="TOC41" HREF="termcap.html#SEC41">Status Line</A>
+<LI><A NAME="TOC42" HREF="termcap.html#SEC42">Half-Line Motion</A>
+<LI><A NAME="TOC43" HREF="termcap.html#SEC43">Controlling Printers Attached to Terminals</A>
+</UL>
+<LI><A NAME="TOC44" HREF="termcap.html#SEC44">Summary of Capability Names</A>
+<LI><A NAME="TOC45" HREF="termcap.html#SEC45">Variable and Function Index</A>
+<LI><A NAME="TOC46" HREF="termcap.html#SEC46">Capability Index</A>
+<LI><A NAME="TOC47" HREF="termcap.html#SEC47">Concept Index</A>
+</UL>
+<P><HR><P>
+
+
+<H1><A NAME="SEC1" HREF="termcap.html#TOC1">Introduction</A></H1>
+
+<P>
+<A NAME="IDX1"></A>
+<EM>Termcap</EM> is a library and data base that enables programs to use
+display terminals in a terminal-independent manner.  It originated in
+Berkeley Unix.
+
+</P>
+<P>
+The termcap data base describes the capabilities of hundreds of different
+display terminals in great detail.  Some examples of the information
+recorded for a terminal could include how many columns wide it is, what
+string to send to move the cursor to an arbitrary position (including how
+to encode the row and column numbers), how to scroll the screen up one or
+several lines, and how much padding is needed for such a scrolling
+operation.
+
+</P>
+<P>
+The termcap library is provided for easy access this data base in programs
+that want to do terminal-independent character-based display output.
+
+</P>
+<P>
+This manual describes the GNU version of the termcap library, which has
+some extensions over the Unix version.  All the extensions are identified
+as such, so this manual also tells you how to use the Unix termcap.
+
+</P>
+<P>
+The GNU version of the termcap library is available free as source code,
+for use in free programs, and runs on Unix and VMS systems (at least).  You
+can find it in the GNU Emacs distribution in the files <TT>`termcap.c'</TT> and
+<TT>`tparam.c'</TT>.
+
+</P>
+<P>
+This manual was written for the GNU project, whose goal is to develop a
+complete free operating system upward-compatible with Unix for user
+programs.  The project is approximately two thirds complete.  For more
+information on the GNU project, including the GNU Emacs editor and the
+mostly-portable optimizing C compiler, send one dollar to
+
+</P>
+
+<PRE>
+Free Software Foundation
+675 Mass Ave
+Cambridge, MA 02139
+</PRE>
+
+
+
+<H1><A NAME="SEC2" HREF="termcap.html#TOC2">The Termcap Library</A></H1>
+
+<P>
+The termcap library is the application programmer's interface to the
+termcap data base.  It contains functions for the following purposes:
+
+</P>
+
+<UL>
+<LI>
+
+Finding the description of the user's terminal type (<CODE>tgetent</CODE>).
+
+<LI>
+
+Interrogating the description for information on various topics
+(<CODE>tgetnum</CODE>, <CODE>tgetflag</CODE>, <CODE>tgetstr</CODE>).
+
+<LI>
+
+Computing and performing padding (<CODE>tputs</CODE>).
+
+<LI>
+
+Encoding numeric parameters such as cursor positions into the
+terminal-specific form required for display commands (<CODE>tparam</CODE>,
+<CODE>tgoto</CODE>).
+</UL>
+
+
+
+<H2><A NAME="SEC3" HREF="termcap.html#TOC3">Preparing to Use the Termcap Library</A></H2>
+
+<P>
+To use the termcap library in a program, you need two kinds of preparation:
+
+</P>
+
+<UL>
+<LI>
+
+The compiler needs declarations of the functions and variables in the
+library.
+
+On GNU systems, it suffices to include the header file
+<TT>`termcap.h'</TT> in each source file that uses these functions and
+variables.
+On Unix systems, there is often no such header file.  Then you must
+explictly declare the variables as external.  You can do likewise for
+the functions, or let them be implicitly declared and cast their
+values from type <CODE>int</CODE> to the appropriate type.
+
+We illustrate the declarations of the individual termcap library
+functions with ANSI C prototypes because they show how to pass the
+arguments.  If you are not using the GNU C compiler, you probably
+cannot use function prototypes, so omit the argument types and names
+from your declarations.
+
+<LI>
+
+The linker needs to search the library.  Usually either
+<SAMP>`-ltermcap'</SAMP> or <SAMP>`-ltermlib'</SAMP> as an argument when linking will
+do this.</UL>
+
+
+
+<H2><A NAME="SEC4" HREF="termcap.html#TOC4">Finding a Terminal Description: <CODE>tgetent</CODE></A></H2>
+
+<P>
+<A NAME="IDX2"></A>
+An application program that is going to use termcap must first look up the
+description of the terminal type in use.  This is done by calling
+<CODE>tgetent</CODE>, whose declaration in ANSI Standard C looks like:
+
+</P>
+
+<PRE>
+int tgetent (char *<VAR>buffer</VAR>, char *<VAR>termtype</VAR>);
+</PRE>
+
+<P>
+This function finds the description and remembers it internally so that
+you can interrogate it about specific terminal capabilities
+(see section <A HREF="termcap.html#SEC5">Interrogating the Terminal Description</A>).
+
+</P>
+<P>
+The argument <VAR>termtype</VAR> is a string which is the name for the type of
+terminal to look up.  Usually you would obtain this from the environment
+variable <CODE>TERM</CODE> using <CODE>getenv ("TERM")</CODE>.
+
+</P>
+<P>
+If you are using the GNU version of termcap, you can alternatively ask
+<CODE>tgetent</CODE> to allocate enough space.  Pass a null pointer for
+<VAR>buffer</VAR>, and <CODE>tgetent</CODE> itself allocates the storage using
+<CODE>malloc</CODE>.  There is no way to get the address that was allocated,
+and you shouldn't try to free the storage.
+</P>
+<P>
+With the Unix version of termcap, you must allocate space for the
+description yourself and pass the address of the space as the argument
+<VAR>buffer</VAR>.  There is no way you can tell how much space is needed, so
+the convention is to allocate a buffer 2048 characters long and assume that
+is enough.  (Formerly the convention was to allocate 1024 characters and
+assume that was enough.  But one day, for one kind of terminal, that was
+not enough.)
+
+</P>
+<P>
+No matter how the space to store the description has been obtained,
+termcap records its address internally for use when you later interrogate
+the description with <CODE>tgetnum</CODE>, <CODE>tgetstr</CODE> or <CODE>tgetflag</CODE>.  If
+the buffer was allocated by termcap, it will be freed by termcap too if you
+call <CODE>tgetent</CODE> again.  If the buffer was provided by you, you must
+make sure that its contents remain unchanged for as long as you still plan
+to interrogate the description.
+</P>
+<P>
+The return value of <CODE>tgetent</CODE> is -1 if there is some difficulty
+accessing the data base of terminal types, 0 if the data base is accessible
+but the specified type is not defined in it, and some other value
+otherwise.
+
+</P>
+<P>
+Here is how you might use the function <CODE>tgetent</CODE>:
+
+</P>
+
+<PRE>
+#ifdef unix
+static char term_buffer[2048];
+#else
+#define term_buffer 0
+#endif
+
+init_terminal_data ()
+{
+  char *termtype = getenv ("TERM");
+  int success;
+
+  if (termtype == 0)
+    fatal ("Specify a terminal type with `setenv TERM &#60;yourtype&#62;'.\n");
+
+  success = tgetent (term_buffer, termtype);
+  if (success &#60; 0)
+    fatal ("Could not access the termcap data base.\n");
+  if (success == 0)
+    fatal ("Terminal type `%s' is not defined.\n", termtype);
+}
+</PRE>
+
+<P>
+Here we assume the function <CODE>fatal</CODE> prints an error message and exits.
+
+</P>
+<P>
+If the environment variable <CODE>TERMCAP</CODE> is defined, its value is used to
+override the terminal type data base.  The function <CODE>tgetent</CODE> checks
+the value of <CODE>TERMCAP</CODE> automatically.  If the value starts with
+<SAMP>`/'</SAMP> then it is taken as a file name to use as the data base file,
+instead of <TT>`/etc/termcap'</TT> which is the standard data base.  If the
+value does not start with <SAMP>`/'</SAMP> then it is itself used as the terminal
+description, provided that the terminal type <VAR>termtype</VAR> is among the
+types it claims to apply to.  See section <A HREF="termcap.html#SEC17">The Format of the Data Base</A>, for information on the
+format of a terminal description.
+</P>
+
+
+<H2><A NAME="SEC5" HREF="termcap.html#TOC5">Interrogating the Terminal Description</A></H2>
+
+<P>
+Each piece of information recorded in a terminal description is called a
+<EM>capability</EM>.  Each defined terminal capability has a two-letter code
+name and a specific meaning.  For example, the number of columns is named
+<SAMP>`co'</SAMP>.  See section <A HREF="termcap.html#SEC23">Definitions of the Terminal Capabilities</A>, for definitions of all the standard
+capability names.
+
+</P>
+<P>
+Once you have found the proper terminal description with <CODE>tgetent</CODE>
+(see section <A HREF="termcap.html#SEC4">Finding a Terminal Description: <CODE>tgetent</CODE></A>), your application program must <EM>interrogate</EM> it for
+various terminal capabilities.  You must specify the two-letter code of
+the capability whose value you seek.
+
+</P>
+<P>
+Capability values can be numeric, boolean (capability is either present or
+absent) or strings.  Any particular capability always has the same value
+type; for example, <SAMP>`co'</SAMP> always has a numeric value, while <SAMP>`am'</SAMP>
+(automatic wrap at margin) is always a flag, and <SAMP>`cm'</SAMP> (cursor motion
+command) always has a string value.  The documentation of each capability
+says which type of value it has.
+</P>
+<P>
+There are three functions to use to get the value of a capability,
+depending on the type of value the capability has.  Here are their
+declarations in ANSI C:
+
+</P>
+<P>
+<A NAME="IDX3"></A>
+<A NAME="IDX4"></A>
+<A NAME="IDX5"></A>
+
+<PRE>
+int tgetnum (char *<VAR>name</VAR>);
+int tgetflag (char *<VAR>name</VAR>);
+char *tgetstr (char *<VAR>name</VAR>, char **<VAR>area</VAR>);
+</PRE>
+
+<DL COMPACT>
+
+<DT><CODE>tgetnum</CODE>
+<DD>
+Use <CODE>tgetnum</CODE> to get a capability value that is numeric.  The
+argument <VAR>name</VAR> is the two-letter code name of the capability.  If
+the capability is present, <CODE>tgetnum</CODE> returns the numeric value
+(which is nonnegative).  If the capability is not mentioned in the
+terminal description, <CODE>tgetnum</CODE> returns -1.
+
+<DT><CODE>tgetflag</CODE>
+<DD>
+Use <CODE>tgetflag</CODE> to get a boolean value.  If the capability
+<VAR>name</VAR> is present in the terminal description, <CODE>tgetflag</CODE>
+returns 1; otherwise, it returns 0.
+
+<DT><CODE>tgetstr</CODE>
+<DD>
+Use <CODE>tgetstr</CODE> to get a string value.  It returns a pointer to a
+string which is the capability value, or a null pointer if the
+capability is not present in the terminal description.
+
+There are two ways <CODE>tgetstr</CODE> can find space to store the string value:
+
+
+<UL>
+<LI>
+
+You can ask <CODE>tgetstr</CODE> to allocate the space.  Pass a null
+pointer for the argument <VAR>area</VAR>, and <CODE>tgetstr</CODE> will use
+<CODE>malloc</CODE> to allocate storage big enough for the value.
+Termcap will never free this storage or refer to it again; you
+should free it when you are finished with it.
+
+This method is more robust, since there is no need to guess how
+much space is needed.  But it is supported only by the GNU
+termcap library.
+
+<LI>
+
+You can provide the space.  Provide for the argument <VAR>area</VAR> the
+address of a pointer variable of type <CODE>char *</CODE>.  Before calling
+<CODE>tgetstr</CODE>, initialize the variable to point at available space.
+Then <CODE>tgetstr</CODE> will store the string value in that space and will
+increment the pointer variable to point after the space that has been
+used.  You can use the same pointer variable for many calls to
+<CODE>tgetstr</CODE>.
+
+There is no way to determine how much space is needed for a single
+string, and no way for you to prevent or handle overflow of the area
+you have provided.  However, you can be sure that the total size of
+all the string values you will obtain from the terminal description is
+no greater than the size of the description (unless you get the same
+capability twice).  You can determine that size with <CODE>strlen</CODE> on
+the buffer you provided to <CODE>tgetent</CODE>.  See below for an example.
+
+Providing the space yourself is the only method supported by the Unix
+version of termcap.
+</UL>
+
+</DL>
+
+<P>
+Note that you do not have to specify a terminal type or terminal
+description for the interrogation functions.  They automatically use the
+description found by the most recent call to <CODE>tgetent</CODE>.
+
+</P>
+<P>
+Here is an example of interrogating a terminal description for various
+capabilities, with conditionals to select between the Unix and GNU methods
+of providing buffer space.
+
+</P>
+
+<PRE>
+char *tgetstr ();
+
+char *cl_string, *cm_string;
+int height;
+int width;
+int auto_wrap;
+
+char PC;   /* For tputs.  */
+char *BC;  /* For tgoto.  */
+char *UP;
+
+interrogate_terminal ()
+{
+#ifdef Unix
+  /* Here we assume that an explicit term_buffer
+     was provided to tgetent.  */
+  char *buffer
+    = (char *) malloc (strlen (term_buffer));
+#define BUFFADDR &#38;buffer
+#else
+#define BUFFADDR 0
+#endif
+
+  char *temp;
+
+  /* Extract information we will use.  */
+  cl_string = tgetstr ("cl", BUFFADDR);
+  cm_string = tgetstr ("cm", BUFFADDR);
+  auto_wrap = tgetflag ("am");
+  height = tgetnum ("li");
+  width = tgetnum ("co");
+
+  /* Extract information that termcap functions use.  */
+  temp = tgetstr ("pc", BUFFADDR);
+  PC = temp ? *temp : 0;
+  BC = tgetstr ("le", BUFFADDR);
+  UP = tgetstr ("up", BUFFADDR);
+}
+</PRE>
+
+<P>
+See section <A HREF="termcap.html#SEC7">Padding</A>, for information on the variable <CODE>PC</CODE>.  See section <A HREF="termcap.html#SEC14">Sending Display Commands with Parameters</A>, for information on <CODE>UP</CODE> and <CODE>BC</CODE>.
+
+</P>
+
+
+<H2><A NAME="SEC6" HREF="termcap.html#TOC6">Initialization for Use of Termcap</A></H2>
+<P>
+<A NAME="IDX6"></A>
+
+</P>
+<P>
+Before starting to output commands to a terminal using termcap,
+an application program should do two things:
+
+</P>
+
+<UL>
+<LI>
+
+Initialize various global variables which termcap library output
+functions refer to.  These include <CODE>PC</CODE> and <CODE>ospeed</CODE> for
+padding (see section <A HREF="termcap.html#SEC11">Performing Padding with <CODE>tputs</CODE></A>) and <CODE>UP</CODE> and <CODE>BC</CODE> for
+cursor motion (see section <A HREF="termcap.html#SEC16"><CODE>tgoto</CODE></A>).
+<LI>
+
+Tell the kernel to turn off alteration and padding of horizontal-tab
+characters sent to the terminal.
+</UL>
+
+<P>
+To turn off output processing in Berkeley Unix you would use <CODE>ioctl</CODE>
+with code <CODE>TIOCLSET</CODE> to set the bit named <CODE>LLITOUT</CODE>, and clear
+the bits <CODE>ANYDELAY</CODE> using <CODE>TIOCSETN</CODE>.  In POSIX or System V, you
+must clear the bit named <CODE>OPOST</CODE>.  Refer to the system documentation
+for details.
+</P>
+<P>
+If you do not set the terminal flags properly, some older terminals will
+not work.  This is because their commands may contain the characters that
+normally signify newline, carriage return and horizontal tab--characters
+which the kernel thinks it ought to modify before output.
+
+</P>
+<P>
+When you change the kernel's terminal flags, you must arrange to restore
+them to their normal state when your program exits.  This implies that the
+program must catch fatal signals such as <CODE>SIGQUIT</CODE> and <CODE>SIGINT</CODE>
+and restore the old terminal flags before actually terminating.
+
+</P>
+<P>
+Modern terminals' commands do not use these special characters, so if you
+do not care about problems with old terminals, you can leave the kernel's
+terminal flags unaltered.
+
+</P>
+
+
+<H2><A NAME="SEC7" HREF="termcap.html#TOC7">Padding</A></H2>
+<P>
+<A NAME="IDX7"></A>
+
+</P>
+<P>
+<EM>Padding</EM> means outputting null characters following a terminal display
+command that takes a long time to execute.  The terminal description says
+which commands require padding and how much; the function <CODE>tputs</CODE>,
+described below, outputs a terminal command while extracting from it the
+padding information, and then outputs the padding that is necessary.
+
+</P>
+
+
+
+<H3><A NAME="SEC8" HREF="termcap.html#TOC8">Why Pad, and How</A></H3>
+
+<P>
+Most types of terminal have commands that take longer to execute than they
+do to send over a high-speed line.  For example, clearing the screen may
+take 20msec once the entire command is received.  During that time, on a
+9600 bps line, the terminal could receive about 20 additional output
+characters while still busy clearing the screen.  Every terminal has a
+certain amount of buffering capacity to remember output characters that
+cannot be processed yet, but too many slow commands in a row can cause the
+buffer to fill up.  Then any additional output that cannot be processed
+immediately will be lost.
+
+</P>
+<P>
+To avoid this problem, we normally follow each display command with enough
+useless charaters (usually null characters) to fill up the time that the
+display command needs to execute.  This does the job if the terminal throws
+away null characters without using up space in the buffer (which most
+terminals do).  If enough padding is used, no output can ever be lost.  The
+right amount of padding avoids loss of output without slowing down
+operation, since the time used to transmit padding is time that nothing
+else could be done.
+
+</P>
+<P>
+The number of padding characters needed for an operation depends on the
+line speed.  In fact, it is proportional to the line speed.  A 9600 baud
+line transmits about one character per msec, so the clear screen command in
+the example above would need about 20 characters of padding.  At 1200 baud,
+however, only about 3 characters of padding are needed to fill up 20msec.
+
+</P>
+
+
+<H3><A NAME="SEC9" HREF="termcap.html#TOC9">When There Is Not Enough Padding</A></H3>
+
+<P>
+There are several common manifestations of insufficient padding.
+
+</P>
+
+<UL>
+<LI>
+
+Emacs displays <SAMP>`I-search: ^Q-'</SAMP> at the bottom of the screen.
+
+This means that the terminal thought its buffer was getting full of
+display commands, so it tried to tell the computer to stop sending
+any.
+
+<LI>
+
+The screen is garbled intermittently, or the details of garbling vary
+when you repeat the action.  (A garbled screen could be due to a
+command which is simply incorrect, or to user option in the terminal
+which doesn't match the assumptions of the terminal description, but
+this usually leads to reproducible failure.)
+
+This means that the buffer did get full, and some commands were lost.
+Many changeable factors can change which ones are lost.
+
+<LI>
+
+Screen is garbled at high output speeds but not at low speeds.
+Padding problems nearly always go away at low speeds, usually even at
+1200 baud.
+
+This means that a high enough speed permits commands to arrive faster
+than they can be executed.
+</UL>
+
+<P>
+Although any obscure command on an obscure terminal might lack padding,
+in practice problems arise most often from the clearing commands
+<SAMP>`cl'</SAMP> and <SAMP>`cd'</SAMP> (see section <A HREF="termcap.html#SEC30">Clearing Parts of the Screen</A>), the scrolling commands
+<SAMP>`sf'</SAMP> and <SAMP>`sr'</SAMP> (see section <A HREF="termcap.html#SEC28">Scrolling</A>), and the line insert/delete
+commands <SAMP>`al'</SAMP> and <SAMP>`dl'</SAMP> (see section <A HREF="termcap.html#SEC31">Insert/Delete Line</A>).
+
+</P>
+<P>
+Occasionally the terminal description fails to define <SAMP>`sf'</SAMP> and some
+programs will use <SAMP>`do'</SAMP> instead, so you may get a problem with
+<SAMP>`do'</SAMP>.  If so, first define <SAMP>`sf'</SAMP> just like <SAMP>`do'</SAMP>, then
+add some padding to <SAMP>`sf'</SAMP>.
+
+</P>
+<P>
+The best strategy is to add a lot of padding at first, perhaps 200 msec.
+This is much more than enough; in fact, it should cause a visible slowdown.
+(If you don't see a slowdown, the change has not taken effect;
+see section <A HREF="termcap.html#SEC22">When Changes in the Data Base Take Effect</A>.)  If this makes the problem go away, you have found the
+right place to add padding; now reduce the amount until the problem comes
+back, then increase it again.  If the problem remains, either it is in some
+other capability or it is not a matter of padding at all.
+
+</P>
+<P>
+Keep in mind that on many terminals the correct padding for insert/delete
+line or for scrolling is cursor-position dependent.  If you get problems
+from scrolling a large region of the screen but not from scrolling a small
+part (just a few lines moving), it may mean that fixed padding should be
+replaced with position-dependent padding.
+
+</P>
+
+
+<H3><A NAME="SEC10" HREF="termcap.html#TOC10">Specifying Padding in a Terminal Description</A></H3>
+
+<P>
+In the terminal description, the amount of padding required by each display
+command is recorded as a sequence of digits at the front of the command.
+These digits specify the padding time in milliseconds (msec).  They can be
+followed optionally by a decimal point and one more digit, which is a
+number of tenths of msec.
+
+</P>
+<P>
+Sometimes the padding needed by a command depends on the cursor position.
+For example, the time taken by an "insert line" command is usually
+proportional to the number of lines that need to be moved down or cleared.
+An asterisk (<SAMP>`*'</SAMP>) following the padding time says that the time
+should be multiplied by the number of screen lines affected by the command.
+
+</P>
+
+<PRE>
+:al=1.3*\E[L:
+</PRE>
+
+<P>
+is used to describe the "insert line" command for a certain terminal.
+The padding required is 1.3 msec per line affected.  The command itself is
+<SAMP>`<KBD>ESC</KBD> [ L'</SAMP>.
+
+</P>
+<P>
+The padding time specified in this way tells <CODE>tputs</CODE> how many pad
+characters to output.  See section <A HREF="termcap.html#SEC11">Performing Padding with <CODE>tputs</CODE></A>.
+
+</P>
+<P>
+Two special capability values affect padding for all commands.  These are
+the <SAMP>`pc'</SAMP> and <SAMP>`pb'</SAMP>.  The variable <SAMP>`pc'</SAMP> specifies the
+character to pad with, and <SAMP>`pb'</SAMP> the speed below which no padding is
+needed.  The defaults for these variables, a null character and 0,
+are correct for most terminals.  See section <A HREF="termcap.html#SEC40">Padding Capabilities</A>.
+
+</P>
+
+
+<H3><A NAME="SEC11" HREF="termcap.html#TOC11">Performing Padding with <CODE>tputs</CODE></A></H3>
+<P>
+<A NAME="IDX8"></A>
+
+</P>
+<P>
+<A NAME="IDX9"></A>
+Use the termcap function <CODE>tputs</CODE> to output a string containing an
+optional padding spec of the form described above (see section <A HREF="termcap.html#SEC10">Specifying Padding in a Terminal Description</A>).  The function <CODE>tputs</CODE> strips off and decodes the padding
+spec, outputs the rest of the string, and then outputs the appropriate
+padding.  Here is its declaration in ANSI C:
+
+</P>
+
+<PRE>
+char PC;
+short ospeed;
+
+int tputs (char *<VAR>string</VAR>, int <VAR>nlines</VAR>, int (*<VAR>outfun</VAR>) ());
+</PRE>
+
+<P>
+Here <VAR>string</VAR> is the string (including padding spec) to be output;
+<VAR>nlines</VAR> is the number of lines affected by the operation, which is
+used to multiply the amount of padding if the padding spec ends with a
+<SAMP>`*'</SAMP>.  Finally, <VAR>outfun</VAR> is a function (such as <CODE>fputchar</CODE>)
+that is called to output each character.  When actually called,
+<VAR>outfun</VAR> should expect one argument, a character.
+
+</P>
+<P>
+<A NAME="IDX10"></A>
+<A NAME="IDX11"></A>
+The operation of <CODE>tputs</CODE> is controlled by two global variables,
+<CODE>ospeed</CODE> and <CODE>PC</CODE>.  The value of <CODE>ospeed</CODE> is supposed to be
+the terminal output speed, encoded as in the <CODE>ioctl</CODE> system call which
+gets the speed information.  This is needed to compute the number of
+padding characters.  The value of <CODE>PC</CODE> is the character used for
+padding.
+
+</P>
+<P>
+You are responsible for storing suitable values into these variables before
+using <CODE>tputs</CODE>.  The value stored into the <CODE>PC</CODE> variable should be
+taken from the <SAMP>`pc'</SAMP> capability in the terminal description (see section <A HREF="termcap.html#SEC40">Padding Capabilities</A>).  Store zero in <CODE>PC</CODE> if there is no <SAMP>`pc'</SAMP>
+capability.
+</P>
+<P>
+The argument <VAR>nlines</VAR> requires some thought.  Normally, it should be
+the number of lines whose contents will be cleared or moved by the command.
+For cursor motion commands, or commands that do editing within one line,
+use the value 1.  For most commands that affect multiple lines, such as
+<SAMP>`al'</SAMP> (insert a line) and <SAMP>`cd'</SAMP> (clear from the cursor to the end
+of the screen), <VAR>nlines</VAR> should be the screen height minus the current
+vertical position (origin 0).  For multiple insert and scroll commands such
+as <SAMP>`AL'</SAMP> (insert multiple lines), that same value for <VAR>nlines</VAR> is
+correct; the number of lines being inserted is <I>not</I> correct.
+</P>
+<P>
+If a "scroll window" feature is used to reduce the number of lines
+affected by a command, the value of <VAR>nlines</VAR> should take this into
+account.  This is because the delay time required depends on how much work
+the terminal has to do, and the scroll window feature reduces the work.
+See section <A HREF="termcap.html#SEC28">Scrolling</A>.
+
+</P>
+<P>
+Commands such as <SAMP>`ic'</SAMP> and <SAMP>`dc'</SAMP> (insert or delete characters) are
+problematical because the padding needed by these commands is proportional
+to the number of characters affected, which is the number of columns from
+the cursor to the end of the line.  It would be nice to have a way to
+specify such a dependence, and there is no need for dependence on vertical
+position in these commands, so it is an obvious idea to say that for these
+commands <VAR>nlines</VAR> should really be the number of columns affected.
+However, the definition of termcap clearly says that <VAR>nlines</VAR> is always
+the number of lines affected, even in this case, where it is always 1.  It
+is not easy to change this rule now, because too many programs and terminal
+descriptions have been written to follow it.
+
+</P>
+<P>
+Because <VAR>nlines</VAR> is always 1 for the <SAMP>`ic'</SAMP> and <SAMP>`dc'</SAMP> strings,
+there is no reason for them to use <SAMP>`*'</SAMP>, but some of them do.  These
+should be corrected by deleting the <SAMP>`*'</SAMP>.  If, some day, such entries
+have disappeared, it may be possible to change to a more useful convention
+for the <VAR>nlines</VAR> argument for these operations without breaking any
+programs.
+
+</P>
+
+
+<H2><A NAME="SEC12" HREF="termcap.html#TOC12">Filling In Parameters</A></H2>
+<P>
+<A NAME="IDX12"></A>
+
+</P>
+<P>
+Some terminal control strings require numeric <EM>parameters</EM>.  For
+example, when you move the cursor, you need to say what horizontal and
+vertical positions to move it to.  The value of the terminal's <SAMP>`cm'</SAMP>
+capability, which says how to move the cursor, cannot simply be a string of
+characters; it must say how to express the cursor position numbers and
+where to put them within the command.
+
+</P>
+<P>
+The specifications of termcap include conventions as to which string-valued
+capabilities require parameters, how many parameters, and what the
+parameters mean; for example, it defines the <SAMP>`cm'</SAMP> string to take
+two parameters, the vertical and horizontal positions, with 0,0 being the
+upper left corner.  These conventions are described where the individual
+commands are documented.
+
+</P>
+<P>
+Termcap also defines a language used within the capability definition for
+specifying how and where to encode the parameters for output.  This language
+uses character sequences starting with <SAMP>`%'</SAMP>.  (This is the same idea as
+<CODE>printf</CODE>, but the details are different.)  The language for parameter
+encoding is described in this section.
+
+</P>
+<P>
+A program that is doing display output calls the functions <CODE>tparam</CODE> or
+<CODE>tgoto</CODE> to encode parameters according to the specifications.  These
+functions produce a string containing the actual commands to be output (as
+well a padding spec which must be processed with <CODE>tputs</CODE>;
+see section <A HREF="termcap.html#SEC7">Padding</A>).
+
+</P>
+
+
+
+<H3><A NAME="SEC13" HREF="termcap.html#TOC13">Describing the Encoding</A></H3>
+<P>
+<A NAME="IDX13"></A>
+
+</P>
+<P>
+A terminal command string that requires parameters contains special
+character sequences starting with <SAMP>`%'</SAMP> to say how to encode the
+parameters.  These sequences control the actions of <CODE>tparam</CODE> and
+<CODE>tgoto</CODE>.
+
+</P>
+<P>
+The parameters values passed to <CODE>tparam</CODE> or <CODE>tgoto</CODE> are
+considered to form a vector.  A pointer into this vector determines
+the next parameter to be processed.  Some of the <SAMP>`%'</SAMP>-sequences
+encode one parameter and advance the pointer to the next parameter.
+Other <SAMP>`%'</SAMP>-sequences alter the pointer or alter the parameter
+values without generating output.
+
+</P>
+<P>
+For example, the <SAMP>`cm'</SAMP> string for a standard ANSI terminal is written
+as <SAMP>`\E[%i%d;%dH'</SAMP>.  (<SAMP>`\E'</SAMP> stands for <KBD>ESC</KBD>.)  <SAMP>`cm'</SAMP> by
+convention always requires two parameters, the vertical and horizontal goal
+positions, so this string specifies the encoding of two parameters.  Here
+<SAMP>`%i'</SAMP> increments the two values supplied, and each <SAMP>`%d'</SAMP> encodes
+one of the values in decimal.  If the cursor position values 20,58 are
+encoded with this string, the result is <SAMP>`\E[21;59H'</SAMP>.
+
+</P>
+<P>
+First, here are the <SAMP>`%'</SAMP>-sequences that generate output.  Except for
+<SAMP>`%%'</SAMP>, each of them encodes one parameter and advances the pointer
+to the following parameter.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`%%'</SAMP>
+<DD>
+Output a single <SAMP>`%'</SAMP>.  This is the only way to represent a literal
+<SAMP>`%'</SAMP> in a terminal command with parameters.  <SAMP>`%%'</SAMP> does not
+use up a parameter.
+
+<DT><SAMP>`%d'</SAMP>
+<DD>
+As in <CODE>printf</CODE>, output the next parameter in decimal.
+
+<DT><SAMP>`%2'</SAMP>
+<DD>
+Like <SAMP>`%02d'</SAMP> in <CODE>printf</CODE>: output the next parameter in
+decimal, and always use at least two digits.
+
+<DT><SAMP>`%3'</SAMP>
+<DD>
+Like <SAMP>`%03d'</SAMP> in <CODE>printf</CODE>: output the next parameter in
+decimal, and always use at least three digits.  Note that <SAMP>`%4'</SAMP>
+and so on are <EM>not</EM> defined.
+
+<DT><SAMP>`%.'</SAMP>
+<DD>
+Output the next parameter as a single character whose ASCII code is
+the parameter value.  Like <SAMP>`%c'</SAMP> in <CODE>printf</CODE>.
+
+<DT><SAMP>`%+<VAR>char</VAR>'</SAMP>
+<DD>
+Add the next parameter to the character <VAR>char</VAR>, and output the
+resulting character.  For example, <SAMP>`%+ '</SAMP> represents 0 as a space,
+1 as <SAMP>`!'</SAMP>, etc.
+</DL>
+
+<P>
+The following <SAMP>`%'</SAMP>-sequences specify alteration of the parameters
+(their values, or their order) rather than encoding a parameter for output.
+They generate no output; they are used only for their side effects
+on the parameters.  Also, they do not advance the "next parameter" pointer
+except as explicitly stated.  Only <SAMP>`%i'</SAMP>, <SAMP>`%r'</SAMP> and <SAMP>`%&#62;'</SAMP> are
+defined in standard Unix termcap.  The others are GNU extensions.
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`%i'</SAMP>
+<DD>
+Increment the next two parameters.  This is used for terminals that
+expect cursor positions in origin 1.  For example, <SAMP>`%i%d,%d'</SAMP> would
+output two parameters with <SAMP>`1'</SAMP> for 0, <SAMP>`2'</SAMP> for 1, etc.
+
+<DT><SAMP>`%r'</SAMP>
+<DD>
+Interchange the next two parameters.  This is used for terminals whose
+cursor positioning command expects the horizontal position first.
+
+<DT><SAMP>`%s'</SAMP>
+<DD>
+Skip the next parameter.  Do not output anything.
+
+<DT><SAMP>`%b'</SAMP>
+<DD>
+Back up one parameter.  The last parameter used will become once again
+the next parameter to be output, and the next output command will use
+it.  Using <SAMP>`%b'</SAMP> more than once, you can back up any number of
+parameters, and you can refer to each parameter any number of times.
+
+<DT><SAMP>`%&#62;<VAR>c1</VAR><VAR>c2</VAR>'</SAMP>
+<DD>
+Conditionally increment the next parameter.  Here <VAR>c1</VAR> and
+<VAR>c2</VAR> are characters which stand for their ASCII codes as numbers.
+If the next parameter is greater than the ASCII code of <VAR>c1</VAR>, the
+ASCII code of <VAR>c2</VAR> is added to it.
+<DT><SAMP>`%a <VAR>op</VAR> <VAR>type</VAR> <VAR>pos</VAR>'</SAMP>
+<DD>
+Perform arithmetic on the next parameter, do not use it up, and do not
+output anything.  Here <VAR>op</VAR> specifies the arithmetic operation,
+while <VAR>type</VAR> and <VAR>pos</VAR> together specify the other operand.
+
+Spaces are used above to separate the operands for clarity; the spaces
+don't appear in the data base, where this sequence is exactly five
+characters long.
+
+The character <VAR>op</VAR> says what kind of arithmetic operation to
+perform.  It can be any of these characters:
+
+<DL COMPACT>
+
+<DT><SAMP>`='</SAMP>
+<DD>
+assign a value to the next parameter, ignoring its old value.
+The new value comes from the other operand.
+
+<DT><SAMP>`+'</SAMP>
+<DD>
+add the other operand to the next parameter.
+
+<DT><SAMP>`-'</SAMP>
+<DD>
+subtract the other operand from the next parameter.
+
+<DT><SAMP>`*'</SAMP>
+<DD>
+multiply the next parameter by the other operand.
+
+<DT><SAMP>`/'</SAMP>
+<DD>
+divide the next parameter by the other operand.
+</DL>
+
+The "other operand" may be another parameter's value or a constant;
+the character <VAR>type</VAR> says which.  It can be:
+
+<DL COMPACT>
+
+<DT><SAMP>`p'</SAMP>
+<DD>
+Use another parameter.  The character <VAR>pos</VAR> says which
+parameter to use.  Subtract 64 from its ASCII code to get the
+position of the desired parameter relative to this one.  Thus,
+the character <SAMP>`A'</SAMP> as <VAR>pos</VAR> means the parameter after the
+next one; the character <SAMP>`?'</SAMP> means the parameter before the
+next one.
+
+<DT><SAMP>`c'</SAMP>
+<DD>
+Use a constant value.  The character <VAR>pos</VAR> specifies the
+value of the constant.  The 0200 bit is cleared out, so that 0200
+can be used to represent zero.
+</DL>
+</DL>
+
+<P>
+The following <SAMP>`%'</SAMP>-sequences are special purpose hacks to compensate
+for the weird designs of obscure terminals.  They modify the next parameter
+or the next two parameters but do not generate output and do not use up any
+parameters.  <SAMP>`%m'</SAMP> is a GNU extension; the others are defined in
+standard Unix termcap.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`%n'</SAMP>
+<DD>
+Exclusive-or the next parameter with 0140, and likewise the parameter
+after next.
+
+<DT><SAMP>`%m'</SAMP>
+<DD>
+Complement all the bits of the next parameter and the parameter after next.
+
+<DT><SAMP>`%B'</SAMP>
+<DD>
+Encode the next parameter in BCD.  It alters the value of the
+parameter by adding six times the quotient of the parameter by ten.
+Here is a C statement that shows how the new value is computed:
+
+
+<PRE>
+<VAR>parm</VAR> = (<VAR>parm</VAR> / 10) * 16 + <VAR>parm</VAR> % 10;
+</PRE>
+
+<DT><SAMP>`%D'</SAMP>
+<DD>
+Transform the next parameter as needed by Delta Data terminals.
+This involves subtracting twice the remainder of the parameter by 16.
+
+
+<PRE>
+<VAR>parm</VAR> -= 2 * (<VAR>parm</VAR> % 16);
+</PRE>
+
+</DL>
+
+
+
+<H3><A NAME="SEC14" HREF="termcap.html#TOC14">Sending Display Commands with Parameters</A></H3>
+
+<P>
+The termcap library functions <CODE>tparam</CODE> and <CODE>tgoto</CODE> serve as the
+analog of <CODE>printf</CODE> for terminal string parameters.  The newer function
+<CODE>tparam</CODE> is a GNU extension, more general but missing from Unix
+termcap.  The original parameter-encoding function is <CODE>tgoto</CODE>, which
+is preferable for cursor motion.
+
+</P>
+
+
+
+<H4><A NAME="SEC15" HREF="termcap.html#TOC15"><CODE>tparam</CODE></A></H4>
+
+<P>
+<A NAME="IDX14"></A>
+The function <CODE>tparam</CODE> can encode display commands with any number of
+parameters and allows you to specify the buffer space.  It is the preferred
+function for encoding parameters for all but the <SAMP>`cm'</SAMP> capability.  Its
+ANSI C declaration is as follows:
+
+</P>
+
+<PRE>
+char *tparam (char *<VAR>ctlstring</VAR>, char *<VAR>buffer</VAR>, int <VAR>size</VAR>, int <VAR>parm1</VAR>,...)
+</PRE>
+
+<P>
+The arguments are a control string <VAR>ctlstring</VAR> (the value of a terminal
+capability, presumably), an output buffer <VAR>buffer</VAR> and <VAR>size</VAR>, and
+any number of integer parameters to be encoded.  The effect of
+<CODE>tparam</CODE> is to copy the control string into the buffer, encoding
+parameters according to the <SAMP>`%'</SAMP> sequences in the control string.
+
+</P>
+<P>
+You describe the output buffer by its address, <VAR>buffer</VAR>, and its size
+in bytes, <VAR>size</VAR>.  If the buffer is not big enough for the data to be
+stored in it, <CODE>tparam</CODE> calls <CODE>malloc</CODE> to get a larger buffer.  In
+either case, <CODE>tparam</CODE> returns the address of the buffer it ultimately
+uses.  If the value equals <VAR>buffer</VAR>, your original buffer was used.
+Otherwise, a new buffer was allocated, and you must free it after you are
+done with printing the results.  If you pass zero for <VAR>size</VAR> and
+<VAR>buffer</VAR>, <CODE>tparam</CODE> always allocates the space with <CODE>malloc</CODE>.
+
+</P>
+<P>
+All capabilities that require parameters also have the ability to specify
+padding, so you should use <CODE>tputs</CODE> to output the string produced by
+<CODE>tparam</CODE>.  See section <A HREF="termcap.html#SEC7">Padding</A>.  Here is an example.
+
+</P>
+
+<PRE>
+{
+char *buf;
+char buffer[40];
+
+buf = tparam (command, buffer, 40, parm);
+tputs (buf, 1, fputchar);
+if (buf != buffer)
+free (buf);
+}
+</PRE>
+
+<P>
+If a parameter whose value is zero is encoded with <SAMP>`%.'</SAMP>-style
+encoding, the result is a null character, which will confuse <CODE>tputs</CODE>.
+This would be a serious problem, but luckily <SAMP>`%.'</SAMP> encoding is used
+only by a few old models of terminal, and only for the <SAMP>`cm'</SAMP>
+capability.  To solve the problem, use <CODE>tgoto</CODE> rather than
+<CODE>tparam</CODE> to encode the <SAMP>`cm'</SAMP> capability.
+</P>
+
+
+<H4><A NAME="SEC16" HREF="termcap.html#TOC16"><CODE>tgoto</CODE></A></H4>
+
+<P>
+<A NAME="IDX15"></A>
+The special case of cursor motion is handled by <CODE>tgoto</CODE>.  There
+are two reasons why you might choose to use <CODE>tgoto</CODE>:
+
+</P>
+
+<UL>
+<LI>
+
+For Unix compatibility, because Unix termcap does not have <CODE>tparam</CODE>.
+
+<LI>
+
+For the <SAMP>`cm'</SAMP> capability, since <CODE>tgoto</CODE> has a special feature
+to avoid problems with null characters, tabs and newlines on certain old
+terminal types that use <SAMP>`%.'</SAMP> encoding for that capability.
+</UL>
+
+<P>
+Here is how <CODE>tgoto</CODE> might be declared in ANSI C:
+
+</P>
+
+<PRE>
+char *tgoto (char *<VAR>cstring</VAR>, int <VAR>hpos</VAR>, int <VAR>vpos</VAR>)
+</PRE>
+
+<P>
+There are three arguments, the terminal description's <SAMP>`cm'</SAMP> string and
+the two cursor position numbers; <CODE>tgoto</CODE> computes the parametrized
+string in an internal static buffer and returns the address of that buffer.
+The next time you use <CODE>tgoto</CODE> the same buffer will be reused.
+
+</P>
+<P>
+<A NAME="IDX16"></A>
+<A NAME="IDX17"></A>
+Parameters encoded with <SAMP>`%.'</SAMP> encoding can generate null characters,
+tabs or newlines.  These might cause trouble: the null character because
+<CODE>tputs</CODE> would think that was the end of the string, the tab because
+the kernel or other software might expand it into spaces, and the newline
+becaue the kernel might add a carriage-return, or padding characters
+normally used for a newline.  To prevent such problems, <CODE>tgoto</CODE> is
+careful to avoid these characters.  Here is how this works: if the target
+cursor position value is such as to cause a problem (that is to say, zero,
+nine or ten), <CODE>tgoto</CODE> increments it by one, then compensates by
+appending a string to move the cursor back or up one position.
+
+</P>
+<P>
+The compensation strings to use for moving back or up are found in global
+variables named <CODE>BC</CODE> and <CODE>UP</CODE>.  These are actual external C
+variables with upper case names; they are declared <CODE>char *</CODE>.  It is up
+to you to store suitable values in them, normally obtained from the
+<SAMP>`le'</SAMP> and <SAMP>`up'</SAMP> terminal capabilities in the terminal description
+with <CODE>tgetstr</CODE>.  Alternatively, if these two variables are both zero,
+the feature of avoiding nulls, tabs and newlines is turned off.
+
+</P>
+<P>
+It is safe to use <CODE>tgoto</CODE> for commands other than <SAMP>`cm'</SAMP> only if
+you have stored zero in <CODE>BC</CODE> and <CODE>UP</CODE>.
+
+</P>
+<P>
+Note that <CODE>tgoto</CODE> reverses the order of its operands: the horizontal
+position comes before the vertical position in the arguments to
+<CODE>tgoto</CODE>, even though the vertical position comes before the horizontal
+in the parameters of the <SAMP>`cm'</SAMP> string.  If you use <CODE>tgoto</CODE> with a
+command such as <SAMP>`AL'</SAMP> that takes one parameter, you must pass the
+parameter to <CODE>tgoto</CODE> as the "vertical position".
+</P>
+
+
+<H1><A NAME="SEC17" HREF="termcap.html#TOC17">The Format of the Data Base</A></H1>
+
+<P>
+The termcap data base of terminal descriptions is stored in the file
+<TT>`/etc/termcap'</TT>.  It contains terminal descriptions, blank lines, and
+comments.
+
+</P>
+<P>
+A terminal description starts with one or more names for the terminal type.
+The information in the description is a series of <EM>capability names</EM>
+and values.  The capability names have standard meanings
+(see section <A HREF="termcap.html#SEC23">Definitions of the Terminal Capabilities</A>) and their values describe the terminal.
+
+</P>
+
+
+
+<H2><A NAME="SEC18" HREF="termcap.html#TOC18">Terminal Description Format</A></H2>
+<P>
+<A NAME="IDX18"></A>
+
+</P>
+<P>
+Aside from comments (lines starting with <SAMP>`#'</SAMP>, which are ignored), each
+nonblank line in the termcap data base is a terminal description.
+A terminal description is nominally a single line, but it can be split
+into multiple lines by inserting the two characters <SAMP>`\ newline'</SAMP>.
+This sequence is ignored wherever it appears in a description.
+
+</P>
+<P>
+The preferred way to split the description is between capabilities: insert
+the four characters <SAMP>`: \ newline tab'</SAMP> immediately before any colon.
+This allows each sub-line to start with some indentation.  This works
+because, after the <SAMP>`\ newline'</SAMP> are ignored, the result is <SAMP>`: tab
+:'</SAMP>; the first colon ends the preceding capability and the second colon
+starts the next capability.  If you split with <SAMP>`\ newline'</SAMP> alone, you
+may not add any indentation after them.
+
+</P>
+<P>
+Here is a real example of a terminal description:
+
+</P>
+
+<PRE>
+dw|vt52|DEC vt52:\
+        :cr=^M:do=^J:nl=^J:bl=^G:\
+        :le=^H:bs:cd=\EJ:ce=\EK:cl=\EH\EJ:\
+        :cm=\EY%+ %+ :co#80:li#24:\
+        :nd=\EC:ta=^I:pt:sr=\EI:up=\EA:\
+        :ku=\EA:kd=\EB:kr=\EC:kl=\ED:kb=^H:
+</PRE>
+
+<P>
+Each terminal description begins with several names for the terminal type.
+The names are separated by <SAMP>`|'</SAMP> characters, and a colon ends the last
+name.  The first name should be two characters long; it exists only for the
+sake of very old Unix systems and is never used in modern systems.  The
+last name should be a fully verbose name such as "DEC vt52" or "Ann
+Arbor Ambassador with 48 lines".  The other names should include whatever
+the user ought to be able to specify to get this terminal type, such as
+<SAMP>`vt52'</SAMP> or <SAMP>`aaa-48'</SAMP>.  See section <A HREF="termcap.html#SEC20">Terminal Type Name Conventions</A>, for information on how to
+choose terminal type names.
+
+</P>
+<P>
+After the terminal type names come the terminal capabilities, separated by
+colons and with a colon after the last one.  Each capability has a
+two-letter name, such as <SAMP>`cm'</SAMP> for "cursor motion string" or <SAMP>`li'</SAMP>
+for "number of display lines".
+
+</P>
+
+
+<H2><A NAME="SEC19" HREF="termcap.html#TOC19">Writing the Capabilities</A></H2>
+
+<P>
+There are three kinds of capabilities: flags, numbers, and strings.  Each
+kind has its own way of being written in the description.  Each defined
+capability has by convention a particular kind of value; for example,
+<SAMP>`li'</SAMP> always has a numeric value and <SAMP>`cm'</SAMP> always a string value.
+
+</P>
+<P>
+A flag capability is thought of as having a boolean value: the value is
+true if the capability is present, false if not.  When the capability is
+present, just write its name between two colons.
+
+</P>
+<P>
+A numeric capability has a value which is a nonnegative number.  Write the
+capability name, a <SAMP>`#'</SAMP>, and the number, between two colons.  For
+example, <SAMP>`...:li#48:...'</SAMP> is how you specify the <SAMP>`li'</SAMP>
+capability for 48 lines.
+</P>
+<P>
+A string-valued capability has a value which is a sequence of characters.
+Usually these are the characters used to perform some display operation.
+Write the capability name, a <SAMP>`='</SAMP>, and the characters of the value,
+between two colons.  For example, <SAMP>`...:cm=\E[%i%d;%dH:...'</SAMP> is
+how the cursor motion command for a standard ANSI terminal would be
+specified.
+</P>
+<P>
+Special characters in the string value can be expressed using
+<SAMP>`\'</SAMP>-escape sequences as in C; in addition, <SAMP>`\E'</SAMP> stands for
+<KBD>ESC</KBD>.  <SAMP>`^'</SAMP> is also a kind of escape character; <SAMP>`^'</SAMP> followed
+by <VAR>char</VAR> stands for the control-equivalent of <VAR>char</VAR>.  Thus,
+<SAMP>`^a'</SAMP> stands for the character control-a, just like <SAMP>`\001'</SAMP>.
+<SAMP>`\'</SAMP> and <SAMP>`^'</SAMP> themselves can be represented as <SAMP>`\\'</SAMP> and
+<SAMP>`\^'</SAMP>.
+</P>
+<P>
+To include a colon in the string, you must write <SAMP>`\072'</SAMP>.  You might
+ask, "Why can't <SAMP>`\:'</SAMP> be used to represent a colon?"  The reason is
+that the interrogation functions do not count slashes while looking for a
+capability.  Even if <SAMP>`:ce=ab\:cd:'</SAMP> were interpreted as giving the
+<SAMP>`ce'</SAMP> capability the value <SAMP>`ab:cd'</SAMP>, it would also appear to define
+<SAMP>`cd'</SAMP> as a flag.
+
+</P>
+<P>
+The string value will often contain digits at the front to specify padding
+(see section <A HREF="termcap.html#SEC7">Padding</A>) and/or <SAMP>`%'</SAMP>-sequences within to specify how to encode
+parameters (see section <A HREF="termcap.html#SEC12">Filling In Parameters</A>).  Although these things are not to be
+output literally to the terminal, they are considered part of the value of
+the capability.  They are special only when the string value is processed
+by <CODE>tputs</CODE>, <CODE>tparam</CODE> or <CODE>tgoto</CODE>.  By contrast, <SAMP>`\'</SAMP> and
+<SAMP>`^'</SAMP> are considered part of the syntax for specifying the characters
+in the string.
+
+</P>
+<P>
+Let's look at the VT52 example again:
+
+</P>
+
+<PRE>
+dw|vt52|DEC vt52:\
+        :cr=^M:do=^J:nl=^J:bl=^G:\
+        :le=^H:bs:cd=\EJ:ce=\EK:cl=\EH\EJ:\
+        :cm=\EY%+ %+ :co#80:li#24:\     
+        :nd=\EC:ta=^I:pt:sr=\EI:up=\EA:\
+        :ku=\EA:kd=\EB:kr=\EC:kl=\ED:kb=^H:
+</PRE>
+
+<P>
+Here we see the numeric-valued capabilities <SAMP>`co'</SAMP> and <SAMP>`li'</SAMP>, the
+flags <SAMP>`bs'</SAMP> and <SAMP>`pt'</SAMP>, and many string-valued capabilities.  Most
+of the strings start with <KBD>ESC</KBD> represented as <SAMP>`\E'</SAMP>.  The rest
+contain control characters represented using <SAMP>`^'</SAMP>.  The meanings of the
+individual capabilities are defined elsewhere (see section <A HREF="termcap.html#SEC23">Definitions of the Terminal Capabilities</A>).
+
+</P>
+
+
+<H2><A NAME="SEC20" HREF="termcap.html#TOC20">Terminal Type Name Conventions</A></H2>
+<P>
+<A NAME="IDX19"></A>
+
+</P>
+<P>
+There are conventions for choosing names of terminal types.  For one thing,
+all letters should be in lower case.  The terminal type for a terminal in
+its most usual or most fundamental mode of operation should not have a
+hyphen in it.
+
+</P>
+<P>
+If the same terminal has other modes of operation which require
+different terminal descriptions, these variant descriptions are given
+names made by adding suffixes with hyphens.  Such alternate descriptions
+are used for two reasons:
+
+</P>
+
+<UL>
+<LI>
+
+When the terminal has a switch that changes its behavior.  Since the
+computer cannot tell how the switch is set, the user must tell the
+computer by choosing the appropriate terminal type name.
+
+<A NAME="IDX20"></A>
+For example, the VT-100 has a setup flag that controls whether the
+cursor wraps at the right margin.  If this flag is set to "wrap",
+you must use the terminal type <SAMP>`vt100-am'</SAMP>.  Otherwise you must
+use <SAMP>`vt100-nam'</SAMP>.  Plain <SAMP>`vt100'</SAMP> is defined as a synonym for
+either <SAMP>`vt100-am'</SAMP> or <SAMP>`vt100-nam'</SAMP> depending on the
+preferences of the local site.
+The standard suffix <SAMP>`-am'</SAMP> stands for "automatic margins".
+
+<LI>
+
+To give the user a choice in how to use the terminal.  This is done
+when the terminal has a switch that the computer normally controls.
+
+<A NAME="IDX21"></A>
+For example, the Ann Arbor Ambassador can be configured with many
+screen sizes ranging from 20 to 60 lines.  Fewer lines make bigger
+characters but more lines let you see more of what you are editing.
+As a result, users have different preferences.  Therefore, termcap
+provides terminal types for many screen sizes.  If you choose type
+<SAMP>`aaa-30'</SAMP>, the terminal will be configured to use 30 lines; if you
+choose <SAMP>`aaa-48'</SAMP>, 48 lines will be used, and so on.
+</UL>
+
+<P>
+Here is a list of standard suffixes and their conventional meanings:
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`-w'</SAMP>
+<DD>
+Short for "wide".  This is a mode that gives the terminal more
+columns than usual.  This is normally a user option.
+
+<DT><SAMP>`-am'</SAMP>
+<DD>
+"Automatic margins".  This is an alternate description for use when
+the terminal's margin-wrap switch is on; it contains the <SAMP>`am'</SAMP>
+flag.  The implication is that normally the switch is off and the
+usual description for the terminal says that the switch is off.
+
+<DT><SAMP>`-nam'</SAMP>
+<DD>
+"No automatic margins".  The opposite of <SAMP>`-am'</SAMP>, this names an
+alternative description which lacks the <SAMP>`am'</SAMP> flag.  This implies
+that the terminal is normally operated with the margin-wrap switch
+turned on, and the normal description of the terminal says so.
+
+<DT><SAMP>`-na'</SAMP>
+<DD>
+"No arrows".  This terminal description initializes the terminal to
+keep its arrow keys in local mode.  This is a user option.
+
+<DT><SAMP>`-rv'</SAMP>
+<DD>
+"Reverse video".  This terminal description causes text output for
+normal video to appear as reverse, and text output for reverse video
+to come out as normal.  Often this description differs from the usual
+one by interchanging the two strings which turn reverse video on and
+off.
+This is a user option; you can choose either the "reverse video"
+variant terminal type or the normal terminal type, and termcap will
+obey.
+
+<DT><SAMP>`-s'</SAMP>
+<DD>
+"Status".  Says to enable use of a status line which ordinary output
+does not touch (see section <A HREF="termcap.html#SEC41">Status Line</A>).
+
+Some terminals have a special line that is used only as a status line.
+For these terminals, there is no need for an <SAMP>`-s'</SAMP> variant; the
+status line commands should be defined by default.  On other
+terminals, enabling a status line means removing one screen line from
+ordinary use and reducing the effective screen height.  For these
+terminals, the user can choose the <SAMP>`-s'</SAMP> variant type to request
+use of a status line.
+
+<DT><SAMP>`-<VAR>nlines</VAR>'</SAMP>
+<DD>
+Says to operate with <VAR>nlines</VAR> lines on the screen, for terminals
+such as the Ambassador which provide this as an option.  Normally this
+is a user option; by choosing the terminal type, you control how many
+lines termcap will use.
+
+<DT><SAMP>`-<VAR>npages</VAR>p'</SAMP>
+<DD>
+Says that the terminal has <VAR>npages</VAR> pages worth of screen memory,
+for terminals where this is a hardware option.
+
+<DT><SAMP>`-unk'</SAMP>
+<DD>
+Says that description is not for direct use, but only for reference in
+<SAMP>`tc'</SAMP> capabilities.  Such a description is a kind of subroutine,
+because it describes the common characteristics of several variant
+descriptions that would use other suffixes in place of <SAMP>`-unk'</SAMP>.
+</DL>
+
+
+
+<H2><A NAME="SEC21" HREF="termcap.html#TOC21">Inheriting from Related Descriptions</A></H2>
+
+<P>
+<A NAME="IDX22"></A>
+When two terminal descriptions are similar, their identical parts do not
+need to be given twice.  Instead, one of the two can be defined in terms of
+the other, using the <SAMP>`tc'</SAMP> capability.  We say that one description
+<EM>refers to</EM> the other, or <EM>inherits from</EM> the other.
+
+</P>
+<P>
+The <SAMP>`tc'</SAMP> capability must be the last one in the terminal description,
+and its value is a string which is the name of another terminal type which
+is referred to.  For example,
+
+</P>
+
+<PRE>
+N9|aaa|ambassador|aaa-30|ann arbor ambassador/30 lines:\
+        :ti=\E[2J\E[30;0;0;30p:\
+        :te=\E[60;0;0;30p\E[30;1H\E[J:\
+        :li#30:tc=aaa-unk:
+</PRE>
+
+<P>
+defines the terminal type <SAMP>`aaa-30'</SAMP> (also known as plain <SAMP>`aaa'</SAMP>) in
+terms of <SAMP>`aaa-unk'</SAMP>, which defines everything about the Ambassador that
+is independent of screen height.  The types <SAMP>`aaa-36'</SAMP>, <SAMP>`aaa-48'</SAMP>
+and so on for other screen heights are likewise defined to inherit from
+<SAMP>`aaa-unk'</SAMP>.
+
+</P>
+<P>
+The capabilities overridden by <SAMP>`aaa-30'</SAMP> include <SAMP>`li'</SAMP>, which says
+how many lines there are, and <SAMP>`ti'</SAMP> and <SAMP>`te'</SAMP>, which configure the
+terminal to use that many lines.
+
+</P>
+<P>
+The effective terminal description for type <SAMP>`aaa'</SAMP> consists of the text
+shown above followed by the text of the description of <SAMP>`aaa-unk'</SAMP>.  The
+<SAMP>`tc'</SAMP> capability is handled automatically by <CODE>tgetent</CODE>, which
+finds the description thus referenced and combines the two descriptions
+(see section <A HREF="termcap.html#SEC4">Finding a Terminal Description: <CODE>tgetent</CODE></A>).  Therefore, only the implementor of the terminal
+descriptions needs to think about using <SAMP>`tc'</SAMP>.  Users and application
+programmers do not need to be concerned with it.
+
+</P>
+<P>
+Since the reference terminal description is used last, capabilities
+specified in the referring description override any specifications of the
+same capabilities in the reference description.
+
+</P>
+<P>
+The referring description can cancel out a capability without specifying
+any new value for it by means of a special trick.  Write the capability in
+the referring description, with the character <SAMP>`@'</SAMP> after the capability
+name, as follows:
+
+</P>
+
+<PRE>
+NZ|aaa-30-nam|ann arbor ambassador/30 lines/no automatic-margins:\
+        :am@:tc=aaa-30:
+</PRE>
+
+
+
+<H2><A NAME="SEC22" HREF="termcap.html#TOC22">When Changes in the Data Base Take Effect</A></H2>
+
+<P>
+Each application program must read the terminal description from the
+data base, so a change in the data base is effective for all jobs started
+after the change is made.
+
+</P>
+<P>
+The change will usually have no effect on a job that have been in existence
+since before the change. The program probably read the terminal description
+once, when it was started, and is continuing to use what it read then.
+If the program does not have a feature for reexamining the data base, then
+you will need to run it again (probably killing the old job).
+
+</P>
+<P>
+If the description in use is coming from the <CODE>TERMCAP</CODE> environment
+variable, then the data base file is effectively overridden, and changes in
+it will have no effect until you change the <CODE>TERMCAP</CODE> variable as
+well.  For example, some users' <TT>`.login'</TT> files automatically copy the
+terminal description into <CODE>TERMCAP</CODE> to speed startup of applications.
+If you have done this, you will need to change the <CODE>TERMCAP</CODE> variable
+to make the changed data base take effect.
+
+</P>
+
+
+<H1><A NAME="SEC23" HREF="termcap.html#TOC23">Definitions of the Terminal Capabilities</A></H1>
+
+<P>
+This section is divided into many subsections, each for one aspect of
+use of display terminals.  For writing a display program, you usually need
+only check the subsections for the operations you want to use.  For writing
+a terminal description, you must read each subsection and fill in the
+capabilities described there.
+
+</P>
+<P>
+String capabilities that are display commands may require numeric
+parameters (see section <A HREF="termcap.html#SEC12">Filling In Parameters</A>).  Most such capabilities do not use
+parameters.  When a capability requires parameters, this is explicitly
+stated at the beginning of its definition.  In simple cases, the first or
+second sentence of the definition mentions all the parameters, in the order
+they should be given, using a name
+in italics
+for each one.  For example, the <SAMP>`rp'</SAMP> capability is a command that
+requires two parameters; its definition begins as follows:
+
+</P>
+
+<BLOCKQUOTE>
+<P>
+String of commands to output a graphic character <VAR>c</VAR>, repeated <VAR>n</VAR>
+times.
+</BLOCKQUOTE>
+
+<P>
+In complex cases or when there are many parameters, they are described
+explicitly.
+
+</P>
+<P>
+When a capability is described as obsolete, this means that programs should
+not be written to look for it, but terminal descriptions should still be
+written to provide it.
+
+</P>
+<P>
+When a capability is described as very obsolete, this means that it should
+be omitted from terminal descriptions as well.
+
+</P>
+
+
+
+<H2><A NAME="SEC24" HREF="termcap.html#TOC24">Basic Characteristics</A></H2>
+
+<P>
+This section documents the capabilities that describe the basic and
+nature of the terminal, and also those that are relevant to the output
+of graphic characters.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`os'</SAMP>
+<DD>
+<A NAME="IDX23"></A>
+<A NAME="IDX24"></A>
+Flag whose presence means that the terminal can overstrike.  This
+means that outputting a graphic character does not erase whatever was
+present in the same character position before.  The terminals that can
+overstrike include printing terminals, storage tubes (all obsolete
+nowadays), and many bit-map displays.
+
+<DT><SAMP>`eo'</SAMP>
+<DD>
+<A NAME="IDX25"></A>
+Flag whose presence means that outputting a space erases a character
+position even if the terminal supports overstriking.  If this flag is
+not present and overstriking is supported, output of a space has no
+effect except to move the cursor.
+
+(On terminals that do not support overstriking, you can always assume
+that outputting a space at a position erases whatever character was
+previously displayed there.)
+
+<DT><SAMP>`gn'</SAMP>
+<DD>
+<A NAME="IDX26"></A>
+<A NAME="IDX27"></A>
+Flag whose presence means that this terminal type is a generic type
+which does not really describe any particular terminal.  Generic types
+are intended for use as the default type assigned when the user
+connects to the system, with the intention that the user should
+specify what type he really has.  One example of a generic type
+is the type <SAMP>`network'</SAMP>.
+
+Since the generic type cannot say how to do anything interesting with
+the terminal, termcap-using programs will always find that the
+terminal is too weak to be supported if the user has failed to specify
+a real terminal type in place of the generic one.  The <SAMP>`gn'</SAMP> flag
+directs these programs to use a different error message: "You have
+not specified your real terminal type", rather than "Your terminal
+is not powerful enough to be used".
+
+<DT><SAMP>`hc'</SAMP>
+<DD>
+<A NAME="IDX28"></A>
+Flag whose presence means this is a hardcopy terminal.
+
+<DT><SAMP>`rp'</SAMP>
+<DD>
+<A NAME="IDX29"></A>
+<A NAME="IDX30"></A>
+String of commands to output a graphic character <VAR>c</VAR>, repeated <VAR>n</VAR>
+times.  The first parameter value is the ASCII code for the desired
+character, and the second parameter is the number of times to repeat the
+character.  Often this command requires padding proportional to the 
+number of times the character is repeated.  This effect can be had by
+using parameter arithmetic with <SAMP>`%'</SAMP>-sequences to compute the
+amount of padding, then generating the result as a number at the front
+of the string so that <CODE>tputs</CODE> will treat it as padding.
+
+<DT><SAMP>`hz'</SAMP>
+<DD>
+<A NAME="IDX31"></A>
+Flag whose presence means that the ASCII character <SAMP>`~'</SAMP> cannot be
+output on this terminal because it is used for display commands.
+
+Programs handle this flag by checking all text to be output and
+replacing each <SAMP>`~'</SAMP> with some other character(s).  If this is not
+done, the screen will be thoroughly garbled.
+
+The old Hazeltine terminals that required such treatment are probably
+very rare today, so you might as well not bother to support this flag.
+
+<DT><SAMP>`CC'</SAMP>
+<DD>
+<A NAME="IDX32"></A>
+<A NAME="IDX33"></A>
+String whose presence means the terminal has a settable command
+character.  The value of the string is the default command character
+(which is usually <KBD>ESC</KBD>).
+
+All the strings of commands in the terminal description should be
+written to use the default command character.  If you are writing an
+application program that changes the command character, use the
+<SAMP>`CC'</SAMP> capability to figure out how to translate all the display
+commands to work with the new command character.
+
+Most programs have no reason to look at the <SAMP>`CC'</SAMP> capability.
+
+<DT><SAMP>`xb'</SAMP>
+<DD>
+<A NAME="IDX34"></A>
+<A NAME="IDX35"></A>
+Flag whose presence identifies Superbee terminals which are unable to
+transmit the characters <KBD>ESC</KBD> and <KBD>Control-C</KBD>.  Programs which
+support this flag are supposed to check the input for the code sequences
+sent by the <KBD>F1</KBD> and <KBD>F2</KBD> keys, and pretend that <KBD>ESC</KBD>
+or <KBD>Control-C</KBD> (respectively) had been read.  But this flag is
+obsolete, and not worth supporting.
+</DL>
+
+
+
+<H2><A NAME="SEC25" HREF="termcap.html#TOC25">Screen Size</A></H2>
+<P>
+<A NAME="IDX36"></A>
+
+</P>
+<P>
+A terminal description has two capabilities, <SAMP>`co'</SAMP> and <SAMP>`li'</SAMP>,
+that describe the screen size in columns and lines.  But there is more
+to the question of screen size than this.
+
+</P>
+<P>
+On some operating systems the "screen" is really a window and the
+effective width can vary.  On some of these systems, <CODE>tgetnum</CODE>
+uses the actual width of the window to decide what value to return for
+the <SAMP>`co'</SAMP> capability, overriding what is actually written in the
+terminal description.  On other systems, it is up to the application
+program to check the actual window width using a system call.  For
+example, on BSD 4.3 systems, the system call <CODE>ioctl</CODE> with code
+<CODE>TIOCGWINSZ</CODE> will tell you the current screen size.
+
+</P>
+<P>
+On all window systems, termcap is powerless to advise the application
+program if the user resizes the window.  Application programs must
+deal with this possibility in a system-dependent fashion.  On some
+systems the C shell handles part of the problem by detecting changes
+in window size and setting the <CODE>TERMCAP</CODE> environment variable
+appropriately.  This takes care of application programs that are
+started subsequently.  It does not help application programs already
+running.
+
+</P>
+<P>
+On some systems, including BSD 4.3, all programs using a terminal get
+a signal named <CODE>SIGWINCH</CODE> whenever the screen size changes.
+Programs that use termcap should handle this signal by using
+<CODE>ioctl TIOCGWINSZ</CODE> to learn the new screen size.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`co'</SAMP>
+<DD>
+<A NAME="IDX37"></A>
+<A NAME="IDX38"></A>
+Numeric value, the width of the screen in character positions.  Even
+hardcopy terminals normally have a <SAMP>`co'</SAMP> capability.
+
+<DT><SAMP>`li'</SAMP>
+<DD>
+<A NAME="IDX39"></A>
+Numeric value, the height of the screen in lines.
+</DL>
+
+
+
+<H2><A NAME="SEC26" HREF="termcap.html#TOC26">Cursor Motion</A></H2>
+<P>
+<A NAME="IDX40"></A>
+
+</P>
+<P>
+Termcap assumes that the terminal has a <EM>cursor</EM>, a spot on the screen
+where a visible mark is displayed, and that most display commands take
+effect at the position of the cursor.  It follows that moving the cursor
+to a specified location is very important.
+
+</P>
+<P>
+There are many terminal capabilities for different cursor motion
+operations.  A terminal description should define as many as possible, but
+most programs do not need to use most of them.  One capability, <SAMP>`cm'</SAMP>,
+moves the cursor to an arbitrary place on the screen; this by itself is
+sufficient for any application as long as there is no need to support
+hardcopy terminals or certain old, weak displays that have only relative
+motion commands.  Use of other cursor motion capabilities is an
+optimization, enabling the program to output fewer characters in some
+common cases.
+
+</P>
+<P>
+If you plan to use the relative cursor motion commands in an application
+program, you must know what the starting cursor position is.  To do this,
+you must keep track of the cursor position and update the records each
+time anything is output to the terminal, including graphic characters.
+In addition, it is necessary to know whether the terminal wraps after
+writing in the rightmost column.  See section <A HREF="termcap.html#SEC27">Wrapping</A>.
+
+</P>
+<P>
+One other motion capability needs special mention: <SAMP>`nw'</SAMP> moves the
+cursor to the beginning of the following line, perhaps clearing all the
+starting line after the cursor, or perhaps not clearing at all.  This
+capability is a least common denominator that is probably supported even by
+terminals that cannot do most other things such as <SAMP>`cm'</SAMP> or <SAMP>`do'</SAMP>.
+Even hardcopy terminals can support <SAMP>`nw'</SAMP>.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`cm'</SAMP>
+<DD>
+<A NAME="IDX41"></A>
+String of commands to position the cursor at line <VAR>l</VAR>, column <VAR>c</VAR>.
+Both parameters are origin-zero, and are defined relative to the
+screen, not relative to display memory.
+
+All display terminals except a few very obsolete ones support <SAMP>`cm'</SAMP>,
+so it is acceptable for an application program to refuse to operate on
+terminals lacking <SAMP>`cm'</SAMP>.
+
+<DT><SAMP>`ho'</SAMP>
+<DD>
+<A NAME="IDX42"></A>
+<A NAME="IDX43"></A>
+String of commands to move the cursor to the upper left corner of the
+screen (this position is called the <EM>home position</EM>).  In
+terminals where the upper left corner of the screen is not the same as
+the beginning of display memory, this command must go to the upper
+left corner of the screen, not the beginning of display memory.
+
+Every display terminal supports this capability, and many application
+programs refuse to operate if the <SAMP>`ho'</SAMP> capability is missing.
+
+<DT><SAMP>`ll'</SAMP>
+<DD>
+<A NAME="IDX44"></A>
+String of commands to move the cursor to the lower left corner of the
+screen.  On some terminals, moving up from home position does this,
+but programs should never assume that will work.  Just output the
+<SAMP>`ll'</SAMP> string (if it is provided); if moving to home position and
+then moving up is the best way to get there, the <SAMP>`ll'</SAMP> command
+will do that.
+
+<DT><SAMP>`cr'</SAMP>
+<DD>
+<A NAME="IDX45"></A>
+String of commands to move the cursor to the beginning of the line it
+is on.  If this capability is not specified, many programs assume
+they can use the ASCII carriage return character for this.
+
+<DT><SAMP>`le'</SAMP>
+<DD>
+<A NAME="IDX46"></A>
+String of commands to move the cursor left one column.  Unless the
+<SAMP>`bw'</SAMP> flag capability is specified, the effect is undefined if the
+cursor is at the left margin; do not use this command there.  If
+<SAMP>`bw'</SAMP> is present, this command may be used at the left margin, and
+it wraps the cursor to the last column of the preceding line.
+
+<DT><SAMP>`nd'</SAMP>
+<DD>
+<A NAME="IDX47"></A>
+String of commands to move the cursor right one column.  The effect is
+undefined if the cursor is at the right margin; do not use this
+command there, not even if <SAMP>`am'</SAMP> is present.
+
+<DT><SAMP>`up'</SAMP>
+<DD>
+<A NAME="IDX48"></A>
+String of commands to move the cursor vertically up one line.  The
+effect of sending this string when on the top line is undefined;
+programs should never use it that way.
+
+<DT><SAMP>`do'</SAMP>
+<DD>
+<A NAME="IDX49"></A>
+String of commands to move the cursor vertically down one line.  The
+effect of sending this string when on the bottom line is undefined;
+programs should never use it that way.
+
+Some programs do use <SAMP>`do'</SAMP> to scroll up one line if used at the
+bottom line, if <SAMP>`sf'</SAMP> is not defined but <SAMP>`sr'</SAMP> is.  This is
+only to compensate for certain old, incorrect terminal descriptions.
+(In principle this might actually lead to incorrect behavior on other
+terminals, but that seems to happen rarely if ever.)  But the proper
+solution is that the terminal description should define <SAMP>`sf'</SAMP> as
+well as <SAMP>`do'</SAMP> if the command is suitable for scrolling.
+
+The original idea was that this string would not contain a newline
+character and therefore could be used without disabling the kernel's
+usual habit of converting of newline into a carriage-return newline
+sequence.  But many terminal descriptions do use newline in the
+<SAMP>`do'</SAMP> string, so this is not possible; a program which sends the
+<SAMP>`do'</SAMP> string must disable output conversion in the kernel
+(see section <A HREF="termcap.html#SEC6">Initialization for Use of Termcap</A>).
+
+<DT><SAMP>`bw'</SAMP>
+<DD>
+<A NAME="IDX50"></A>
+Flag whose presence says that <SAMP>`le'</SAMP> may be used in column zero
+to move to the last column of the preceding line.  If this flag
+is not present, <SAMP>`le'</SAMP> should not be used in column zero.
+
+<DT><SAMP>`nw'</SAMP>
+<DD>
+<A NAME="IDX51"></A>
+String of commands to move the cursor to start of next line, possibly
+clearing rest of line (following the cursor) before moving.
+
+<DT><SAMP>`DO'</SAMP>, <SAMP>`UP'</SAMP>, <SAMP>`LE'</SAMP>, <SAMP>`RI'</SAMP>
+<DD>
+<A NAME="IDX52"></A>
+<A NAME="IDX53"></A>
+<A NAME="IDX54"></A>
+<A NAME="IDX55"></A>
+Strings of commands to move the cursor <VAR>n</VAR> lines down vertically,
+up vertically, or <VAR>n</VAR> columns left or right.  Do not attempt to
+move past any edge of the screen with these commands; the effect of
+trying that is undefined.  Only a few terminal descriptions provide
+these commands, and most programs do not use them.
+
+<DT><SAMP>`CM'</SAMP>
+<DD>
+<A NAME="IDX56"></A>
+String of commands to position the cursor at line <VAR>l</VAR>, column
+<VAR>c</VAR>, relative to display memory.  Both parameters are origin-zero.
+This capability is present only in terminals where there is a
+difference between screen-relative and memory-relative addressing, and
+not even in all such terminals.
+
+<DT><SAMP>`ch'</SAMP>
+<DD>
+<A NAME="IDX57"></A>
+String of commands to position the cursor at column <VAR>c</VAR> in the
+same line it is on.  This is a special case of <SAMP>`cm'</SAMP> in which the
+vertical position is not changed.  The <SAMP>`ch'</SAMP> capability is
+provided only when it is faster to output than <SAMP>`cm'</SAMP> would be in
+this special case.  Programs should not assume most display terminals
+have <SAMP>`ch'</SAMP>.
+
+<DT><SAMP>`cv'</SAMP>
+<DD>
+<A NAME="IDX58"></A>
+String of commands to position the cursor at line <VAR>l</VAR> in the same
+column.  This is a special case of <SAMP>`cm'</SAMP> in which the horizontal
+position is not changed.  The <SAMP>`cv'</SAMP> capability is provided only
+when it is faster to output than <SAMP>`cm'</SAMP> would be in this special
+case.  Programs should not assume most display terminals have
+<SAMP>`cv'</SAMP>.
+
+<DT><SAMP>`sc'</SAMP>
+<DD>
+<A NAME="IDX59"></A>
+String of commands to make the terminal save the current cursor
+position.  Only the last saved position can be used.  If this
+capability is present, <SAMP>`rc'</SAMP> should be provided also.  Most
+terminals have neither.
+
+<DT><SAMP>`rc'</SAMP>
+<DD>
+<A NAME="IDX60"></A>
+String of commands to make the terminal restore the last saved cursor
+position.  If this capability is present, <SAMP>`sc'</SAMP> should be provided
+also.  Most terminals have neither.
+
+<DT><SAMP>`ff'</SAMP>
+<DD>
+<A NAME="IDX61"></A>
+String of commands to advance to the next page, for a hardcopy
+terminal.
+
+<DT><SAMP>`ta'</SAMP>
+<DD>
+<A NAME="IDX62"></A>
+String of commands to move the cursor right to the next hardware tab
+stop column.  Missing if the terminal does not have any kind of
+hardware tabs.  Do not send this command if the kernel's terminal
+modes say that the kernel is expanding tabs into spaces.
+
+<DT><SAMP>`bt'</SAMP>
+<DD>
+<A NAME="IDX63"></A>
+String of commands to move the cursor left to the previous hardware
+tab stop column.  Missing if the terminal has no such ability; many
+terminals do not.  Do not send this command if the kernel's terminal
+modes say that the kernel is expanding tabs into spaces.
+</DL>
+
+<P>
+The following obsolete capabilities should be included in terminal
+descriptions when appropriate, but should not be looked at by new programs.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`nc'</SAMP>
+<DD>
+<A NAME="IDX64"></A>
+Flag whose presence means the terminal does not support the ASCII
+carriage return character as <SAMP>`cr'</SAMP>.  This flag is needed because
+old programs assume, when the <SAMP>`cr'</SAMP> capability is missing, that
+ASCII carriage return can be used for the purpose.  We use <SAMP>`nc'</SAMP>
+to tell the old programs that carriage return may not be used.
+
+New programs should not assume any default for <SAMP>`cr'</SAMP>, so they need
+not look at <SAMP>`nc'</SAMP>.  However, descriptions should contain <SAMP>`nc'</SAMP>
+whenever they do not contain <SAMP>`cr'</SAMP>.
+
+<DT><SAMP>`xt'</SAMP>
+<DD>
+<A NAME="IDX65"></A>
+Flag whose presence means that the ASCII tab character may not be used
+for cursor motion.  This flag exists because old programs assume, when
+the <SAMP>`ta'</SAMP> capability is missing, that ASCII tab can be used for
+the purpose.  We use <SAMP>`xt'</SAMP> to tell the old programs not to use tab.
+
+New programs should not assume any default for <SAMP>`ta'</SAMP>, so they need
+not look at <SAMP>`xt'</SAMP> in connection with cursor motion.  Note that
+<SAMP>`xt'</SAMP> also has implications for standout mode (see section <A HREF="termcap.html#SEC33">Standout and Appearance Modes</A>).
+It is obsolete in regard to cursor motion but not in regard to
+standout.
+
+In fact, <SAMP>`xt'</SAMP> means that the terminal is a Teleray 1061.
+
+<DT><SAMP>`bc'</SAMP>
+<DD>
+<A NAME="IDX66"></A>
+Very obsolete alternative name for the <SAMP>`le'</SAMP> capability.
+
+<DT><SAMP>`bs'</SAMP>
+<DD>
+<A NAME="IDX67"></A>
+Flag whose presence means that the ASCII character backspace may be
+used to move the cursor left.  Obsolete; look at <SAMP>`le'</SAMP> instead.
+
+<DT><SAMP>`nl'</SAMP>
+<DD>
+<A NAME="IDX68"></A>
+Obsolete capability which is a string that can either be used to move
+the cursor down or to scroll.  The same string must scroll when used
+on the bottom line and move the cursor when used on any other line.
+New programs should use <SAMP>`do'</SAMP> or <SAMP>`sf'</SAMP>, and ignore <SAMP>`nl'</SAMP>.
+
+If there is no <SAMP>`nl'</SAMP> capability, some old programs assume they can
+use the newline character for this purpose.  These programs follow a
+bad practice, but because they exist, it is still desirable to define
+the <SAMP>`nl'</SAMP> capability in a terminal description if the best way to
+move down is <EM>not</EM> a newline.
+</DL>
+
+
+
+<H2><A NAME="SEC27" HREF="termcap.html#TOC27">Wrapping</A></H2>
+<P>
+<A NAME="IDX69"></A>
+
+</P>
+<P>
+<EM>Wrapping</EM> means moving the cursor from the right margin to the left
+margin of the following line.  Some terminals wrap automatically when a
+graphic character is output in the last column, while others do not.  Most
+application programs that use termcap need to know whether the terminal
+wraps.  There are two special flag capabilities to describe what the
+terminal does when a graphic character is output in the last column.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`am'</SAMP>
+<DD>
+<A NAME="IDX70"></A>
+Flag whose presence means that writing a character in the last column
+causes the cursor to wrap to the beginning of the next line.
+
+If <SAMP>`am'</SAMP> is not present, writing in the last column leaves the
+cursor at the place where the character was written.
+
+Writing in the last column of the last line should be avoided on
+terminals with <SAMP>`am'</SAMP>, as it may or may not cause scrolling to
+occur (see section <A HREF="termcap.html#SEC28">Scrolling</A>).  Scrolling is surely not what you would
+intend.
+
+If your program needs to check the <SAMP>`am'</SAMP> flag, then it also needs
+to check the <SAMP>`xn'</SAMP> flag which indicates that wrapping happens in a
+strange way.  Many common terminals have the <SAMP>`xn'</SAMP> flag.
+
+<DT><SAMP>`xn'</SAMP>
+<DD>
+<A NAME="IDX71"></A>
+Flag whose presence means that the cursor wraps in a strange way.  At
+least two distinct kinds of strange behavior are known; the termcap
+data base does not contain anything to distinguish the two.
+
+On Concept-100 terminals, output in the last column wraps the cursor
+almost like an ordinary <SAMP>`am'</SAMP> terminal.  But if the next thing
+output is a newline, it is ignored.
+
+DEC VT-100 terminals (when the wrap switch is on) do a different
+strange thing: the cursor wraps only if the next thing output is
+another graphic character.  In fact, the wrap occurs when the
+following graphic character is received by the terminal, before the
+character is placed on the screen.
+
+On both of these terminals, after writing in the last column a
+following graphic character will be displayed in the first column of
+the following line.  But the effect of relative cursor motion
+characters such as newline or backspace at such a time depends on the
+terminal.  The effect of erase or scrolling commands also depends on
+the terminal.  You can't assume anything about what they will do on a
+terminal that has <SAMP>`xn'</SAMP>.  So, to be safe, you should never do
+these things at such a time on such a terminal.
+
+To be sure of reliable results on a terminal which has the <SAMP>`xn'</SAMP>
+flag, output a <SAMP>`cm'</SAMP> absolute positioning command after writing in
+the last column.  Another safe thing to do is to output carriage-return
+newline, which will leave the cursor at the beginning of the following
+line.
+
+<DT><SAMP>`LP'</SAMP>
+<DD>
+<A NAME="IDX72"></A>
+Flag whose presence means that it is safe to write in the last column of
+the last line without worrying about undesired scrolling.  <SAMP>`LP'</SAMP>
+indicates the DEC flavor of <SAMP>`xn'</SAMP> strangeness.
+</DL>
+
+
+
+<H2><A NAME="SEC28" HREF="termcap.html#TOC28">Scrolling</A></H2>
+<P>
+<A NAME="IDX73"></A>
+
+</P>
+<P>
+<EM>Scrolling</EM> means moving the contents of the screen up or down one or
+more lines.  Moving the contents up is <EM>forward scrolling</EM>; moving them
+down is <EM>reverse scrolling</EM>.
+
+</P>
+<P>
+Scrolling happens after each line of output during ordinary output on most
+display terminals.  But in an application program that uses termcap for
+random-access output, scrolling happens only when explicitly requested with
+the commands in this section.
+
+</P>
+<P>
+Some terminals have a <EM>scroll region</EM> feature.  This lets you limit
+the effect of scrolling to a specified range of lines.  Lines outside the
+range are unaffected when scrolling happens.  The scroll region feature
+is available if either <SAMP>`cs'</SAMP> or <SAMP>`cS'</SAMP> is present.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`sf'</SAMP>
+<DD>
+<A NAME="IDX74"></A>
+String of commands to scroll the screen one line up, assuming it is
+output with the cursor at the beginning of the bottom line.
+
+<DT><SAMP>`sr'</SAMP>
+<DD>
+<A NAME="IDX75"></A>
+String of commands to scroll the screen one line down, assuming it is
+output with the cursor at the beginning of the top line.
+
+<DT><SAMP>`do'</SAMP>
+<DD>
+A few programs will try to use <SAMP>`do'</SAMP> to do the work of <SAMP>`sf'</SAMP>.
+This is not really correct--it is an attempt to compensate for the
+absence of a <SAMP>`sf'</SAMP> command in some old terminal descriptions.
+
+Since these terminal descriptions do define <SAMP>`sr'</SAMP>, perhaps at one
+time the definition of <SAMP>`do'</SAMP> was different and it could be used
+for scrolling as well.  But it isn't desirable to combine these two
+functions in one capability, since scrolling often requires more
+padding than simply moving the cursor down.  Defining <SAMP>`sf'</SAMP> and
+<SAMP>`do'</SAMP> separately allows you to specify the padding properly.
+Also, all sources agree that <SAMP>`do'</SAMP> should not be relied on to do
+scrolling.
+
+So the best approach is to add <SAMP>`sf'</SAMP> capabilities to the
+descriptions of these terminals, copying the definition of <SAMP>`do'</SAMP>
+if that does scroll.
+
+<DT><SAMP>`SF'</SAMP>
+<DD>
+<A NAME="IDX76"></A>
+String of commands to scroll the screen <VAR>n</VAR> lines up, assuming it
+is output with the cursor at the beginning of the bottom line.
+
+<DT><SAMP>`SR'</SAMP>
+<DD>
+<A NAME="IDX77"></A>
+String of commands to scroll the screen <VAR>n</VAR> lines down, assuming it
+is output with the cursor at the beginning of the top line.
+
+<DT><SAMP>`cs'</SAMP>
+<DD>
+<A NAME="IDX78"></A>
+String of commands to set the scroll region.  This command takes two
+parameters, <VAR>start</VAR> and <VAR>end</VAR>, which are the line numbers
+(origin-zero) of the first line to include in the scroll region and of
+the last line to include in it.  When a scroll region is set,
+scrolling is limited to the specified range of lines; lines outside
+the range are not affected by scroll commands.
+
+Do not try to move the cursor outside the scroll region.  The region
+remains set until explicitly removed.  To remove the scroll region,
+use another <SAMP>`cs'</SAMP> command specifying the full height of the
+screen.
+
+The cursor position is undefined after the <SAMP>`cs'</SAMP> command is set,
+so position the cursor with <SAMP>`cm'</SAMP> immediately afterward.
+
+<DT><SAMP>`cS'</SAMP>
+<DD>
+<A NAME="IDX79"></A>
+String of commands to set the scroll region using parameters in
+different form.  The effect is the same as if <SAMP>`cs'</SAMP> were used.
+Four parameters are required:
+
+
+<OL>
+<LI>
+
+Total number of lines on the screen.
+<LI>
+
+Number of lines above desired scroll region.
+<LI>
+
+Number of lines below (outside of) desired scroll region.
+<LI>
+
+Total number of lines on the screen, the same as the first parameter.
+</OL>
+
+This capability is a GNU extension that was invented to allow the Ann
+Arbor Ambassador's scroll-region command to be described; it could
+also be done by putting non-Unix <SAMP>`%'</SAMP>-sequences into a <SAMP>`cs'</SAMP>
+string, but that would have confused Unix programs that used the
+<SAMP>`cs'</SAMP> capability with the Unix termcap.  Currently only GNU Emacs
+uses the <SAMP>`cS'</SAMP> capability.
+
+<DT><SAMP>`ns'</SAMP>
+<DD>
+<A NAME="IDX80"></A>
+Flag which means that the terminal does not normally scroll for
+ordinary sequential output.  For modern terminals, this means that
+outputting a newline in ordinary sequential output with the cursor on
+the bottom line wraps to the top line.  For some obsolete terminals,
+other things may happen.
+
+The terminal may be able to scroll even if it does not normally do so.
+If the <SAMP>`sf'</SAMP> capability is provided, it can be used for scrolling
+regardless of <SAMP>`ns'</SAMP>.
+
+<DT><SAMP>`da'</SAMP>
+<DD>
+<A NAME="IDX81"></A>
+Flag whose presence means that lines scrolled up off the top of the
+screen may come back if scrolling down is done subsequently.
+
+The <SAMP>`da'</SAMP> and <SAMP>`db'</SAMP> flags do not, strictly speaking, affect
+how to scroll.  But programs that scroll usually need to clear the
+lines scrolled onto the screen, if these flags are present.
+
+<DT><SAMP>`db'</SAMP>
+<DD>
+<A NAME="IDX82"></A>
+Flag whose presence means that lines scrolled down off the bottom of
+the screen may come back if scrolling up is done subsequently.
+
+<DT><SAMP>`lm'</SAMP>
+<DD>
+<A NAME="IDX83"></A>
+Numeric value, the number of lines of display memory that the terminal
+has.  A value of zero means that the terminal has more display memory
+than can fit on the screen, but no fixed number of lines.  (The number
+of lines may depend on the amount of text in each line.)
+</DL>
+
+<P>
+Any terminal description that defines <SAMP>`SF'</SAMP> should also define <SAMP>`sf'</SAMP>;
+likewise for <SAMP>`SR'</SAMP> and <SAMP>`sr'</SAMP>.  However, many terminals can only
+scroll by one line at a time, so it is common to find <SAMP>`sf'</SAMP> and not
+<SAMP>`SF'</SAMP>, or <SAMP>`sr'</SAMP> without <SAMP>`SR'</SAMP>.
+</P>
+<P>
+Therefore, all programs that use the scrolling facilities should be
+prepared to work with <SAMP>`sf'</SAMP> in the case that <SAMP>`SF'</SAMP> is absent, and
+likewise with <SAMP>`sr'</SAMP>.  On the other hand, an application program that
+uses only <SAMP>`sf'</SAMP> and not <SAMP>`SF'</SAMP> is acceptable, though slow on some
+terminals.
+</P>
+<P>
+When outputting a scroll command with <CODE>tputs</CODE>, the <VAR>nlines</VAR>
+argument should be the total number of lines in the portion of the screen
+being scrolled.  Very often these commands require padding proportional to
+this number of lines.  See section <A HREF="termcap.html#SEC7">Padding</A>.
+
+</P>
+
+
+<H2><A NAME="SEC29" HREF="termcap.html#TOC29">Windows</A></H2>
+<P>
+<A NAME="IDX84"></A>
+
+</P>
+<P>
+A <EM>window</EM>, in termcap, is a rectangular portion of the screen to which
+all display operations are restricted.  Wrapping, clearing, scrolling,
+insertion and deletion all operate as if the specified window were all the
+screen there was.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`wi'</SAMP>
+<DD>
+<A NAME="IDX85"></A>
+String of commands to set the terminal output screen window.
+This string requires four parameters, all origin-zero:
+
+<OL>
+<LI>
+
+The first line to include in the window.
+<LI>
+
+The last line to include in the window.
+<LI>
+
+The first column to include in the window.
+<LI>
+
+The last column to include in the window.
+</OL>
+
+</DL>
+
+<P>
+Most terminals do not support windows.
+
+</P>
+
+
+<H2><A NAME="SEC30" HREF="termcap.html#TOC30">Clearing Parts of the Screen</A></H2>
+<P>
+<A NAME="IDX86"></A>
+<A NAME="IDX87"></A>
+
+</P>
+<P>
+There are several terminal capabilities for clearing parts of the screen
+to blank.  All display terminals support the <SAMP>`cl'</SAMP> string, and most
+display terminals support all of these capabilities.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`cl'</SAMP>
+<DD>
+<A NAME="IDX88"></A>
+String of commands to clear the entire screen and position the cursor
+at the upper left corner.
+
+<DT><SAMP>`cd'</SAMP>
+<DD>
+<A NAME="IDX89"></A>
+String of commands to clear the line the cursor is on, and all the
+lines below it, down to the bottom of the screen.  This command string
+should be used only with the cursor in column zero; their effect is
+undefined if the cursor is elsewhere.
+
+<DT><SAMP>`ce'</SAMP>
+<DD>
+<A NAME="IDX90"></A>
+String of commands to clear from the cursor to the end of the current
+line.
+
+<DT><SAMP>`ec'</SAMP>
+<DD>
+<A NAME="IDX91"></A>
+String of commands to clear <VAR>n</VAR> characters, starting with the
+character that the cursor is on.  This command string is expected to
+leave the cursor position unchanged.  The parameter <VAR>n</VAR> should never
+be large enough to reach past the right margin; the effect of such a
+large parameter would be undefined.
+</DL>
+
+<P>
+Clear to end of line (<SAMP>`ce'</SAMP>) is extremely important in programs that
+maintain an updating display.  Nearly all display terminals support this
+operation, so it is acceptable for a an application program to refuse to
+work if <SAMP>`ce'</SAMP> is not present.  However, if you do not want this
+limitation, you can accomplish clearing to end of line by outputting spaces
+until you reach the right margin.  In order to do this, you must know the
+current horizontal position.  Also, this technique assumes that writing a
+space will erase.  But this happens to be true on all the display terminals
+that fail to support <SAMP>`ce'</SAMP>.
+
+</P>
+
+
+<H2><A NAME="SEC31" HREF="termcap.html#TOC31">Insert/Delete Line</A></H2>
+
+<P>
+<A NAME="IDX92"></A>
+<A NAME="IDX93"></A>
+<EM>Inserting a line</EM> means creating a blank line in the middle
+of the screen, and pushing the existing lines of text apart.  In fact,
+the lines above the insertion point do not change, while the lines below
+move down, and one is normally lost at the bottom of the screen.
+
+</P>
+<P>
+<EM>Deleting a line</EM> means causing the line to disappear from the screen,
+closing up the gap by moving the lines below it upward.  A new line
+appears at the bottom of the screen.  Usually this line is blank, but
+on terminals with the <SAMP>`db'</SAMP> flag it may be a line previously moved
+off the screen bottom by scrolling or line insertion.
+
+</P>
+<P>
+Insertion and deletion of lines is useful in programs that maintain an
+updating display some parts of which may get longer or shorter.  They are
+also useful in editors for scrolling parts of the screen, and for
+redisplaying after lines of text are killed or inserted.
+
+</P>
+<P>
+Many terminals provide commands to insert or delete a single line at the
+cursor position.  Some provide the ability to insert or delete several
+lines with one command, using the number of lines to insert or delete as a
+parameter.  Always move the cursor to column zero before using any of
+these commands.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`al'</SAMP>
+<DD>
+<A NAME="IDX94"></A>
+String of commands to insert a blank line before the line the cursor
+is on.  The existing line, and all lines below it, are moved down.
+The last line in the screen (or in the scroll region, if one is set)
+disappears and in most circumstances is discarded.  It may not be
+discarded if the <SAMP>`db'</SAMP> is present (see section <A HREF="termcap.html#SEC28">Scrolling</A>).
+
+The cursor must be at the left margin before this command is used.
+This command does not move the cursor.
+
+<DT><SAMP>`dl'</SAMP>
+<DD>
+<A NAME="IDX95"></A>
+String of commands to delete the line the cursor is on.  The following
+lines move up, and a blank line appears at the bottom of the screen
+(or bottom of the scroll region).  If the terminal has the <SAMP>`db'</SAMP>
+flag, a nonblank line previously pushed off the screen bottom may
+reappear at the bottom.
+
+The cursor must be at the left margin before this command is used.
+This command does not move the cursor.
+
+<DT><SAMP>`AL'</SAMP>
+<DD>
+<A NAME="IDX96"></A>
+String of commands to insert <VAR>n</VAR> blank lines before the line that
+the cursor is on.  It is like <SAMP>`al'</SAMP> repeated <VAR>n</VAR> times, except
+that it is as fast as one <SAMP>`al'</SAMP>.
+
+<DT><SAMP>`DL'</SAMP>
+<DD>
+<A NAME="IDX97"></A>
+String of commands to delete <VAR>n</VAR> lines starting with the line that
+the cursor is on.  It is like <SAMP>`dl'</SAMP> repeated <VAR>n</VAR> times, except
+that it is as fast as one <SAMP>`dl'</SAMP>.
+</DL>
+
+<P>
+Any terminal description that defines <SAMP>`AL'</SAMP> should also define
+<SAMP>`al'</SAMP>; likewise for <SAMP>`DL'</SAMP> and <SAMP>`dl'</SAMP>.  However, many terminals
+can only insert or delete one line at a time, so it is common to find
+<SAMP>`al'</SAMP> and not <SAMP>`AL'</SAMP>, or <SAMP>`dl'</SAMP> without <SAMP>`DL'</SAMP>.
+</P>
+<P>
+Therefore, all programs that use the insert and delete facilities should be
+prepared to work with <SAMP>`al'</SAMP> in the case that <SAMP>`AL'</SAMP> is absent, and
+likewise with <SAMP>`dl'</SAMP>.  On the other hand, it is acceptable to write
+an application that uses only <SAMP>`al'</SAMP> and <SAMP>`dl'</SAMP> and does not look
+for <SAMP>`AL'</SAMP> or <SAMP>`DL'</SAMP> at all.
+</P>
+<P>
+If a terminal does not support line insertion and deletion directly,
+but does support a scroll region, the effect of insertion and deletion
+can be obtained with scrolling.  However, it is up to the individual
+user program to check for this possibility and use the scrolling
+commands to get the desired result.  It is fairly important to implement
+this alternate strategy, since it is the only way to get the effect of
+line insertion and deletion on the popular VT100 terminal.
+
+</P>
+<P>
+Insertion and deletion of lines is affected by the scroll region on
+terminals that have a settable scroll region.  This is useful when it is
+desirable to move any few consecutive lines up or down by a few lines.
+See section <A HREF="termcap.html#SEC28">Scrolling</A>.
+
+</P>
+<P>
+The line pushed off the bottom of the screen is not lost if the terminal
+has the <SAMP>`db'</SAMP> flag capability; instead, it is pushed into display
+memory that does not appear on the screen.  This is the same thing that
+happens when scrolling pushes a line off the bottom of the screen.
+Either reverse scrolling or deletion of a line can bring the apparently
+lost line back onto the bottom of the screen.  If the terminal has the
+scroll region feature as well as <SAMP>`db'</SAMP>, the pushed-out line really
+is lost if a scroll region is in effect.
+
+</P>
+<P>
+When outputting an insert or delete command with <CODE>tputs</CODE>, the
+<VAR>nlines</VAR> argument should be the total number of lines from the cursor
+to the bottom of the screen (or scroll region).  Very often these commands
+require padding proportional to this number of lines.  See section <A HREF="termcap.html#SEC7">Padding</A>.
+
+</P>
+<P>
+For <SAMP>`AL'</SAMP> and <SAMP>`DL'</SAMP> the <VAR>nlines</VAR> argument should <EM>not</EM>
+depend on the number of lines inserted or deleted; only the total number of
+lines affected.  This is because it is just as fast to insert two or
+<VAR>n</VAR> lines with <SAMP>`AL'</SAMP> as to insert one line with <SAMP>`al'</SAMP>.
+
+</P>
+
+
+<H2><A NAME="SEC32" HREF="termcap.html#TOC32">Insert/Delete Character</A></H2>
+<P>
+<A NAME="IDX98"></A>
+<A NAME="IDX99"></A>
+
+</P>
+<P>
+<EM>Inserting a character</EM> means creating a blank space in the middle of a
+line, and pushing the rest of the line rightward.  The character in the
+rightmost column is lost.
+
+</P>
+<P>
+<EM>Deleting a character</EM> means causing the character to disappear from
+the screen, closing up the gap by moving the rest of the line leftward.  A
+blank space appears in the rightmost column.
+
+</P>
+<P>
+Insertion and deletion of characters is useful in programs that maintain an
+updating display some parts of which may get longer or shorter.  It is also
+useful in editors for redisplaying the results of editing within a line.
+
+</P>
+<P>
+Many terminals provide commands to insert or delete a single character at
+the cursor position.  Some provide the ability to insert or delete several
+characters with one command, using the number of characters to insert or
+delete as a parameter.
+
+</P>
+<P>
+<A NAME="IDX100"></A>
+Many terminals provide an insert mode in which outputting a graphic
+character has the added effect of inserting a position for that character.
+A special command string is used to enter insert mode and another is used
+to exit it.  The reason for designing a terminal with an insert mode rather
+than an insert command is that inserting character positions is usually
+followed by writing characters into them.  With insert mode, this is as
+fast as simply writing the characters, except for the fixed overhead of
+entering and leaving insert mode.  However, when the line speed is great
+enough, padding may be required for the graphic characters output in insert
+mode.
+
+</P>
+<P>
+Some terminals require you to enter insert mode and then output a special
+command for each position to be inserted.  Or they may require special
+commands to be output before or after each graphic character to be
+inserted.
+
+</P>
+<P>
+<A NAME="IDX101"></A>
+Deletion of characters is usually accomplished by a straightforward command
+to delete one or several positions; but on some terminals, it is necessary
+to enter a special delete mode before using the delete command, and leave
+delete mode afterward.  Sometimes delete mode and insert mode are the same
+mode.
+
+</P>
+<P>
+Some terminals make a distinction between character positions in which a
+space character has been output and positions which have been cleared.  On
+these terminals, the effect of insert or delete character runs to the first
+cleared position rather than to the end of the line.  In fact, the effect
+may run to more than one line if there is no cleared position to stop the
+shift on the first line.  These terminals are identified by the <SAMP>`in'</SAMP>
+flag capability.
+
+</P>
+<P>
+On terminals with the <SAMP>`in'</SAMP> flag, the technique of skipping over
+characters that you know were cleared, and then outputting text later on in
+the same line, causes later insert and delete character operations on that
+line to do nonstandard things.  A program that has any chance of doing this
+must check for the <SAMP>`in'</SAMP> flag and must be careful to write explicit
+space characters into the intermediate columns when <SAMP>`in'</SAMP> is present.
+
+</P>
+<P>
+A plethora of terminal capabilities are needed to describe all of this
+complexity.  Here is a list of them all.  Following the list, we present
+an algorithm for programs to use to take proper account of all of these
+capabilities.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`im'</SAMP>
+<DD>
+<A NAME="IDX102"></A>
+String of commands to enter insert mode.
+
+If the terminal has no special insert mode, but it can insert
+characters with a special command, <SAMP>`im'</SAMP> should be defined with a
+null value, because the <SAMP>`vi'</SAMP> editor assumes that insertion of a
+character is impossible if <SAMP>`im'</SAMP> is not provided.
+
+New programs should not act like <SAMP>`vi'</SAMP>.  They should pay attention
+to <SAMP>`im'</SAMP> only if it is defined.
+
+<DT><SAMP>`ei'</SAMP>
+<DD>
+<A NAME="IDX103"></A>
+String of commands to leave insert mode.  This capability must be
+present if <SAMP>`im'</SAMP> is.
+
+On a few old terminals the same string is used to enter and exit
+insert mode.  This string turns insert mode on if it was off, and off
+it it was on.  You can tell these terminals because the <SAMP>`ei'</SAMP>
+string equals the <SAMP>`im'</SAMP> string.  If you want to support these
+terminals, you must always remember accurately whether insert mode is
+in effect.  However, these terminals are obsolete, and it is
+reasonable to refuse to support them.  On all modern terminals, you
+can safely output <SAMP>`ei'</SAMP> at any time to ensure that insert mode is
+turned off.
+
+<DT><SAMP>`ic'</SAMP>
+<DD>
+<A NAME="IDX104"></A>
+String of commands to insert one character position at the cursor.
+The cursor does not move.
+
+If outputting a graphic character while in insert mode is sufficient
+to insert the character, then the <SAMP>`ic'</SAMP> capability should be
+defined with a null value.
+
+If your terminal offers a choice of ways to insert--either use insert
+mode or use a special command--then define <SAMP>`im'</SAMP> and do not define
+<SAMP>`ic'</SAMP>, since this gives the most efficient operation when several
+characters are to be inserted.  <EM>Do not</EM> define both strings, for
+that means that <EM>both</EM> must be used each time insertion is done.
+
+<DT><SAMP>`ip'</SAMP>
+<DD>
+<A NAME="IDX105"></A>
+String of commands to output following an inserted graphic character
+in insert mode.  Often it is used just for a padding spec, when padding
+is needed after an inserted character (see section <A HREF="termcap.html#SEC7">Padding</A>).
+
+<DT><SAMP>`IC'</SAMP>
+<DD>
+<A NAME="IDX106"></A>
+String of commands to insert <VAR>n</VAR> character positions at and after
+the cursor.  It has the same effect as repeating the <SAMP>`ic'</SAMP> string
+and a space, <VAR>n</VAR> times.
+
+If <SAMP>`IC'</SAMP> is provided, application programs may use it without first
+entering insert mode.
+
+<DT><SAMP>`mi'</SAMP>
+<DD>
+<A NAME="IDX107"></A>
+Flag whose presence means it is safe to move the cursor while in insert
+mode and assume the terminal remains in insert mode.
+
+<DT><SAMP>`in'</SAMP>
+<DD>
+<A NAME="IDX108"></A>
+Flag whose presence means that the terminal distinguishes between
+character positions in which space characters have been output and
+positions which have been cleared.
+</DL>
+
+<P>
+An application program can assume that the terminal can do character
+insertion if <EM>any one of</EM> the capabilities <SAMP>`IC'</SAMP>, <SAMP>`im'</SAMP>,
+<SAMP>`ic'</SAMP> or <SAMP>`ip'</SAMP> is provided.
+
+</P>
+<P>
+To insert <VAR>n</VAR> blank character positions, move the cursor to the place
+to insert them and follow this algorithm:
+
+</P>
+
+<OL>
+<LI>
+
+If an <SAMP>`IC'</SAMP> string is provided, output it with parameter <VAR>n</VAR>
+and you are finished.  Otherwise (or if you don't want to bother to
+look for an <SAMP>`IC'</SAMP> string) follow the remaining steps.
+
+<LI>
+
+Output the <SAMP>`im'</SAMP> string, if there is one, unless the terminal is
+already in insert mode.
+
+<LI>
+
+Repeat steps 4 through 6, <VAR>n</VAR> times.
+
+<LI>
+
+Output the <SAMP>`ic'</SAMP> string if any.
+
+<LI>
+
+Output a space.
+
+<LI>
+
+Output the <SAMP>`ip'</SAMP> string if any.
+
+<LI>
+
+Output the <SAMP>`ei'</SAMP> string, eventually, to exit insert mode.  There
+is no need to do this right away.  If the <SAMP>`mi'</SAMP> flag is present,
+you can move the cursor and the cursor will remain in insert mode;
+then you can do more insertion elsewhere without reentering insert
+mode.
+</OL>
+
+<P>
+To insert <VAR>n</VAR> graphic characters, position the cursor and follow this
+algorithm:
+
+</P>
+
+<OL>
+<LI>
+
+If an <SAMP>`IC'</SAMP> string is provided, output it with parameter <VAR>n</VAR>,
+then output the graphic characters, and you are finished.  Otherwise
+(or if you don't want to bother to look for an <SAMP>`IC'</SAMP> string)
+follow the remaining steps.
+
+<LI>
+
+Output the <SAMP>`im'</SAMP> string, if there is one, unless the terminal is
+already in insert mode.
+
+<LI>
+
+For each character to be output, repeat steps 4 through 6.
+
+<LI>
+
+Output the <SAMP>`ic'</SAMP> string if any.
+
+<LI>
+
+Output the next graphic character.
+
+<LI>
+
+Output the <SAMP>`ip'</SAMP> string if any.
+
+<LI>
+
+Output the <SAMP>`ei'</SAMP> string, eventually, to exit insert mode.  There
+is no need to do this right away.  If the <SAMP>`mi'</SAMP> flag is present,
+you can move the cursor and the cursor will remain in insert mode;
+then you can do more insertion elsewhere without reentering insert
+mode.
+</OL>
+
+<P>
+Note that this is not the same as the original Unix termcap specifications
+in one respect: it assumes that the <SAMP>`IC'</SAMP> string can be used without
+entering insert mode.  This is true as far as I know, and it allows you be
+able to avoid entering and leaving insert mode, and also to be able to
+avoid the inserted-character padding after the characters that go into the
+inserted positions.
+
+</P>
+<P>
+Deletion of characters is less complicated; deleting one column is done by
+outputting the <SAMP>`dc'</SAMP> string.  However, there may be a delete mode that
+must be entered with <SAMP>`dm'</SAMP> in order to make <SAMP>`dc'</SAMP> work.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`dc'</SAMP>
+<DD>
+<A NAME="IDX109"></A>
+String of commands to delete one character position at the cursor.  If
+<SAMP>`dc'</SAMP> is not present, the terminal cannot delete characters.
+
+<DT><SAMP>`DC'</SAMP>
+<DD>
+<A NAME="IDX110"></A>
+String of commands to delete <VAR>n</VAR> characters starting at the cursor.
+It has the same effect as repeating the <SAMP>`dc'</SAMP> string <VAR>n</VAR> times.
+Any terminal description that has <SAMP>`DC'</SAMP> also has <SAMP>`dc'</SAMP>.
+
+<DT><SAMP>`dm'</SAMP>
+<DD>
+<A NAME="IDX111"></A>
+String of commands to enter delete mode.  If not present, there is no
+delete mode, and <SAMP>`dc'</SAMP> can be used at any time (assuming there is
+a <SAMP>`dc'</SAMP>).
+
+<DT><SAMP>`ed'</SAMP>
+<DD>
+<A NAME="IDX112"></A>
+String of commands to exit delete mode.  This must be present if
+<SAMP>`dm'</SAMP> is.
+</DL>
+
+<P>
+To delete <VAR>n</VAR> character positions, position the cursor and follow these
+steps:
+
+</P>
+
+<OL>
+<LI>
+
+If the <SAMP>`DC'</SAMP> string is present, output it with parameter <VAR>n</VAR>
+and you are finished.  Otherwise, follow the remaining steps.
+
+<LI>
+
+Output the <SAMP>`dm'</SAMP> string, unless you know the terminal is already
+in delete mode.
+
+<LI>
+
+Output the <SAMP>`dc'</SAMP> string <VAR>n</VAR> times.
+
+<LI>
+
+Output the <SAMP>`ed'</SAMP> string eventually.  If the flag capability
+<SAMP>`mi'</SAMP> is present, you can move the cursor and do more deletion
+without leaving and reentering delete mode.
+</OL>
+
+<P>
+As with the <SAMP>`IC'</SAMP> string, we have departed from the original termcap
+specifications by assuming that <SAMP>`DC'</SAMP> works without entering delete
+mode even though <SAMP>`dc'</SAMP> would not.
+
+</P>
+<P>
+If the <SAMP>`dm'</SAMP> and <SAMP>`im'</SAMP> capabilities are both present and have the
+same value, it means that the terminal has one mode for both insertion and
+deletion.  It is useful for a program to know this, because then it can do
+insertions after deletions, or vice versa, without leaving insert/delete
+mode and reentering it.
+
+</P>
+
+
+<H2><A NAME="SEC33" HREF="termcap.html#TOC33">Standout and Appearance Modes</A></H2>
+<P>
+<A NAME="IDX113"></A>
+<A NAME="IDX114"></A>
+<A NAME="IDX115"></A>
+
+</P>
+<P>
+<EM>Appearance modes</EM> are modifications to the ways characters are
+displayed.  Typical appearance modes include reverse video, dim, bright,
+blinking, underlined, invisible, and alternate character set.  Each kind of
+terminal supports various among these, or perhaps none.
+
+</P>
+<P>
+For each type of terminal, one appearance mode or combination of them that
+looks good for highlighted text is chosen as the <EM>standout mode</EM>.  The
+capabilities <SAMP>`so'</SAMP> and <SAMP>`se'</SAMP> say how to enter and leave standout
+mode.  Programs that use appearance modes only to highlight some text
+generally use the standout mode so that they can work on as many terminals
+as possible.  Use of specific appearance modes other than "underlined"
+and "alternate character set" is rare.
+
+</P>
+<P>
+Terminals that implement appearance modes fall into two general classes as
+to how they do it.
+
+</P>
+<P>
+In some terminals, the presence or absence of any appearance mode is
+recorded separately for each character position.  In these terminals, each
+graphic character written is given the appearance modes current at the time
+it is written, and keeps those modes until it is erased or overwritten.
+There are special commands to turn the appearance modes on or off for
+characters to be written in the future.
+
+</P>
+<P>
+In other terminals, the change of appearance modes is represented by a
+marker that belongs to a certain screen position but affects all following
+screen positions until the next marker.  These markers are traditionally
+called <EM>magic cookies</EM>.
+
+</P>
+<P>
+The same capabilities (<SAMP>`so'</SAMP>, <SAMP>`se'</SAMP>, <SAMP>`mb'</SAMP> and so on) for
+turning appearance modes on and off are used for both magic-cookie
+terminals and per-character terminals.  On magic cookie terminals, these
+give the commands to write the magic cookies.  On per-character terminals,
+they change the current modes that affect future output and erasure.  Some
+simple applications can use these commands without knowing whether or not
+they work by means of cookies.
+
+</P>
+<P>
+However, a program that maintains and updates a display needs to know
+whether the terminal uses magic cookies, and exactly what their effect is.
+This information comes from the <SAMP>`sg'</SAMP> capability.
+
+</P>
+<P>
+The <SAMP>`sg'</SAMP> capability is a numeric capability whose presence indicates
+that the terminal uses magic cookies for appearance modes.  Its value is
+the number of character positions that a magic cookie occupies.  Usually
+the cookie occupies one or more character positions on the screen, and these
+character positions are displayed as blank, but in some terminals the
+cookie has zero width.
+
+</P>
+<P>
+The <SAMP>`sg'</SAMP> capability describes both the magic cookie to turn standout
+on and the cookie to turn it off.  This makes the assumption that both
+kinds of cookie have the same width on the screen.  If that is not true,
+the narrower cookie must be "widened" with spaces until it has the same
+width as the other.
+
+</P>
+<P>
+On some magic cookie terminals, each line always starts with normal
+display; in other words, the scope of a magic cookie never extends over
+more than one line.  But on other terminals, one magic cookie affects all
+the lines below it unless explicitly canceled.  Termcap does not define any
+way to distinguish these two ways magic cookies can work.  To be safe, it
+is best to put a cookie at the beginning of each line.
+
+</P>
+<P>
+On some per-character terminals, standout mode or other appearance modes
+may be canceled by moving the cursor.  On others, moving the cursor has no
+effect on the state of the appearance modes.  The latter class of terminals
+are given the flag capability <SAMP>`ms'</SAMP> ("can move in standout").  All
+programs that might have occasion to move the cursor while appearance modes
+are turned on must check for this flag; if it is not present, they should
+reset appearance modes to normal before doing cursor motion.
+
+</P>
+<P>
+A program that has turned on only standout mode should use <SAMP>`se'</SAMP> to
+reset the standout mode to normal.  A program that has turned on only
+alternate character set mode should use <SAMP>`ae'</SAMP> to return it to normal.
+If it is possible that any other appearance modes are turned on, use the
+<SAMP>`me'</SAMP> capability to return them to normal.
+
+</P>
+<P>
+Note that the commands to turn on one appearance mode, including <SAMP>`so'</SAMP>
+and <SAMP>`mb'</SAMP> ... <SAMP>`mr'</SAMP>, if used while some other appearance modes
+are turned on, may combine the two modes on some terminals but may turn off
+the mode previously enabled on other terminals.  This is because some
+terminals do not have a command to set or clear one appearance mode without
+changing the others.  Programs should not attempt to use appearance modes
+in combination except with <SAMP>`sa'</SAMP>, and when switching from one single
+mode to another should always turn off the previously enabled mode and then
+turn on the new desired mode.
+
+</P>
+<P>
+On some old terminals, the <SAMP>`so'</SAMP> and <SAMP>`se'</SAMP> commands may be the same
+command, which has the effect of turning standout on if it is off, or off
+it is on.  It is therefore risky for a program to output extra <SAMP>`se'</SAMP>
+commands for good measure.  Fortunately, all these terminals are obsolete.
+
+</P>
+<P>
+Programs that update displays in which standout-text may be replaced with
+non-standout text must check for the <SAMP>`xs'</SAMP> flag.  In a per-character
+terminal, this flag says that the only way to remove standout once written is
+to clear that portion of the line with the <SAMP>`ce'</SAMP> string or something
+even more powerful (see section <A HREF="termcap.html#SEC30">Clearing Parts of the Screen</A>); just writing new characters at those
+screen positions will not change the modes in effect there.  In a magic
+cookie terminal, <SAMP>`xs'</SAMP> says that the only way to remove a cookie is to
+clear a portion of the line that includes the cookie; writing a different
+cookie at the same position does not work.
+
+</P>
+<P>
+Such programs must also check for the <SAMP>`xt'</SAMP> flag, which means that the
+terminal is a Teleray 1061.  On this terminal it is impossible to position
+the cursor at the front of a magic cookie, so the only two ways to remove a
+cookie are (1) to delete the line it is on or (2) to position the cursor at
+least one character before it (possibly on a previous line) and output the
+<SAMP>`se'</SAMP> string, which on these terminals finds and removes the next
+<SAMP>`so'</SAMP> magic cookie on the screen.  (It may also be possible to remove a
+cookie which is not at the beginning of a line by clearing that line.)  The
+<SAMP>`xt'</SAMP> capability also has implications for the use of tab characters,
+but in that regard it is obsolete (See section <A HREF="termcap.html#SEC26">Cursor Motion</A>).
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`so'</SAMP>
+<DD>
+<A NAME="IDX116"></A>
+String of commands to enter standout mode.
+
+<DT><SAMP>`se'</SAMP>
+<DD>
+<A NAME="IDX117"></A>
+String of commands to leave standout mode.
+
+<DT><SAMP>`sg'</SAMP>
+<DD>
+<A NAME="IDX118"></A>
+Numeric capability, the width on the screen of the magic cookie.  This
+capability is absent in terminals that record appearance modes
+character by character.
+
+<DT><SAMP>`ms'</SAMP>
+<DD>
+<A NAME="IDX119"></A>
+Flag whose presence means that it is safe to move the cursor while the
+appearance modes are not in the normal state.  If this flag is absent,
+programs should always reset the appearance modes to normal before
+moving the cursor.
+
+<DT><SAMP>`xs'</SAMP>
+<DD>
+<A NAME="IDX120"></A>
+Flag whose presence means that the only way to reset appearance modes
+already on the screen is to clear to end of line.  On a per-character
+terminal, you must clear the area where the modes are set.  On a magic
+cookie terminal, you must clear an area containing the cookie.
+See the discussion above.
+
+<DT><SAMP>`xt'</SAMP>
+<DD>
+<A NAME="IDX121"></A>
+Flag whose presence means that the cursor cannot be positioned right
+in front of a magic cookie, and that <SAMP>`se'</SAMP> is a command to delete
+the next magic cookie following the cursor.  See discussion above.
+
+<DT><SAMP>`mb'</SAMP>
+<DD>
+<A NAME="IDX122"></A>
+String of commands to enter blinking mode.
+
+<DT><SAMP>`md'</SAMP>
+<DD>
+<A NAME="IDX123"></A>
+String of commands to enter double-bright mode.
+
+<DT><SAMP>`mh'</SAMP>
+<DD>
+<A NAME="IDX124"></A>
+String of commands to enter half-bright mode.
+
+<DT><SAMP>`mk'</SAMP>
+<DD>
+<A NAME="IDX125"></A>
+String of commands to enter invisible mode.
+
+<DT><SAMP>`mp'</SAMP>
+<DD>
+<A NAME="IDX126"></A>
+String of commands to enter protected mode.
+
+<DT><SAMP>`mr'</SAMP>
+<DD>
+<A NAME="IDX127"></A>
+String of commands to enter reverse-video mode.
+
+<DT><SAMP>`me'</SAMP>
+<DD>
+<A NAME="IDX128"></A>
+String of commands to turn off all appearance modes, including
+standout mode and underline mode.  On some terminals it also turns off
+alternate character set mode; on others, it may not.  This capability
+must be present if any of <SAMP>`mb'</SAMP> ... <SAMP>`mr'</SAMP> is present.
+
+<DT><SAMP>`as'</SAMP>
+<DD>
+<A NAME="IDX129"></A>
+String of commands to turn on alternate character set mode.  This mode
+assigns some or all graphic characters an alternate picture on the
+screen.  There is no standard as to what the alternate pictures look
+like.
+
+<DT><SAMP>`ae'</SAMP>
+<DD>
+<A NAME="IDX130"></A>
+String of commands to turn off alternate character set mode.
+
+<DT><SAMP>`sa'</SAMP>
+<DD>
+<A NAME="IDX131"></A>
+String of commands to turn on an arbitrary combination of appearance
+modes.  It accepts 9 parameters, each of which controls a particular
+kind of appearance mode.  A parameter should be 1 to turn its appearance
+mode on, or zero to turn that mode off.  Most terminals do not support
+the <SAMP>`sa'</SAMP> capability, even among those that do have various
+appearance modes.
+
+The nine parameters are, in order, <VAR>standout</VAR>, <VAR>underline</VAR>,
+<VAR>reverse</VAR>, <VAR>blink</VAR>, <VAR>half-bright</VAR>, <VAR>double-bright</VAR>,
+<VAR>blank</VAR>, <VAR>protect</VAR>, <VAR>alt char set</VAR>.
+</DL>
+
+
+
+<H2><A NAME="SEC34" HREF="termcap.html#TOC34">Underlining</A></H2>
+<P>
+<A NAME="IDX132"></A>
+
+</P>
+<P>
+Underlining on most terminals is a kind of appearance mode, much like
+standout mode.  Therefore, it may be implemented using magic cookies or as
+a flag in the terminal whose current state affects each character that is
+output.  See section <A HREF="termcap.html#SEC33">Standout and Appearance Modes</A>, for a full explanation.
+
+</P>
+<P>
+The <SAMP>`ug'</SAMP> capability is a numeric capability whose presence indicates
+that the terminal uses magic cookies for underlining.  Its value is the
+number of character positions that a magic cookie for underlining occupies;
+it is used for underlining just as <SAMP>`sg'</SAMP> is used for standout.  Aside
+from the simplest applications, it is impossible to use underlining
+correctly without paying attention to the value of <SAMP>`ug'</SAMP>.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`us'</SAMP>
+<DD>
+<A NAME="IDX133"></A>
+String of commands to turn on underline mode or to output a magic cookie
+to start underlining.
+
+<DT><SAMP>`ue'</SAMP>
+<DD>
+<A NAME="IDX134"></A>
+String of commands to turn off underline mode or to output a magic
+cookie to stop underlining.
+
+<DT><SAMP>`ug'</SAMP>
+<DD>
+<A NAME="IDX135"></A>
+Width of magic cookie that represents a change of underline mode;
+or missing, if the terminal does not use a magic cookie for this.
+
+<DT><SAMP>`ms'</SAMP>
+<DD>
+<A NAME="IDX136"></A>
+Flag whose presence means that it is safe to move the cursor while the
+appearance modes are not in the normal state.  Underlining is an
+appearance mode.  If this flag is absent, programs should always turn
+off underlining before moving the cursor.
+</DL>
+
+<P>
+There are two other, older ways of doing underlining: there can be a
+command to underline a single character, or the output of <SAMP>`_'</SAMP>, the
+ASCII underscore character, as an overstrike could cause a character to be
+underlined.  New programs need not bother to handle these capabilities
+unless the author cares strongly about the obscure terminals which support
+them.  However, terminal descriptions should provide these capabilities
+when appropriate.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`uc'</SAMP>
+<DD>
+<A NAME="IDX137"></A>
+String of commands to underline the character under the cursor, and
+move the cursor right.
+
+<DT><SAMP>`ul'</SAMP>
+<DD>
+<A NAME="IDX138"></A>
+Flag whose presence means that the terminal can underline by
+overstriking an underscore character (<SAMP>`_'</SAMP>); some terminals can do
+this even though they do not support overstriking in general.  An
+implication of this flag is that when outputting new text to overwrite
+old text, underscore characters must be treated specially lest they
+underline the old text instead.
+</DL>
+
+
+
+<H2><A NAME="SEC35" HREF="termcap.html#TOC35">Cursor Visibility</A></H2>
+<P>
+<A NAME="IDX139"></A>
+
+</P>
+<P>
+Some terminals have the ability to make the cursor invisible, or to enhance
+it.  Enhancing the cursor is often done by programs that plan to use the
+cursor to indicate to the user a position of interest that may be anywhere
+on the screen--for example, the Emacs editor enhances the cursor on entry.
+Such programs should always restore the cursor to normal on exit.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`vs'</SAMP>
+<DD>
+<A NAME="IDX140"></A>
+String of commands to enhance the cursor.
+
+<DT><SAMP>`vi'</SAMP>
+<DD>
+<A NAME="IDX141"></A>
+String of commands to make the cursor invisible.
+
+<DT><SAMP>`ve'</SAMP>
+<DD>
+<A NAME="IDX142"></A>
+String of commands to return the cursor to normal.
+</DL>
+
+<P>
+If you define either <SAMP>`vs'</SAMP> or <SAMP>`vi'</SAMP>, you must also define <SAMP>`ve'</SAMP>.
+
+</P>
+
+
+<H2><A NAME="SEC36" HREF="termcap.html#TOC36">Bell</A></H2>
+<P>
+<A NAME="IDX143"></A>
+<A NAME="IDX144"></A>
+
+</P>
+<P>
+Here we describe commands to make the terminal ask for the user to pay
+attention to it.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`bl'</SAMP>
+<DD>
+<A NAME="IDX145"></A>
+String of commands to cause the terminal to make an audible sound.  If
+this capability is absent, the terminal has no way to make a suitable
+sound.
+
+<DT><SAMP>`vb'</SAMP>
+<DD>
+<A NAME="IDX146"></A>
+String of commands to cause the screen to flash to attract attention
+("visible bell").  If this capability is absent, the terminal has no
+way to do such a thing.
+</DL>
+
+
+
+<H2><A NAME="SEC37" HREF="termcap.html#TOC37">Keypad and Function Keys</A></H2>
+
+<P>
+Many terminals have arrow and function keys that transmit specific
+character sequences to the computer.  Since the precise sequences used
+depend on the terminal, termcap defines capabilities used to say what the
+sequences are.  Unlike most termcap string-valued capabilities, these are
+not strings of commands to be sent to the terminal, rather strings that
+are received from the terminal.
+
+</P>
+<P>
+Programs that expect to use keypad keys should check, initially, for a
+<SAMP>`ks'</SAMP> capability and send it, to make the keypad actually transmit.
+Such programs should also send the <SAMP>`ke'</SAMP> string when exiting.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`ks'</SAMP>
+<DD>
+<A NAME="IDX147"></A>
+String of commands to make the keypad keys transmit.  If this
+capability is not provided, but the others in this section are,
+programs may assume that the keypad keys always transmit.
+
+<DT><SAMP>`ke'</SAMP>
+<DD>
+String of commands to make the keypad keys work locally.  This
+capability is provided only if <SAMP>`ks'</SAMP> is.
+
+<DT><SAMP>`kl'</SAMP>
+<DD>
+String of input characters sent by typing the left-arrow key.  If this
+capability is missing, you cannot expect the terminal to have a
+left-arrow key that transmits anything to the computer.
+
+<DT><SAMP>`kr'</SAMP>
+<DD>
+String of input characters sent by typing the right-arrow key.
+
+<DT><SAMP>`ku'</SAMP>
+<DD>
+String of input characters sent by typing the up-arrow key.
+
+<DT><SAMP>`kd'</SAMP>
+<DD>
+String of input characters sent by typing the down-arrow key.
+
+<DT><SAMP>`kh'</SAMP>
+<DD>
+String of input characters sent by typing the "home-position" key.
+
+<DT><SAMP>`K1'</SAMP> ... <SAMP>`K5'</SAMP>
+<DD>
+<A NAME="IDX148"></A>
+Strings of input characters sent by the five other keys in a 3-by-3
+array that includes the arrow keys, if the keyboard has such a 3-by-3
+array.  Note that one of these keys may be the "home-position" key,
+in which case one of these capabilities will have the same value as
+the <SAMP>`kh'</SAMP> key.
+
+<DT><SAMP>`k0'</SAMP>
+<DD>
+String of input characters sent by function key 10 (or 0, if the terminal
+has one labeled 0).
+
+<DT><SAMP>`k1'</SAMP> ... <SAMP>`k9'</SAMP>
+<DD>
+<A NAME="IDX149"></A>
+Strings of input characters sent by function keys 1 through 9,
+provided for those function keys that exist.
+
+<DT><SAMP>`kn'</SAMP>
+<DD>
+Number: the number of numbered function keys, if there are more than
+10.
+
+<DT><SAMP>`l0'</SAMP> ... <SAMP>`l9'</SAMP>
+<DD>
+<A NAME="IDX150"></A>
+Strings which are the labels appearing on the keyboard on the keys
+described by the capabilities <SAMP>`k0'</SAMP> ... <SAMP>`l9'</SAMP>.  These
+capabilities should be left undefined if the labels are <SAMP>`f0'</SAMP> or
+<SAMP>`f10'</SAMP> and <SAMP>`f1'</SAMP> ... <SAMP>`f9'</SAMP>.
+<DT><SAMP>`kH'</SAMP>
+<DD>
+<A NAME="IDX151"></A>
+String of input characters sent by the "home down" key, if there is
+one.
+
+<DT><SAMP>`kb'</SAMP>
+<DD>
+String of input characters sent by the "backspace" key, if there is
+one.
+
+<DT><SAMP>`ka'</SAMP>
+<DD>
+String of input characters sent by the "clear all tabs" key, if there
+is one.
+
+<DT><SAMP>`kt'</SAMP>
+<DD>
+String of input characters sent by the "clear tab stop this column"
+key, if there is one.
+
+<DT><SAMP>`kC'</SAMP>
+<DD>
+String of input characters sent by the "clear screen" key, if there is
+one.
+
+<DT><SAMP>`kD'</SAMP>
+<DD>
+String of input characters sent by the "delete character" key, if
+there is one.
+
+<DT><SAMP>`kL'</SAMP>
+<DD>
+String of input characters sent by the "delete line" key, if there is
+one.
+
+<DT><SAMP>`kM'</SAMP>
+<DD>
+String of input characters sent by the "exit insert mode" key, if
+there is one.
+
+<DT><SAMP>`kE'</SAMP>
+<DD>
+String of input characters sent by the "clear to end of line" key, if
+there is one.
+
+<DT><SAMP>`kS'</SAMP>
+<DD>
+String of input characters sent by the "clear to end of screen" key,
+if there is one.
+
+<DT><SAMP>`kI'</SAMP>
+<DD>
+String of input characters sent by the "insert character" or "enter
+insert mode" key, if there is one.
+
+<DT><SAMP>`kA'</SAMP>
+<DD>
+String of input characters sent by the "insert line" key, if there is
+one.
+
+<DT><SAMP>`kN'</SAMP>
+<DD>
+String of input characters sent by the "next page" key, if there is
+one.
+
+<DT><SAMP>`kP'</SAMP>
+<DD>
+String of input characters sent by the "previous page" key, if there is
+one.
+
+<DT><SAMP>`kF'</SAMP>
+<DD>
+String of input characters sent by the "scroll forward" key, if there
+is one.
+
+<DT><SAMP>`kR'</SAMP>
+<DD>
+String of input characters sent by the "scroll reverse" key, if there
+is one.
+
+<DT><SAMP>`kT'</SAMP>
+<DD>
+String of input characters sent by the "set tab stop in this column"
+key, if there is one.
+
+<DT><SAMP>`ko'</SAMP>
+<DD>
+String listing the other function keys the terminal has.  This is a
+very obsolete way of describing the same information found in the
+<SAMP>`kH'</SAMP> ... <SAMP>`kT'</SAMP> keys.  The string contains a list of
+two-character termcap capability names, separated by commas.  The
+meaning is that for each capability name listed, the terminal has a
+key which sends the string which is the value of that capability.  For
+example, the value <SAMP>`:ko=cl,ll,sf,sr:'</SAMP> says that the terminal has
+four function keys which mean "clear screen", "home down",
+"scroll forward" and "scroll reverse".</DL>
+
+
+
+<H2><A NAME="SEC38" HREF="termcap.html#TOC38">Meta Key</A></H2>
+
+<P>
+<A NAME="IDX152"></A>
+A Meta key is a key on the keyboard that modifies each character you type
+by controlling the 0200 bit.  This bit is on if and only if the Meta key is
+held down when the character is typed.  Characters typed using the Meta key
+are called Meta characters.  Emacs uses Meta characters as editing
+commands.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`km'</SAMP>
+<DD>
+<A NAME="IDX153"></A>
+Flag whose presence means that the terminal has a Meta key.
+
+<DT><SAMP>`mm'</SAMP>
+<DD>
+<A NAME="IDX154"></A>
+String of commands to enable the functioning of the Meta key.
+
+<DT><SAMP>`mo'</SAMP>
+<DD>
+<A NAME="IDX155"></A>
+String of commands to disable the functioning of the Meta key.
+</DL>
+
+<P>
+If the terminal has <SAMP>`km'</SAMP> but does not have <SAMP>`mm'</SAMP> and <SAMP>`mo'</SAMP>, it
+means that the Meta key always functions.  If it has <SAMP>`mm'</SAMP> and
+<SAMP>`mo'</SAMP>, it means that the Meta key can be turned on or off.  Send the
+<SAMP>`mm'</SAMP> string to turn it on, and the <SAMP>`mo'</SAMP> string to turn it off.
+I do not know why one would ever not want it to be on.
+
+</P>
+
+
+<H2><A NAME="SEC39" HREF="termcap.html#TOC39">Initialization</A></H2>
+<P>
+<A NAME="IDX156"></A>
+<A NAME="IDX157"></A>
+<A NAME="IDX158"></A>
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`ti'</SAMP>
+<DD>
+<A NAME="IDX159"></A>
+String of commands to put the terminal into whatever special modes are
+needed or appropriate for programs that move the cursor
+nonsequentially around the screen.  Programs that use termcap to do
+full-screen display should output this string when they start up.
+
+<DT><SAMP>`te'</SAMP>
+<DD>
+<A NAME="IDX160"></A>
+String of commands to undo what is done by the <SAMP>`ti'</SAMP> string.
+Programs that output the <SAMP>`ti'</SAMP> string on entry should output this
+string when they exit.
+
+<DT><SAMP>`is'</SAMP>
+<DD>
+<A NAME="IDX161"></A>
+String of commands to initialize the terminal for each login session.
+
+<DT><SAMP>`if'</SAMP>
+<DD>
+<A NAME="IDX162"></A>
+String which is the name of a file containing the string of commands
+to initialize the terminal for each session of use.  Normally <SAMP>`is'</SAMP>
+and <SAMP>`if'</SAMP> are not both used.
+
+<DT><SAMP>`i1'</SAMP>
+<DD>
+<DT><SAMP>`i3'</SAMP>
+<DD>
+<A NAME="IDX163"></A>
+<A NAME="IDX164"></A>
+Two more strings of commands to initialize the terminal for each login
+session.  The <SAMP>`i1'</SAMP> string (if defined) is output before <SAMP>`is'</SAMP>
+or <SAMP>`if'</SAMP>, and the <SAMP>`i3'</SAMP> string (if defined) is output after.
+
+The reason for having three separate initialization strings is to make
+it easier to define a group of related terminal types with slightly
+different initializations.  Define two or three of the strings in the
+basic type; then the other types can override one or two of the
+strings.
+
+<DT><SAMP>`rs'</SAMP>
+<DD>
+<A NAME="IDX165"></A>
+String of commands to reset the terminal from any strange mode it may
+be in.  Normally this includes the <SAMP>`is'</SAMP> string (or other commands
+with the same effects) and more.  What would go in the <SAMP>`rs'</SAMP>
+string but not in the <SAMP>`is'</SAMP> string are annoying or slow commands
+to bring the terminal back from strange modes that nobody would
+normally use.
+
+<DT><SAMP>`it'</SAMP>
+<DD>
+<A NAME="IDX166"></A>
+Numeric value, the initial spacing between hardware tab stop columns
+when the terminal is powered up.  Programs to initialize the terminal
+can use this to decide whether there is a need to set the tab stops.
+If the initial width is 8, well and good; if it is not 8, then the
+tab stops should be set; if they cannot be set, the kernel is told
+to convert tabs to spaces, and other programs will observe this and do
+likewise.
+
+<DT><SAMP>`ct'</SAMP>
+<DD>
+<A NAME="IDX167"></A>
+String of commands to clear all tab stops.
+
+<DT><SAMP>`st'</SAMP>
+<DD>
+<A NAME="IDX168"></A>
+String of commands to set tab stop at current cursor column on all
+lines.
+
+<DT><SAMP>`NF'</SAMP>
+<DD>
+<A NAME="IDX169"></A>
+Flag whose presence means that the terminal does not support XON/XOFF
+flow control.  Programs should not send XON (<KBD>C-q</KBD>) or XOFF
+(<KBD>C-s</KBD>) characters to the terminal.
+</DL>
+
+
+
+<H2><A NAME="SEC40" HREF="termcap.html#TOC40">Padding Capabilities</A></H2>
+<P>
+<A NAME="IDX170"></A>
+
+</P>
+<P>
+There are two terminal capabilities that exist just to explain the proper
+way to obey the padding specifications in all the command string
+capabilities.  One, <SAMP>`pc'</SAMP>, must be obeyed by all termcap-using
+programs.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`pb'</SAMP>
+<DD>
+<A NAME="IDX171"></A>
+Numeric value, the lowest baud rate at which padding is actually
+needed.  Programs may check this and refrain from doing any padding at
+lower speeds.
+
+<DT><SAMP>`pc'</SAMP>
+<DD>
+<A NAME="IDX172"></A>
+String of commands for padding.  The first character of this string is
+to be used as the pad character, instead of using null characters for
+padding.  If <SAMP>`pc'</SAMP> is not provided, use null characters.  Every
+program that uses termcap must look up this capability and use it to
+set the variable <CODE>PC</CODE> that is used by <CODE>tputs</CODE>.
+See section <A HREF="termcap.html#SEC7">Padding</A>.
+</DL>
+
+<P>
+Some termcap capabilities exist just to specify the amount of padding that
+the kernel should give to cursor motion commands used in ordinary
+sequential output.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`dC'</SAMP>
+<DD>
+<A NAME="IDX173"></A>
+Numeric value, the number of msec of padding needed for the
+carriage-return character.
+
+<DT><SAMP>`dN'</SAMP>
+<DD>
+<A NAME="IDX174"></A>
+Numeric value, the number of msec of padding needed for the newline
+(linefeed) character.
+
+<DT><SAMP>`dB'</SAMP>
+<DD>
+<A NAME="IDX175"></A>
+Numeric value, the number of msec of padding needed for the backspace
+character.
+
+<DT><SAMP>`dF'</SAMP>
+<DD>
+<A NAME="IDX176"></A>
+Numeric value, the number of msec of padding needed for the formfeed
+character.
+
+<DT><SAMP>`dT'</SAMP>
+<DD>
+<A NAME="IDX177"></A>
+Numeric value, the number of msec of padding needed for the tab
+character.
+</DL>
+
+<P>
+In some systems, the kernel uses the above capabilities; in other systems,
+the kernel uses the paddings specified in the string capabilities
+<SAMP>`cr'</SAMP>, <SAMP>`sf'</SAMP>, <SAMP>`le'</SAMP>, <SAMP>`ff'</SAMP> and <SAMP>`ta'</SAMP>.  Descriptions of
+terminals which require such padding should contain the <SAMP>`dC'</SAMP> ...
+<SAMP>`dT'</SAMP> capabilities and also specify the appropriate padding in the
+corresponding string capabilities.  Since no modern terminals require
+padding for ordinary sequential output, you probably won't need to do
+either of these things.
+
+</P>
+
+
+<H2><A NAME="SEC41" HREF="termcap.html#TOC41">Status Line</A></H2>
+
+<P>
+<A NAME="IDX178"></A>
+A <EM>status line</EM> is a line on the terminal that is not used for ordinary
+display output but instead used for a special message.  The intended use is
+for a continuously updated description of what the user's program is doing,
+and that is where the name "status line" comes from, but in fact it could
+be used for anything.  The distinguishing characteristic of a status line
+is that ordinary output to the terminal does not affect it; it changes only
+if the special status line commands of this section are used.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`hs'</SAMP>
+<DD>
+<A NAME="IDX179"></A>
+Flag whose presence means that the terminal has a status line.  If a
+terminal description specifies that there is a status line, it must
+provide the <SAMP>`ts'</SAMP> and <SAMP>`fs'</SAMP> capabilities.
+
+<DT><SAMP>`ts'</SAMP>
+<DD>
+<A NAME="IDX180"></A>
+String of commands to move the terminal cursor into the status line.
+Usually these commands must specifically record the old cursor
+position for the sake of the <SAMP>`fs'</SAMP> string.
+
+<DT><SAMP>`fs'</SAMP>
+<DD>
+<A NAME="IDX181"></A>
+String of commands to move the cursor back from the status line to its
+previous position (outside the status line).
+
+<DT><SAMP>`es'</SAMP>
+<DD>
+<A NAME="IDX182"></A>
+Flag whose presence means that other display commands work while
+writing the status line.  In other words, one can clear parts of it,
+insert or delete characters, move the cursor within it using <SAMP>`ch'</SAMP>
+if there is a <SAMP>`ch'</SAMP> capability, enter and leave standout mode, and
+so on.
+
+<DT><SAMP>`ds'</SAMP>
+<DD>
+<A NAME="IDX183"></A>
+String of commands to disable the display of the status line.  This
+may be absent, if there is no way to disable the status line display.
+
+<DT><SAMP>`ws'</SAMP>
+<DD>
+<A NAME="IDX184"></A>
+Numeric value, the width of the status line.  If this capability is
+absent in a terminal that has a status line, it means the status line
+is the same width as the other lines.
+
+Note that the value of <SAMP>`ws'</SAMP> is sometimes as small as 8.
+</DL>
+
+
+
+<H2><A NAME="SEC42" HREF="termcap.html#TOC42">Half-Line Motion</A></H2>
+
+<P>
+Some terminals have commands for moving the cursor vertically by half-lines,
+useful for outputting subscripts and superscripts.  Mostly it is hardcopy
+terminals that have such features.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`hu'</SAMP>
+<DD>
+<A NAME="IDX185"></A>
+String of commands to move the cursor up half a line.  If the terminal
+is a display, it is your responsibility to avoid moving up past the
+top line; however, most likely the terminal that supports this is a
+hardcopy terminal and there is nothing to be concerned about.
+
+<DT><SAMP>`hd'</SAMP>
+<DD>
+<A NAME="IDX186"></A>
+String of commands to move the cursor down half a line.  If the
+terminal is a display, it is your responsibility to avoid moving down
+past the bottom line, etc.
+</DL>
+
+
+
+<H2><A NAME="SEC43" HREF="termcap.html#TOC43">Controlling Printers Attached to Terminals</A></H2>
+<P>
+<A NAME="IDX187"></A>
+
+</P>
+<P>
+Some terminals have attached hardcopy printer ports.  They may be able to
+copy the screen contents to the printer; they may also be able to redirect
+output to the printer.  Termcap does not have anything to tell the program
+whether the redirected output appears also on the screen; it does on some
+terminals but not all.
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`ps'</SAMP>
+<DD>
+<A NAME="IDX188"></A>
+String of commands to cause the contents of the screen to be printed.
+If it is absent, the screen contents cannot be printed.
+
+<DT><SAMP>`po'</SAMP>
+<DD>
+<A NAME="IDX189"></A>
+String of commands to redirect further output to the printer.
+
+<DT><SAMP>`pf'</SAMP>
+<DD>
+<A NAME="IDX190"></A>
+String of commands to terminate redirection of output to the printer.
+This capability must be present in the description if <SAMP>`po'</SAMP> is.
+
+<DT><SAMP>`pO'</SAMP>
+<DD>
+<A NAME="IDX191"></A>
+String of commands to redirect output to the printer for next <VAR>n</VAR>
+characters of output, regardless of what they are.  Redirection will
+end automatically after <VAR>n</VAR> characters of further output.  Until
+then, nothing that is output can end redirection, not even the
+<SAMP>`pf'</SAMP> string if there is one.  The number <VAR>n</VAR> should not be
+more than 255.
+
+One use of this capability is to send non-text byte sequences (such as
+bit-maps) to the printer.
+</DL>
+
+<P>
+Most terminals with printers do not support all of <SAMP>`ps'</SAMP>, <SAMP>`po'</SAMP> and
+<SAMP>`pO'</SAMP>; any one or two of them may be supported.  To make a program that
+can send output to all kinds of printers, it is necessary to check for all
+three of these capabilities, choose the most convenient of the ones that
+are provided, and use it in its own appropriate fashion.
+
+</P>
+
+
+<H1><A NAME="SEC44" HREF="termcap.html#TOC44">Summary of Capability Names</A></H1>
+
+<P>
+Here are all the terminal capability names in alphabetical order
+with a brief description of each.  For cross references to their definitions,
+see the index of capability names (see section <A HREF="termcap.html#SEC46">Capability Index</A>).
+
+</P>
+<DL COMPACT>
+
+<DT><SAMP>`ae'</SAMP>
+<DD>
+String to turn off alternate character set mode.
+<DT><SAMP>`al'</SAMP>
+<DD>
+String to insert a blank line before the cursor.
+<DT><SAMP>`AL'</SAMP>
+<DD>
+String to insert <VAR>n</VAR> blank lines before the cursor.
+<DT><SAMP>`am'</SAMP>
+<DD>
+Flag: output to last column wraps cursor to next line.
+<DT><SAMP>`as'</SAMP>
+<DD>
+String to turn on alternate character set mode.like.
+<DT><SAMP>`bc'</SAMP>
+<DD>
+Very obsolete alternative name for the <SAMP>`le'</SAMP> capability.
+<DT><SAMP>`bl'</SAMP>
+<DD>
+String to sound the bell.
+<DT><SAMP>`bs'</SAMP>
+<DD>
+Obsolete flag: ASCII backspace may be used for leftward motion.
+<DT><SAMP>`bt'</SAMP>
+<DD>
+String to move the cursor left to the previous hardware tab stop column.
+<DT><SAMP>`bw'</SAMP>
+<DD>
+Flag: <SAMP>`le'</SAMP> at left margin wraps to end of previous line.
+<DT><SAMP>`CC'</SAMP>
+<DD>
+String to change terminal's command character.
+<DT><SAMP>`cd'</SAMP>
+<DD>
+String to clear the line the cursor is on, and following lines.
+<DT><SAMP>`ce'</SAMP>
+<DD>
+String to clear from the cursor to the end of the line.
+<DT><SAMP>`ch'</SAMP>
+<DD>
+String to position the cursor at column <VAR>c</VAR> in the same line.
+<DT><SAMP>`cl'</SAMP>
+<DD>
+String to clear the entire screen and put cursor at upper left corner.
+<DT><SAMP>`cm'</SAMP>
+<DD>
+String to position the cursor at line <VAR>l</VAR>, column <VAR>c</VAR>.
+<DT><SAMP>`CM'</SAMP>
+<DD>
+String to position the cursor at line <VAR>l</VAR>, column
+<VAR>c</VAR>, relative to display memory.
+<DT><SAMP>`co'</SAMP>
+<DD>
+Number: width of the screen.
+<DT><SAMP>`cr'</SAMP>
+<DD>
+String to move cursor sideways to left margin.
+<DT><SAMP>`cs'</SAMP>
+<DD>
+String to set the scroll region.
+<DT><SAMP>`cS'</SAMP>
+<DD>
+Alternate form of string to set the scroll region.
+<DT><SAMP>`ct'</SAMP>
+<DD>
+String to clear all tab stops.
+<DT><SAMP>`cv'</SAMP>
+<DD>
+String to position the cursor at line <VAR>l</VAR> in the same column.
+<DT><SAMP>`da'</SAMP>
+<DD>
+Flag: data scrolled off top of screen may be scrolled back.
+<DT><SAMP>`db'</SAMP>
+<DD>
+Flag: data scrolled off bottom of screen may be scrolled back.
+<DT><SAMP>`dB'</SAMP>
+<DD>
+Obsolete number: msec of padding needed for the backspace character.
+<DT><SAMP>`dc'</SAMP>
+<DD>
+String to delete one character position at the cursor.
+<DT><SAMP>`dC'</SAMP>
+<DD>
+Obsolete number: msec of padding needed for the carriage-return character.
+<DT><SAMP>`DC'</SAMP>
+<DD>
+String to delete <VAR>n</VAR> characters starting at the cursor.
+<DT><SAMP>`dF'</SAMP>
+<DD>
+Obsolete number: msec of padding needed for the formfeed character.
+<DT><SAMP>`dl'</SAMP>
+<DD>
+String to delete the line the cursor is on.
+<DT><SAMP>`DL'</SAMP>
+<DD>
+String to delete <VAR>n</VAR> lines starting with the cursor's line.
+<DT><SAMP>`dm'</SAMP>
+<DD>
+String to enter delete mode.
+<DT><SAMP>`dN'</SAMP>
+<DD>
+Obsolete number: msec of padding needed for the newline character.
+<DT><SAMP>`do'</SAMP>
+<DD>
+String to move the cursor vertically down one line.
+<DT><SAMP>`DO'</SAMP>
+<DD>
+String to move cursor vertically down <VAR>n</VAR> lines.
+<DT><SAMP>`ds'</SAMP>
+<DD>
+String to disable the display of the status line.
+<DT><SAMP>`dT'</SAMP>
+<DD>
+Obsolete number: msec of padding needed for the tab character.
+<DT><SAMP>`ec'</SAMP>
+<DD>
+String of commands to clear <VAR>n</VAR> characters at cursor.
+<DT><SAMP>`ed'</SAMP>
+<DD>
+String to exit delete mode.
+<DT><SAMP>`ei'</SAMP>
+<DD>
+String to leave insert mode.
+<DT><SAMP>`eo'</SAMP>
+<DD>
+Flag: output of a space can erase an overstrike.
+<DT><SAMP>`es'</SAMP>
+<DD>
+Flag: other display commands work while writing the status line.
+<DT><SAMP>`ff'</SAMP>
+<DD>
+String to advance to the next page, for a hardcopy terminal.
+<DT><SAMP>`fs'</SAMP>
+<DD>
+String to move the cursor back from the status line to its
+previous position (outside the status line).
+<DT><SAMP>`gn'</SAMP>
+<DD>
+Flag: this terminal type is generic, not real.
+<DT><SAMP>`hc'</SAMP>
+<DD>
+Flag: hardcopy terminal.
+<DT><SAMP>`hd'</SAMP>
+<DD>
+String to move the cursor down half a line.
+<DT><SAMP>`ho'</SAMP>
+<DD>
+String to position cursor at upper left corner.
+<DT><SAMP>`hs'</SAMP>
+<DD>
+Flag: the terminal has a status line.
+<DT><SAMP>`hu'</SAMP>
+<DD>
+String to move the cursor up half a line.
+<DT><SAMP>`hz'</SAMP>
+<DD>
+Flag: terminal cannot accept <SAMP>`~'</SAMP> as output.
+<DT><SAMP>`i1'</SAMP>
+<DD>
+String to initialize the terminal for each login session.
+<DT><SAMP>`i3'</SAMP>
+<DD>
+String to initialize the terminal for each login session.
+<DT><SAMP>`ic'</SAMP>
+<DD>
+String to insert one character position at the cursor.
+<DT><SAMP>`IC'</SAMP>
+<DD>
+String to insert <VAR>n</VAR> character positions at the cursor.
+<DT><SAMP>`if'</SAMP>
+<DD>
+String naming a file of commands to initialize the terminal.
+<DT><SAMP>`im'</SAMP>
+<DD>
+String to enter insert mode.
+<DT><SAMP>`in'</SAMP>
+<DD>
+Flag: outputting a space is different from moving over empty positions.
+<DT><SAMP>`ip'</SAMP>
+<DD>
+String to output following an inserted character in insert mode.
+<DT><SAMP>`is'</SAMP>
+<DD>
+String to initialize the terminal for each login session.
+<DT><SAMP>`it'</SAMP>
+<DD>
+Number: initial spacing between hardware tab stop columns.
+<DT><SAMP>`k0'</SAMP>
+<DD>
+String of input sent by function key 0 or 10.
+<DT><SAMP>`k1 ... k9'</SAMP>
+<DD>
+Strings of input sent by function keys 1 through 9.
+<DT><SAMP>`K1 ... K5'</SAMP>
+<DD>
+Strings sent by the five other keys in 3-by-3 array with arrows.
+<DT><SAMP>`ka'</SAMP>
+<DD>
+String of input sent by the "clear all tabs" key.
+<DT><SAMP>`kA'</SAMP>
+<DD>
+String of input sent by the "insert line" key.
+<DT><SAMP>`kb'</SAMP>
+<DD>
+String of input sent by the "backspace" key.
+<DT><SAMP>`kC'</SAMP>
+<DD>
+String of input sent by the "clear screen" key.
+<DT><SAMP>`kd'</SAMP>
+<DD>
+String of input sent by typing the down-arrow key.
+<DT><SAMP>`kD'</SAMP>
+<DD>
+String of input sent by the "delete character" key.
+<DT><SAMP>`ke'</SAMP>
+<DD>
+String to make the function keys work locally.
+<DT><SAMP>`kE'</SAMP>
+<DD>
+String of input sent by the "clear to end of line" key.
+<DT><SAMP>`kF'</SAMP>
+<DD>
+String of input sent by the "scroll forward" key.
+<DT><SAMP>`kh'</SAMP>
+<DD>
+String of input sent by typing the "home-position" key.
+<DT><SAMP>`kH'</SAMP>
+<DD>
+String of input sent by the "home down" key.
+<DT><SAMP>`kI'</SAMP>
+<DD>
+String of input sent by the "insert character" or "enter
+insert mode" key.
+<DT><SAMP>`kl'</SAMP>
+<DD>
+String of input sent by typing the left-arrow key.
+<DT><SAMP>`kL'</SAMP>
+<DD>
+String of input sent by the "delete line" key.
+<DT><SAMP>`km'</SAMP>
+<DD>
+Flag: the terminal has a Meta key.
+<DT><SAMP>`kM'</SAMP>
+<DD>
+String of input sent by the "exit insert mode" key.
+<DT><SAMP>`kn'</SAMP>
+<DD>
+Numeric value, the number of numbered function keys.
+<DT><SAMP>`kN'</SAMP>
+<DD>
+String of input sent by the "next page" key.
+<DT><SAMP>`ko'</SAMP>
+<DD>
+Very obsolete string listing the terminal's named function keys.
+<DT><SAMP>`kP'</SAMP>
+<DD>
+String of input sent by the "previous page" key.
+<DT><SAMP>`kr'</SAMP>
+<DD>
+String of input sent by typing the right-arrow key.
+<DT><SAMP>`kR'</SAMP>
+<DD>
+String of input sent by the "scroll reverse" key.
+<DT><SAMP>`ks'</SAMP>
+<DD>
+String to make the function keys transmit.
+<DT><SAMP>`kS'</SAMP>
+<DD>
+String of input sent by the "clear to end of screen" key.
+<DT><SAMP>`kt'</SAMP>
+<DD>
+String of input sent by the "clear tab stop this column" key.
+<DT><SAMP>`kT'</SAMP>
+<DD>
+String of input sent by the "set tab stop in this column" key.
+<DT><SAMP>`ku'</SAMP>
+<DD>
+String of input sent by typing the up-arrow key.
+<DT><SAMP>`l0'</SAMP>
+<DD>
+String on keyboard labelling function key 0 or 10.
+<DT><SAMP>`l1 ... l9'</SAMP>
+<DD>
+Strings on keyboard labelling function keys 1 through 9.
+<DT><SAMP>`le'</SAMP>
+<DD>
+String to move the cursor left one column.
+<DT><SAMP>`LE'</SAMP>
+<DD>
+String to move cursor left <VAR>n</VAR> columns.
+<DT><SAMP>`li'</SAMP>
+<DD>
+Number: height of the screen.
+<DT><SAMP>`ll'</SAMP>
+<DD>
+String to position cursor at lower left corner.
+<DT><SAMP>`lm'</SAMP>
+<DD>
+Number: lines of display memory.
+<DT><SAMP>`LP'</SAMP>
+<DD>
+Flag: writing to last column of last line will not scroll.
+<DT><SAMP>`mb'</SAMP>
+<DD>
+String to enter blinking mode.
+<DT><SAMP>`md'</SAMP>
+<DD>
+String to enter double-bright mode.
+<DT><SAMP>`me'</SAMP>
+<DD>
+String to turn off all appearance modes
+<DT><SAMP>`mh'</SAMP>
+<DD>
+String to enter half-bright mode.
+<DT><SAMP>`mi'</SAMP>
+<DD>
+Flag: cursor motion in insert mode is safe.
+<DT><SAMP>`mk'</SAMP>
+<DD>
+String to enter invisible mode.
+<DT><SAMP>`mm'</SAMP>
+<DD>
+String to enable the functioning of the Meta key.
+<DT><SAMP>`mo'</SAMP>
+<DD>
+String to disable the functioning of the Meta key.
+<DT><SAMP>`mp'</SAMP>
+<DD>
+String to enter protected mode.
+<DT><SAMP>`mr'</SAMP>
+<DD>
+String to enter reverse-video mode.
+<DT><SAMP>`ms'</SAMP>
+<DD>
+Flag: cursor motion in standout mode is safe.
+<DT><SAMP>`nc'</SAMP>
+<DD>
+Obsolete flag: do not use ASCII carriage-return on this terminal.
+<DT><SAMP>`nd'</SAMP>
+<DD>
+String to move the cursor right one column.
+<DT><SAMP>`NF'</SAMP>
+<DD>
+Flag: do not use XON/XOFF flow control.
+<DT><SAMP>`nl'</SAMP>
+<DD>
+Obsolete alternative name for the <SAMP>`do'</SAMP> and <SAMP>`sf'</SAMP> capabilities.
+<DT><SAMP>`ns'</SAMP>
+<DD>
+Flag: the terminal does not normally scroll for sequential output.
+<DT><SAMP>`nw'</SAMP>
+<DD>
+String to move to start of next line, possibly clearing rest of old line.
+<DT><SAMP>`os'</SAMP>
+<DD>
+Flag: terminal can overstrike.
+<DT><SAMP>`pb'</SAMP>
+<DD>
+Number: the lowest baud rate at which padding is actually needed.
+<DT><SAMP>`pc'</SAMP>
+<DD>
+String containing character for padding.
+<DT><SAMP>`pf'</SAMP>
+<DD>
+String to terminate redirection of output to the printer.
+<DT><SAMP>`po'</SAMP>
+<DD>
+String to redirect further output to the printer.
+<DT><SAMP>`pO'</SAMP>
+<DD>
+String to redirect <VAR>n</VAR> characters ofoutput to the printer.
+<DT><SAMP>`ps'</SAMP>
+<DD>
+String to print the screen on the attached printer.
+<DT><SAMP>`rc'</SAMP>
+<DD>
+String to move to last saved cursor position.
+<DT><SAMP>`RI'</SAMP>
+<DD>
+String to move cursor right <VAR>n</VAR> columns.
+<DT><SAMP>`rp'</SAMP>
+<DD>
+String to output character <VAR>c</VAR> repeated <VAR>n</VAR> times.
+<DT><SAMP>`rs'</SAMP>
+<DD>
+String to reset the terminal from any strange modes.
+<DT><SAMP>`sa'</SAMP>
+<DD>
+String to turn on an arbitrary combination of appearance modes.
+<DT><SAMP>`sc'</SAMP>
+<DD>
+String to save the current cursor position.
+<DT><SAMP>`se'</SAMP>
+<DD>
+String to leave standout mode.
+<DT><SAMP>`sf'</SAMP>
+<DD>
+String to scroll the screen one line up.
+<DT><SAMP>`SF'</SAMP>
+<DD>
+String to scroll the screen <VAR>n</VAR> lines up.
+<DT><SAMP>`sg'</SAMP>
+<DD>
+Number: width of magic standout cookie.  Absent if magic cookies are
+not used.
+<DT><SAMP>`so'</SAMP>
+<DD>
+String to enter standout mode.
+<DT><SAMP>`sr'</SAMP>
+<DD>
+String to scroll the screen one line down.
+<DT><SAMP>`SR'</SAMP>
+<DD>
+String to scroll the screen <VAR>n</VAR> line down.
+<DT><SAMP>`st'</SAMP>
+<DD>
+String to set tab stop at current cursor column on all lines.
+programs.
+<DT><SAMP>`ta'</SAMP>
+<DD>
+String to move the cursor right to the next hardware tab stop column.
+<DT><SAMP>`te'</SAMP>
+<DD>
+String to return terminal to settings for sequential output.
+<DT><SAMP>`ti'</SAMP>
+<DD>
+String to initialize terminal for random cursor motion.
+<DT><SAMP>`ts'</SAMP>
+<DD>
+String to move the terminal cursor into the status line.
+<DT><SAMP>`uc'</SAMP>
+<DD>
+String to underline one character and move cursor right.
+<DT><SAMP>`ue'</SAMP>
+<DD>
+String to turn off underline mode
+<DT><SAMP>`ug'</SAMP>
+<DD>
+Number: width of underlining magic cookie.  Absent if underlining
+doesn't use magic cookies.
+<DT><SAMP>`ul'</SAMP>
+<DD>
+Flag: underline by overstriking with an underscore.
+<DT><SAMP>`up'</SAMP>
+<DD>
+String to move the cursor vertically up one line.
+<DT><SAMP>`UP'</SAMP>
+<DD>
+String to move cursor vertically up <VAR>n</VAR> lines.
+<DT><SAMP>`us'</SAMP>
+<DD>
+String to turn on underline mode
+<DT><SAMP>`vb'</SAMP>
+<DD>
+String to make the screen flash.
+<DT><SAMP>`ve'</SAMP>
+<DD>
+String to return the cursor to normal.
+<DT><SAMP>`vi'</SAMP>
+<DD>
+String to make the cursor invisible.
+<DT><SAMP>`vs'</SAMP>
+<DD>
+String to enhance the cursor.
+<DT><SAMP>`wi'</SAMP>
+<DD>
+String to set the terminal output screen window.
+<DT><SAMP>`ws'</SAMP>
+<DD>
+Number: the width of the status line.
+<DT><SAMP>`xb'</SAMP>
+<DD>
+Flag: superbee terminal.
+<DT><SAMP>`xn'</SAMP>
+<DD>
+Flag: cursor wraps in a strange way.
+<DT><SAMP>`xs'</SAMP>
+<DD>
+Flag: clearing a line is the only way to clear the appearance modes of
+positions in that line (or, only way to remove magic cookies on that
+line).
+<DT><SAMP>`xt'</SAMP>
+<DD>
+Flag: Teleray 1061; several strange characteristics.
+</DL>
+
+
+
+<H1><A NAME="SEC45" HREF="termcap.html#TOC45">Variable and Function Index</A></H1>
+
+<P>
+Jump to:
+<A HREF="#findex_b">b</A>
+-
+<A HREF="#findex_o">o</A>
+-
+<A HREF="#findex_p">p</A>
+-
+<A HREF="#findex_t">t</A>
+-
+<A HREF="#findex_u">u</A>
+<P>
+<H2><A NAME="findex_b">b</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX17">BC</A>
+</DIR>
+<H2><A NAME="findex_o">o</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX10">ospeed</A>
+</DIR>
+<H2><A NAME="findex_p">p</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX11">PC</A>
+</DIR>
+<H2><A NAME="findex_t">t</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX2">tgetent</A>
+<LI><A HREF="termcap.html#IDX4">tgetflag</A>
+<LI><A HREF="termcap.html#IDX3">tgetnum</A>
+<LI><A HREF="termcap.html#IDX5">tgetstr</A>
+<LI><A HREF="termcap.html#IDX15">tgoto</A>
+<LI><A HREF="termcap.html#IDX14">tparam</A>
+<LI><A HREF="termcap.html#IDX9">tputs</A>
+</DIR>
+<H2><A NAME="findex_u">u</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX16">UP</A>
+</DIR>
+
+</P>
+
+
+<H1><A NAME="SEC46" HREF="termcap.html#TOC46">Capability Index</A></H1>
+
+<P>
+Jump to:
+<A HREF="#kindex_a">a</A>
+-
+<A HREF="#kindex_b">b</A>
+-
+<A HREF="#kindex_c">c</A>
+-
+<A HREF="#kindex_d">d</A>
+-
+<A HREF="#kindex_e">e</A>
+-
+<A HREF="#kindex_f">f</A>
+-
+<A HREF="#kindex_g">g</A>
+-
+<A HREF="#kindex_h">h</A>
+-
+<A HREF="#kindex_i">i</A>
+-
+<A HREF="#kindex_k">k</A>
+-
+<A HREF="#kindex_l">l</A>
+-
+<A HREF="#kindex_m">m</A>
+-
+<A HREF="#kindex_n">n</A>
+-
+<A HREF="#kindex_o">o</A>
+-
+<A HREF="#kindex_p">p</A>
+-
+<A HREF="#kindex_r">r</A>
+-
+<A HREF="#kindex_s">s</A>
+-
+<A HREF="#kindex_t">t</A>
+-
+<A HREF="#kindex_u">u</A>
+-
+<A HREF="#kindex_v">v</A>
+-
+<A HREF="#kindex_w">w</A>
+-
+<A HREF="#kindex_x">x</A>
+<P>
+<H2><A NAME="kindex_a">a</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX130">ae</A>
+<LI><A HREF="termcap.html#IDX96">AL</A>
+<LI><A HREF="termcap.html#IDX94">al</A>
+<LI><A HREF="termcap.html#IDX70">am</A>
+<LI><A HREF="termcap.html#IDX129">as</A>
+</DIR>
+<H2><A NAME="kindex_b">b</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX66">bc</A>
+<LI><A HREF="termcap.html#IDX145">bl</A>
+<LI><A HREF="termcap.html#IDX67">bs</A>
+<LI><A HREF="termcap.html#IDX63">bt</A>
+<LI><A HREF="termcap.html#IDX50">bw</A>
+</DIR>
+<H2><A NAME="kindex_c">c</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX32">CC</A>
+<LI><A HREF="termcap.html#IDX89">cd</A>
+<LI><A HREF="termcap.html#IDX90">ce</A>
+<LI><A HREF="termcap.html#IDX57">ch</A>
+<LI><A HREF="termcap.html#IDX88">cl</A>
+<LI><A HREF="termcap.html#IDX41">cm</A>
+<LI><A HREF="termcap.html#IDX56">CM</A>
+<LI><A HREF="termcap.html#IDX37">co</A>
+<LI><A HREF="termcap.html#IDX45">cr</A>
+<LI><A HREF="termcap.html#IDX79">cS</A>
+<LI><A HREF="termcap.html#IDX78">cs</A>
+<LI><A HREF="termcap.html#IDX167">ct</A>
+<LI><A HREF="termcap.html#IDX58">cv</A>
+</DIR>
+<H2><A NAME="kindex_d">d</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX81">da</A>
+<LI><A HREF="termcap.html#IDX175">dB</A>
+<LI><A HREF="termcap.html#IDX82">db</A>
+<LI><A HREF="termcap.html#IDX110">DC</A>
+<LI><A HREF="termcap.html#IDX173">dC</A>
+<LI><A HREF="termcap.html#IDX109">dc</A>
+<LI><A HREF="termcap.html#IDX176">dF</A>
+<LI><A HREF="termcap.html#IDX97">DL</A>
+<LI><A HREF="termcap.html#IDX95">dl</A>
+<LI><A HREF="termcap.html#IDX111">dm</A>
+<LI><A HREF="termcap.html#IDX174">dN</A>
+<LI><A HREF="termcap.html#IDX52">DO</A>
+<LI><A HREF="termcap.html#IDX49">do</A>
+<LI><A HREF="termcap.html#IDX183">ds</A>
+<LI><A HREF="termcap.html#IDX177">dT</A>
+</DIR>
+<H2><A NAME="kindex_e">e</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX91">ec</A>
+<LI><A HREF="termcap.html#IDX112">ed</A>
+<LI><A HREF="termcap.html#IDX103">ei</A>
+<LI><A HREF="termcap.html#IDX25">eo</A>
+<LI><A HREF="termcap.html#IDX182">es</A>
+</DIR>
+<H2><A NAME="kindex_f">f</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX61">ff</A>
+<LI><A HREF="termcap.html#IDX181">fs</A>
+</DIR>
+<H2><A NAME="kindex_g">g</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX26">gn</A>
+</DIR>
+<H2><A NAME="kindex_h">h</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX28">hc</A>
+<LI><A HREF="termcap.html#IDX186">hd</A>
+<LI><A HREF="termcap.html#IDX42">ho</A>
+<LI><A HREF="termcap.html#IDX179">hs</A>
+<LI><A HREF="termcap.html#IDX185">hu</A>
+<LI><A HREF="termcap.html#IDX31">hz</A>
+</DIR>
+<H2><A NAME="kindex_i">i</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX163">i1</A>
+<LI><A HREF="termcap.html#IDX164">i3</A>
+<LI><A HREF="termcap.html#IDX106">IC</A>
+<LI><A HREF="termcap.html#IDX104">ic</A>
+<LI><A HREF="termcap.html#IDX162">if</A>
+<LI><A HREF="termcap.html#IDX102">im</A>
+<LI><A HREF="termcap.html#IDX108">in</A>
+<LI><A HREF="termcap.html#IDX105">ip</A>
+<LI><A HREF="termcap.html#IDX161">is</A>
+<LI><A HREF="termcap.html#IDX166">it</A>
+</DIR>
+<H2><A NAME="kindex_k">k</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX148">K1...K5</A>
+<LI><A HREF="termcap.html#IDX149">k1...k9</A>
+<LI><A HREF="termcap.html#IDX151">kA...kT</A>
+<LI><A HREF="termcap.html#IDX147">ka...ku</A>
+<LI><A HREF="termcap.html#IDX153">km</A>
+</DIR>
+<H2><A NAME="kindex_l">l</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX150">l0...l9</A>
+<LI><A HREF="termcap.html#IDX53">LE</A>
+<LI><A HREF="termcap.html#IDX46">le</A>
+<LI><A HREF="termcap.html#IDX39">li</A>
+<LI><A HREF="termcap.html#IDX44">ll</A>
+<LI><A HREF="termcap.html#IDX83">lm</A>
+<LI><A HREF="termcap.html#IDX72">LP</A>
+</DIR>
+<H2><A NAME="kindex_m">m</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX122">mb</A>
+<LI><A HREF="termcap.html#IDX123">md</A>
+<LI><A HREF="termcap.html#IDX128">me</A>
+<LI><A HREF="termcap.html#IDX124">mh</A>
+<LI><A HREF="termcap.html#IDX107">mi</A>
+<LI><A HREF="termcap.html#IDX125">mk</A>
+<LI><A HREF="termcap.html#IDX154">mm</A>
+<LI><A HREF="termcap.html#IDX155">mo</A>
+<LI><A HREF="termcap.html#IDX126">mp</A>
+<LI><A HREF="termcap.html#IDX127">mr</A>
+<LI><A HREF="termcap.html#IDX119">ms</A>, <A HREF="termcap.html#IDX136">ms</A>
+</DIR>
+<H2><A NAME="kindex_n">n</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX64">nc</A>
+<LI><A HREF="termcap.html#IDX47">nd</A>
+<LI><A HREF="termcap.html#IDX169">NF</A>
+<LI><A HREF="termcap.html#IDX68">nl</A>
+<LI><A HREF="termcap.html#IDX80">ns</A>
+<LI><A HREF="termcap.html#IDX51">nw</A>
+</DIR>
+<H2><A NAME="kindex_o">o</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX23">os</A>
+</DIR>
+<H2><A NAME="kindex_p">p</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX171">pb</A>
+<LI><A HREF="termcap.html#IDX172">pc</A>
+<LI><A HREF="termcap.html#IDX190">pf</A>
+<LI><A HREF="termcap.html#IDX191">pO</A>
+<LI><A HREF="termcap.html#IDX189">po</A>
+<LI><A HREF="termcap.html#IDX188">ps</A>
+</DIR>
+<H2><A NAME="kindex_r">r</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX60">rc</A>
+<LI><A HREF="termcap.html#IDX54">RI</A>
+<LI><A HREF="termcap.html#IDX29">rp</A>
+<LI><A HREF="termcap.html#IDX165">rs</A>
+</DIR>
+<H2><A NAME="kindex_s">s</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX131">sa</A>
+<LI><A HREF="termcap.html#IDX59">sc</A>
+<LI><A HREF="termcap.html#IDX117">se</A>
+<LI><A HREF="termcap.html#IDX74">sf</A>
+<LI><A HREF="termcap.html#IDX76">SF</A>
+<LI><A HREF="termcap.html#IDX118">sg</A>
+<LI><A HREF="termcap.html#IDX116">so</A>
+<LI><A HREF="termcap.html#IDX77">SR</A>
+<LI><A HREF="termcap.html#IDX75">sr</A>
+<LI><A HREF="termcap.html#IDX168">st</A>
+</DIR>
+<H2><A NAME="kindex_t">t</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX62">ta</A>
+<LI><A HREF="termcap.html#IDX160">te</A>
+<LI><A HREF="termcap.html#IDX159">ti</A>
+<LI><A HREF="termcap.html#IDX180">ts</A>
+</DIR>
+<H2><A NAME="kindex_u">u</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX137">uc</A>
+<LI><A HREF="termcap.html#IDX134">ue</A>
+<LI><A HREF="termcap.html#IDX135">ug</A>
+<LI><A HREF="termcap.html#IDX138">ul</A>
+<LI><A HREF="termcap.html#IDX55">UP</A>
+<LI><A HREF="termcap.html#IDX48">up</A>
+<LI><A HREF="termcap.html#IDX133">us</A>
+</DIR>
+<H2><A NAME="kindex_v">v</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX146">vb</A>
+<LI><A HREF="termcap.html#IDX142">ve</A>
+<LI><A HREF="termcap.html#IDX141">vi</A>
+<LI><A HREF="termcap.html#IDX140">vs</A>
+</DIR>
+<H2><A NAME="kindex_w">w</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX85">wi</A>
+<LI><A HREF="termcap.html#IDX184">ws</A>
+</DIR>
+<H2><A NAME="kindex_x">x</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX34">xb</A>
+<LI><A HREF="termcap.html#IDX71">xn</A>
+<LI><A HREF="termcap.html#IDX120">xs</A>
+<LI><A HREF="termcap.html#IDX65">xt</A>, <A HREF="termcap.html#IDX121">xt</A>
+</DIR>
+
+</P>
+
+
+<H1><A NAME="SEC47" HREF="termcap.html#TOC47">Concept Index</A></H1>
+
+<P>
+Jump to:
+<A HREF="#cindex_%">%</A>
+-
+<A HREF="#cindex_a">a</A>
+-
+<A HREF="#cindex_b">b</A>
+-
+<A HREF="#cindex_c">c</A>
+-
+<A HREF="#cindex_d">d</A>
+-
+<A HREF="#cindex_e">e</A>
+-
+<A HREF="#cindex_g">g</A>
+-
+<A HREF="#cindex_h">h</A>
+-
+<A HREF="#cindex_i">i</A>
+-
+<A HREF="#cindex_l">l</A>
+-
+<A HREF="#cindex_m">m</A>
+-
+<A HREF="#cindex_n">n</A>
+-
+<A HREF="#cindex_o">o</A>
+-
+<A HREF="#cindex_p">p</A>
+-
+<A HREF="#cindex_r">r</A>
+-
+<A HREF="#cindex_s">s</A>
+-
+<A HREF="#cindex_t">t</A>
+-
+<A HREF="#cindex_u">u</A>
+-
+<A HREF="#cindex_v">v</A>
+-
+<A HREF="#cindex_w">w</A>
+<P>
+<H2><A NAME="cindex_%">%</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX13">%</A>
+</DIR>
+<H2><A NAME="cindex_a">a</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX113">appearance modes</A>
+</DIR>
+<H2><A NAME="cindex_b">b</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX143">bell</A>
+</DIR>
+<H2><A NAME="cindex_c">c</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX87">clearing the screen</A>
+<LI><A HREF="termcap.html#IDX33">command character</A>
+<LI><A HREF="termcap.html#IDX40">cursor motion</A>
+</DIR>
+<H2><A NAME="cindex_d">d</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX99">delete character</A>
+<LI><A HREF="termcap.html#IDX93">delete line</A>
+<LI><A HREF="termcap.html#IDX101">delete mode</A>
+<LI><A HREF="termcap.html#IDX18">description format</A>
+</DIR>
+<H2><A NAME="cindex_e">e</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX86">erasing</A>
+</DIR>
+<H2><A NAME="cindex_g">g</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX27">generic terminal type</A>
+</DIR>
+<H2><A NAME="cindex_h">h</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX43">home position</A>
+</DIR>
+<H2><A NAME="cindex_i">i</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX22">inheritance</A>
+<LI><A HREF="termcap.html#IDX157">initialization</A>
+<LI><A HREF="termcap.html#IDX98">insert character</A>
+<LI><A HREF="termcap.html#IDX92">insert line</A>
+<LI><A HREF="termcap.html#IDX100">insert mode</A>
+</DIR>
+<H2><A NAME="cindex_l">l</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX8">line speed</A>
+</DIR>
+<H2><A NAME="cindex_m">m</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX115">magic cookie</A>
+<LI><A HREF="termcap.html#IDX152">meta key</A>
+</DIR>
+<H2><A NAME="cindex_n">n</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX19">names of terminal types</A>
+</DIR>
+<H2><A NAME="cindex_o">o</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX24">overstrike</A>
+</DIR>
+<H2><A NAME="cindex_p">p</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX7">padding</A>, <A HREF="termcap.html#IDX170">padding</A>
+<LI><A HREF="termcap.html#IDX12">parameters</A>
+<LI><A HREF="termcap.html#IDX187">printer</A>
+</DIR>
+<H2><A NAME="cindex_r">r</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX30">repeat output</A>
+<LI><A HREF="termcap.html#IDX156">reset</A>
+</DIR>
+<H2><A NAME="cindex_s">s</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX21">screen size</A>, <A HREF="termcap.html#IDX36">screen size</A>, <A HREF="termcap.html#IDX38">screen size</A>
+<LI><A HREF="termcap.html#IDX73">scrolling</A>
+<LI><A HREF="termcap.html#IDX114">standout</A>
+<LI><A HREF="termcap.html#IDX178">status line</A>
+<LI><A HREF="termcap.html#IDX35">Superbee</A>
+</DIR>
+<H2><A NAME="cindex_t">t</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX158">tab stops</A>
+<LI><A HREF="termcap.html#IDX1">termcap</A>
+<LI><A HREF="termcap.html#IDX6">terminal flags (kernel)</A>
+</DIR>
+<H2><A NAME="cindex_u">u</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX132">underlining</A>
+</DIR>
+<H2><A NAME="cindex_v">v</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX139">visibility</A>
+<LI><A HREF="termcap.html#IDX144">visible bell</A>
+</DIR>
+<H2><A NAME="cindex_w">w</A></H2>
+<DIR>
+<LI><A HREF="termcap.html#IDX84">window</A>
+<LI><A HREF="termcap.html#IDX20">wrapping</A>, <A HREF="termcap.html#IDX69">wrapping</A>
+</DIR>
+
+</P>
+<P><HR><P>
+This document was generated on 7 November 1998 using the
+<A HREF="http://wwwinfo.cern.ch/dis/texi2html/">texi2html</A>
+translator version 1.52.</P>
+</BODY>
+</HTML>

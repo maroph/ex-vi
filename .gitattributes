@@ -4,6 +4,7 @@
 #
 build.bash text eol=lf
 #
+*.1  text
 *.md  text
 *.yml text
 #
@@ -11,4 +12,3 @@ build.bash text eol=lf
 *.gz  binary
 *.ico binary
 *.png binary
-*.tar binary

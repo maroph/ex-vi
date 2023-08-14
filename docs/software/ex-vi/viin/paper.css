@@ -1,0 +1,16 @@
+/* Sccsid @(#)paper.css	1.3 (gritter) 3/3/02 */
+BODY,TD,P { font-family: Verdana,Arial,Helvetica,sans-serif;
+	font-size: 10pt; line-height: 14pt; }
+TH { font-weight: bold; font-size: 10pt; line-height: 10pt;
+	font-family: Verdana,Arial,Helvetica,sans-serif; }
+TD { font-size: 10pt; line-height: 10pt;
+	font-family: Verdana,Arial,Helvetica,sans-serif; }
+PRE { font-family: monospace; }
+BODY,TD,P { text-align: justify; }
+BODY { max-width: 480pt; }
+H1 { color: #666666; line-height: 32pt; font-size: 24pt; font-weight: normal;
+	text-align: center; }
+H2 { color: #666666; line-height: 24pt; font-size: 16pt; font-weight: normal; }
+H3 { color: #666666; line-height: 16pt; font-size: 12pt; font-weight: normal; }
+HR { width: 100%; height: 1pt; border-width: 0px; background-color: #AAAAAA; }
+ADDRESS { font-style:normal; }

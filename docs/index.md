@@ -1,12 +1,8 @@
-# ex-vi
+# ex-vi: My Vi GitHub Repository
+This repository is dedicated to Bill Joy's ex and vi implementation.
 
-![Learning the vi Editor - 4th Edition](./assets/Learning_the_vi_Editor_4th.png)
+I started using Vi on a SINIX 
+([German](https://de.wikipedia.org/wiki/Sinix)/[English](https://en.wikipedia.org/wiki/Sinix)) 
+system in 1986 when I worked for the Siemens Research & Development Department in Munich.
 
-```
-Linda Lamb
-Learning the vi Editor - 4th Edition
-June 1988
-O'Reilly & Associates, Inc.
-ISBN 0-937175-17-X
-```
-
+Up to now Vi - and now Vim - is my preferred choice for file editing in Linux.
