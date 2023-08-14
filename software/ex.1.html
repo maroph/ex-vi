@@ -1,0 +1,1657 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Dedicated to Bill Joy's vi Implementation">
+      
+      
+        <meta name="author" content="Manfred Rosenboom (maroph)">
+      
+      
+        <link rel="canonical" href="https://maroph.github.io/ex-vi/software/ex.1.html">
+      
+      
+      
+      <link rel="icon" href="../assets/Vi_logo.ico">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.1.21">
+    
+    
+      
+        <title>NAME - My vi Site</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.eebd395e.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ecc896b0.min.css">
+      
+      
+
+    
+    
+    
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#name" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="My vi Site" class="md-header__button md-logo" aria-label="My vi Site" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My vi Site
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              NAME
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/maroph/ex-vi" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    maroph/ex-vi
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../index.html" class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../documentation.html" class="md-tabs__link">
+      Documentation
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="heirloom-ex-vi.html" class="md-tabs__link">
+        Software
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../info/about.html" class="md-tabs__link">
+        Info
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="My vi Site" class="md-nav__button md-logo" aria-label="My vi Site" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    My vi Site
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/maroph/ex-vi" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    maroph/ex-vi
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../documentation.html" class="md-nav__link">
+        Documentation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          Software
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Software
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="heirloom-ex-vi.html" class="md-nav__link">
+        heirloom-ex-vi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ex-vi.html" class="md-nav__link">
+        ex-vi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ex-1.1.html" class="md-nav__link">
+        Ex 1.1
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="termcap.html" class="md-nav__link">
+        Termcap
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          Info
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Info
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../info/about.html" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../info/gdpr.html" class="md-nav__link">
+        GDPR/DSGVO
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../info/license.html" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../info/resources.html" class="md-nav__link">
+        Resources
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/maroph/ex-vi/edit/main/docs/software/ex.1.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/maroph/ex-vi/raw/main/docs/software/ex.1.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5Z"/></svg>
+    </a>
+  
+
+
+<h1 id="name">NAME</h1>
+<p>ex, edit - text editor</p>
+<h1 id="synopsis">SYNOPSIS</h1>
+<p><strong>ex</strong> [<strong>-c</strong><em> command</em>|<strong>+</strong><em>command</em>] [<strong>-r</strong> [<em>filename</em>]]
+[<strong>-s</strong>|<strong>-</strong>] [<strong>-t</strong><em> tagstring</em>] [<strong>-w</strong><em> size</em>]
+[<strong>-lLRvV</strong>] [<em>file</em> ...]</p>
+<p><strong>edit</strong> [<strong>-c</strong><em> command</em>|<strong>+</strong><em>command</em>] [<strong>-r</strong> [<em>filename</em>]]
+[<strong>-s</strong>|<strong>-</strong>] [<strong>-t</strong><em> tagstring</em>] [<strong>-w</strong><em> size</em>]
+[<strong>-lLRvV</strong>] [<em>file</em> ...]\</p>
+<h1 id="description">DESCRIPTION</h1>
+<p><em>Ex</em> is the root of a family of editors: <em>edit,</em> <em>ex</em> and <em>vi.</em> <em>Ex</em> is
+a superset of <em>ed,</em> with the most notable extension being a display
+editing facility. Display based editing on</p>
+<p>terminals is the focus of <em>vi</em>.</p>
+<p>For those who have not used <em>ed,</em> or for casual users, the editor <em>edit</em>
+may be convenient. It avoids some of the complexities of <em>ex</em> used
+mostly by systems programmers and persons very familiar with <em>ed.</em></p>
+<p>The following options are accepted:</p>
+<p><strong>-c</strong><em> command</em> or <strong>+</strong><em>command</em></p>
+<p>:   Execute <em>command</em> when editing begins.</p>
+<p><strong>-l</strong></p>
+<p>:   Start in a special mode useful for the <em>Lisp</em> programming language.</p>
+<p><strong>-r</strong><em> [filename]</em> or <strong>-L</strong></p>
+<p>:   When no argument is supplied with this option, all files to be
+    recovered are listed and the editor exits immediately. If a
+    <em>filename</em> is specified, the corresponding temporary file is opened
+    in recovery mode.</p>
+<p><strong>-R</strong></p>
+<p>:   Files are opened read-only when this option is given.</p>
+<p><strong>-s</strong> or <strong>-</strong></p>
+<p>:   Script mode; all feedback for interactive editing is disabled.</p>
+<p>and <em>.exrc</em> files are not processed.</p>
+<p><strong>-t</strong><em> tagstring</em></p>
+<p>:   Read the <em>tags</em> file, then choose the file and position specified by
+    <em>tagstring</em> for editing.</p>
+<p><strong>-v</strong></p>
+<p>:   Start in visual mode even if called as <em>ex</em>.</p>
+<p><strong>-V</strong></p>
+<p>:   Echo command input to standard error, unless it originates from a
+    terminal.</p>
+<p><strong>-w</strong><em> size</em></p>
+<p>:   Specify the size of the editing window for visual mode.</p>
+<h2 id="file-manipulation">File manipulation</h2>
+<p><em>Ex</em> is normally editing the contents of a single file, whose name is
+recorded in the <em>current</em> file name. <em>Ex</em> performs all editing actions
+in a buffer (actually a temporary file) into which the text of the file
+is initially read. Changes made to the buffer have no effect on the file
+being edited unless and until the buffer contents are written out to the
+file with a <em>write</em> command. After the buffer contents are written, the
+previous contents of the written file are no longer accessible. When a
+file is edited, its name becomes the current file name, and its contents
+are read into the buffer.</p>
+<p>The current file is almost always considered to be <em>edited.</em> This means
+that the contents of the buffer are logically connected with the current
+file name, so that writing the current buffer contents onto that file,
+even if it exists, is a reasonable action. If the current file is not
+<em>edited</em> then <em>ex</em> will not normally write on it if it already exists.</p>
+<p>For saving blocks of text while editing, and especially when editing
+more than one file, <em>ex</em> has a group of named buffers. These are similar
+to the normal buffer, except that only a limited number of operations
+are available on them. The buffers have names <em>a</em> through <em>z.</em></p>
+<h2 id="exceptional-conditions">Exceptional Conditions</h2>
+<p>When errors occur <em>ex</em> (optionally) rings the terminal bell and, in any
+case, prints an error diagnostic. If the primary input is from a file,
+editor processing will terminate. If an interrupt signal is received,
+<em>ex</em> prints "Interrupt" and returns to its command level. If the primary
+input is a file, then <em>ex</em> will exit when this occurs.</p>
+<p>If a hangup signal is received and the buffer has been modified since it
+was last written out, or if the system crashes, either the editor (in
+the first case) or the system (after it reboots in the second) will
+attempt to preserve the buffer. The next time the user logs in he should
+be able to recover the work he was doing, losing at most a few lines of
+changes from the last point before the hangup or editor crash. To
+recover a file one can use the <strong>-r</strong> option. If one was editing the
+file <em>resume,</em> then he should change to the directory where he were when
+the crash occurred, giving the command</p>
+<blockquote>
+<p><strong>ex -r</strong><em> resume</em></p>
+</blockquote>
+<p>After checking that the retrieved file is indeed ok, he can <em>write</em> it
+over the previous contents of that file.</p>
+<p>The user will normally get mail from the system telling him when a file
+has been saved after a crash. The command</p>
+<blockquote>
+<p><strong>ex</strong> -<strong>r</strong></p>
+</blockquote>
+<p>will print a list of the files which have been saved for the user.</p>
+<h2 id="editing-modes">Editing modes</h2>
+<p><em>Ex</em> has five distinct modes. The primary mode is <em>command</em> mode.
+Commands are entered in command mode when a `:\' prompt is present, and
+are executed each time a complete line is sent. In <em>text input</em> mode
+<em>ex</em> gathers input lines and places them in the file. The <em>append,</em>
+<em>insert,</em> and <em>change</em> commands use text input mode. No prompt is
+printed when in text input mode. This mode is left by typing a `.\'
+alone at the beginning of a line, and <em>command</em> mode resumes.</p>
+<p>The last three modes are <em>open</em> and <em>visual</em> modes, entered by the
+commands of the same name, and, within open and visual modes <em>text
+insertion</em> mode. <em>Open</em> and <em>visual</em> modes allow local editing
+operations to be performed on the text in the file. The <em>open</em> command
+displays one line at a time on any terminal while <em>visual</em> works on</p>
+<p>terminals with random positioning cursors, using the screen as a
+(single) window for file editing changes. These modes are described
+(only) in <em>An Introduction to Display Editing with Vi.</em></p>
+<h2 id="command-structure">Command structure</h2>
+<p>Most command names are English words, and initial prefixes of the words
+are acceptable abbreviations. The ambiguity of abbreviations is resolved
+in favor of the more commonly used commands.</p>
+<p>Most commands accept prefix addresses specifying the lines in the file
+upon which they are to have effect. The forms of these addresses will be
+discussed below. A number of commands also may take a trailing <em>count</em>
+specifying the number of lines to be involved in the command. Thus the
+command "10p" will print the tenth line in the buffer while "delete 5"
+will delete five lines from the buffer, starting with the current line.</p>
+<p>Some commands take other information or parameters, this information
+always being given after the command name.</p>
+<p>A number of commands have two distinct variants. The variant form of the
+command is invoked by placing an `!\' immediately after the command
+name. Some of the default variants may be controlled by options; in this
+case, the `!\' serves to toggle the default.</p>
+<p>The characters `#\', `p\' and `l\' may be placed after many commands
+(A `p\' or `l\' must be preceded by a blank or tab except in the
+single special case `dp\'). In this case, the command abbreviated by
+these characters is executed after the command completes. Since <em>ex</em>
+normally prints the new current line after each change, `p\' is rarely
+necessary. Any number of `+\' or `-\' characters may also be given
+with these flags. If they appear, the specified offset is applied to the
+current line value before the printing command is executed.</p>
+<p>It is possible to give editor commands which are ignored. This is useful
+when making complex editor scripts for which comments are desired. The
+comment character is the double quote: \". Any command line beginning
+with \" is ignored. Comments beginning with \" may also be placed at the
+ends of commands, except in cases where they could be confused as part
+of text (shell escapes and the substitute and map commands).</p>
+<p>More than one command may be placed on a line by separating each pair of
+commands by a `|\' character. However the <em>global</em> commands, comments,
+and the shell escape `!\' must be the last command on a line, as they
+are not terminated by a `|\'.</p>
+<h2 id="command-addressing">Command addressing</h2>
+<p>.</p>
+<p>:   The current line. Most commands leave the current line as the last
+    line which they affect. The default address for most commands is the
+    current line, thus `<strong>.</strong>\' is rarely used alone as an address.</p>
+<p>n.  The <em>n</em>th line in the editor\'s buffer, lines being numbered
+    sequentially from 1.</p>
+<p>\$</p>
+<p>:   The last line in the buffer.</p>
+<p>\%</p>
+<p>:   An abbreviation for "1,\$", the entire buffer.</p>
+<p>+n -n</p>
+<p>:   An offset relative to the current buffer line. The forms `.+3\'
+    `+3\' and `+++\' are all equivalent; if the current line is line
+    100 they all address line 103.</p>
+<p>/pat/ ?pat?</p>
+<p>:   Scan forward and backward respectively for a line containing <em>pat</em>,
+    a regular expression (as defined below). The scans normally wrap
+    around the end of the buffer. If all that is desired is to print the
+    next line containing <em>pat</em>, then the trailing <strong>/</strong> or <strong>?</strong> may be
+    omitted. If <em>pat</em> is omitted or explicitly empty, then the last
+    regular expression specified is located. The forms <strong>\/</strong> and
+    <strong>\?</strong> scan using the last regular expression used in a scan; after
+    a substitute <strong>//</strong> and <strong>??</strong> would scan using the substitute\'s
+    regular expression.</p>
+<p>´´ ´x</p>
+<p>:   Before each non-relative motion of the current line `<strong>.</strong>\', the
+    previous current line is marked with a tag, subsequently referred to
+    as `´´\'. This makes it easy to refer or return to this previous
+    context. Marks may also be established by the <em>mark</em> command, using
+    single lower case letters <em>x</em> and the marked lines referred to as
+    `´<em>x</em>\'.</p>
+<p>Addresses to commands consist of a series of addressing primitives,
+separated by `,\' or `;\'. Such address lists are evaluated
+left-to-right. When addresses are separated by `;\' the current line
+`<strong>.</strong>\' is set to the value of the previous addressing expression
+before the next address is interpreted. If more addresses are given than
+the command requires, then all but the last one or two are ignored. If
+the command takes two addresses, the first addressed line must precede
+the second in the buffer.</p>
+<p>Null address specifications are permitted in a list of addresses, the
+default in this case is the current line `.\'; thus `,100\' is
+equivalent to `<strong>.</strong>,100\'. It is an error to give a prefix address to
+a command which expects none.</p>
+<h2 id="command-descriptions">Command descriptions</h2>
+<p>The following form is a prototype for all <em>ex</em> commands:</p>
+<blockquote>
+<p><em>address</em> <strong>command</strong> <em>! parameters count flags</em></p>
+</blockquote>
+<p>All parts are optional; the degenerate case is the empty command which
+prints the next line in the file. For sanity with use from within
+<em>visual</em> mode, <em>ex</em> ignores a ":" preceding any command.</p>
+<p>In the following command descriptions, the default addresses are shown
+in parentheses, which are <em>not,</em> however, part of the command.</p>
+<p><strong>abbreviate</strong> <em>word rhs</em> abbr: <strong>ab</strong></p>
+<p>:   Add the named abbreviation to the current list. When in input mode
+    in visual, if <em>word</em> is typed as a complete word, it will be changed
+    to <em>rhs .</em></p>
+<p>( <strong>.</strong> ) <strong>append</strong> abbr: <strong>a</strong>\
+<em>text</em>\
+<strong>.</strong></p>
+<blockquote>
+<p>Reads the input text and places it after the specified line. After the
+command, `<strong>.</strong>\' addresses the last line input or the specified line
+if no lines were input. If address `0\' is given, text is placed at
+the beginning of the buffer.</p>
+</blockquote>
+<p><strong>a!</strong>\
+<em>text</em>\
+<strong>.</strong></p>
+<blockquote>
+<p>The variant flag to <em>append</em> toggles the setting for the <em>autoindent</em>
+option during the input of <em>text.</em></p>
+</blockquote>
+<p><strong>args</strong></p>
+<p>:   The members of the argument list are printed, with the current
+    argument delimited by `[\' and `]\'.</p>
+<p><strong>cd</strong> <em>directory</em></p>
+<p>:   The <em>cd</em> command is a synonym for <em>chdir.</em></p>
+<p>( <strong>.</strong> , <strong>.</strong> ) <strong>change</strong> <em>count</em> abbr: <strong>c</strong>\
+<em>text</em>\
+<strong>.</strong></p>
+<blockquote>
+<p>Replaces the specified lines with the input <em>text</em>. The current line
+becomes the last line input; if no lines were input it is left as for
+a <em>delete</em>.</p>
+</blockquote>
+<p><strong>c!</strong>\
+<em>text</em>\
+<strong>.</strong></p>
+<blockquote>
+<p>The variant toggles <em>autoindent</em> during the <em>change.</em></p>
+</blockquote>
+<p><strong>chdir</strong> <em>directory</em></p>
+<p>:   The specified <em>directory</em> becomes the current directory. If no
+    directory is specified, the current value of the <em>home</em> option is
+    used as the target directory. After a <em>chdir</em> the current file is
+    not considered to have been edited so that write restrictions on
+    pre-existing files apply.</p>
+<p>( <strong>.</strong> , <strong>.</strong> ) <strong>copy</strong> <em>addr</em> <em>flags</em> abbr: <strong>co</strong></p>
+<p>:   A <em>copy</em> of the specified lines is placed after <em>addr,</em> which may be
+    `0\'. The current line `<strong>.</strong>\' addresses the last line of the
+    copy. The command <em>t</em> is a synonym for <em>copy.</em></p>
+<p>( <strong>.</strong> , <strong>.</strong> ) <strong>delete</strong> <em>buffer</em> <em>count</em> <em>flags</em> abbr: <strong>d</strong></p>
+<p>:   Removes the specified lines from the buffer. The line after the last
+    line deleted becomes the current line; if the lines deleted were
+    originally at the end, the new last line becomes the current line.
+    If a named <em>buffer</em> is specified by giving a letter, then the
+    specified lines are saved in that buffer, or appended to it if an
+    upper case letter is used.</p>
+<p><strong>edit</strong> <em>file</em> abbr: <strong>e</strong>\
+<strong>ex</strong> <em>file</em></p>
+<blockquote>
+<p>Used to begin an editing session on a new file. The editor first
+checks to see if the buffer has been modified since the last <em>write</em>
+command was issued. If it has been, a warning is issued and the
+command is aborted. The command otherwise deletes the entire contents
+of the editor buffer, makes the named file the current file and prints
+the new filename. After insuring that this file is sensible (i.e.,
+that it is not a binary file such as a directory, a block or character
+special file other than <em>/dev/tty,</em> a terminal, or a binary or
+executable file), the editor reads the file into its buffer.</p>
+<p>If the read of the file completes without error, the number of lines
+and characters read is typed. Any null characters in the file are
+discarded. If none of these errors occurred, the file is considered
+<em>edited.</em> If the last line of the input file is missing the trailing
+newline character, it will be supplied and a complaint will be issued.
+This command leaves the current line `<strong>.</strong>\' at the last line read.
+If executed from within <em>open</em> or <em>visual,</em> the current line is
+initially the first line of the file.</p>
+</blockquote>
+<p><strong>e!</strong> <em>file</em></p>
+<p>:   The variant form suppresses the complaint about modifications having
+    been made and not written from the editor buffer, thus discarding
+    all changes which have been made before editing the new file.</p>
+<p><strong>e</strong> <strong>+</strong><em>n</em> <em>file</em></p>
+<p>:   Causes the editor to begin at line <em>n</em> rather than at the last line;
+    <em>n</em> may also be an editor command containing no spaces, e.g.:
+    "+/pat".</p>
+<p><strong>file</strong> abbr: <strong>f</strong></p>
+<p>:   Prints the current file name, whether it has been `[Modified]\'
+    since the last <em>write</em> command, whether it is <em>read only ,</em> the
+    current line, the number of lines in the buffer, and the percentage
+    of the way through the buffer of the current line. In the rare case
+    that the current file is `[Not edited]\' this is noted also; in
+    this case one has to use the form <strong>w!</strong> to write to the file, since
+    the editor is not sure that a <strong>write</strong> will not destroy a file
+    unrelated to the current contents of the buffer.</p>
+<p><strong>file</strong> <em>file</em></p>
+<p>:   The current file name is changed to <em>file</em> which is considered
+    `[Not edited]\'.</p>
+<p>( 1 , \$ ) <strong>global</strong> /<em>pat </em>/ <em>cmds</em> abbr: <strong>g</strong></p>
+<p>:   First marks each line among those specified which matches the given
+    regular expression. Then the given command list is executed with
+    `<strong>.</strong>\' initially set to each marked line.</p>
+<div class="highlight"><pre><span></span><code>The command list consists of the remaining commands on the current
+input line and may continue to multiple lines by ending all but the
+last such line with a \`\\\&#39;. If *cmds* (and possibly the trailing
+**/** delimiter) is omitted, each line matching *pat* is printed.
+*Append,* *insert,* and *change* commands and associated input are
+permitted; the \`**.**\&#39; terminating input may be omitted if it
+would be on the last line of the command list. *Open* and *visual*
+commands are permitted in the command list and take input from the
+terminal.
+
+The *global* command itself may not appear in *cmds.* The *undo*
+command is also not permitted there, as *undo* instead can be used
+to reverse the entire *global* command. The options *autoprint* and
+*autoindent* are inhibited during a *global,* (and possibly the
+trailing **/** delimiter) and the value of the *report* option is
+temporarily infinite, in deference to a *report* for the entire
+global. Finally, the context mark \`\&#39;\&#39;\&#39; is set to the value of
+\`.\&#39; before the global command begins and is not changed during a
+global command, except perhaps by an *open* or *visual* within the
+*global.*
+</code></pre></div>
+<p><strong>g!</strong> <strong>/</strong><em>pat</em><strong>/</strong> <em>cmds</em> abbr: <strong>v</strong></p>
+<p>:   The variant form of <em>global</em> runs <em>cmds</em> at each line not matching
+    <em>pat</em>.</p>
+<p>( <strong>.</strong> ) <strong>insert</strong> abbr: <strong>i</strong>\
+<em>text</em>\
+<strong>.</strong></p>
+<blockquote>
+<p>Places the given text before the specified line. The current line is
+left at the last line input; if there were none input it is left at
+the line before the addressed line. This command differs from <em>append</em>
+only in the placement of text.</p>
+</blockquote>
+<p><strong>i!</strong>\
+<em>text</em>\
+<strong>.</strong></p>
+<blockquote>
+<p>The variant toggles <em>autoindent</em> during the <em>insert.</em></p>
+</blockquote>
+<p>( <strong>.</strong> , <strong>.</strong>+1 ) <strong>join</strong> <em>count</em> <em>flags</em> abbr: <strong>j</strong></p>
+<p>:   Places the text from a specified range of lines together on one
+    line. White space is adjusted at each junction to provide at least
+    one blank character, two if there was a `<strong>.</strong>\' at the end of the
+    line, or none if the first following character is a `)\'. If there
+    is already white space at the end of the line, then the white space
+    at the start of the next line will be discarded.</p>
+<p><strong>j!</strong></p>
+<p>:   The variant causes a simpler <em>join</em> with no white space processing;
+    the characters in the lines are simply concatenated.</p>
+<p>( <strong>.</strong> ) <strong>k</strong> <em>x</em></p>
+<p>:   The <em>k</em> command is a synonym for <em>mark.</em> It does not require a blank
+    or tab before the following letter.</p>
+<p>( <strong>.</strong> , <strong>.</strong> ) <strong>list</strong> <em>count</em> <em>flags</em></p>
+<p>:   Prints the specified lines in a more unambiguous way: tabs are
+    printed as `\^I\' and the end of each line is marked with a
+    trailing `\$\'. The current line is left at the last line printed.</p>
+<p><strong>map</strong>[<strong>!</strong>] <em>lhs</em> <em>rhs</em></p>
+<p>:   The <em>map</em> command is used to define macros for use in <em>visual</em>
+    command mode. <em>Lhs</em> should be a single character, or the sequence
+    "#n", for n a digit, referring to function key <em>n</em>. When this
+    character or function key is typed in <em>visual</em> mode, it will be as
+    though the corresponding <em>rhs</em> had been typed. On terminals without
+    function keys, the user can type "#n". If the `<strong>!</strong>\' character
+    follows the command name, the mapping is interpreted in input mode.
+    See section 6.9 of the "Introduction to Display Editing with Vi" for
+    more details.</p>
+<p>( <strong>.</strong> ) <strong>mark</strong> <em>x</em></p>
+<p>:   Gives the specified line mark <em>x,</em> a single lower case letter. The
+    <em>x</em> must be preceded by a blank or a tab. The addressing form
+    `\'x\' then addresses this line. The current line is not affected
+    by this command.</p>
+<p>( <strong>.</strong> , <strong>.</strong> ) <strong>move</strong> <em>addr</em> abbr: <strong>m</strong></p>
+<p>:   The <em>move</em> command repositions the specified lines to be after <em>addr
+    .</em> The first of the moved lines becomes the current line.</p>
+<p><strong>next</strong> abbr: <strong>n</strong></p>
+<p>:   The next file from the command line argument list is edited.</p>
+<p><strong>n!</strong></p>
+<p>:   The variant suppresses warnings about the modifications to the
+    buffer not having been written out, discarding (irretrievably) any
+    changes which may have been made.</p>
+<p><strong>n</strong> <em>filelist</em>\
+<strong>n</strong> <strong>+</strong><em>command</em> <em>filelist</em></p>
+<blockquote>
+<p>The specified <em>filelist</em> is expanded and the resulting list replaces
+the current argument list; the first file in the new list is then
+edited. If <em>command</em> is given (it must contain no spaces), then it is
+executed after editing the first such file.</p>
+</blockquote>
+<p>( <strong>.</strong> , <strong>.</strong> ) <strong>number</strong> <em>count</em> <em>flags</em> abbr: <strong>#</strong> or <strong>nu</strong></p>
+<p>:   Prints each specified line preceded by its buffer line number. The
+    current line is left at the last line printed.</p>
+<p>( <strong>.</strong> ) <strong>open</strong> <em>flags</em> abbr: <strong>o</strong>\
+( <strong>.</strong> ) <strong>open</strong> /<em>pat </em>/ <em>flags</em></p>
+<blockquote>
+<p>Enters intraline editing <em>open</em> mode at each addressed line. If <em>pat</em>
+is given, then the cursor will be placed initially at the beginning of
+the string matched by the pattern. To exit this mode use Q. See <em>An
+Introduction to Display Editing with Vi</em> for more details.</p>
+</blockquote>
+<p><strong>preserve</strong></p>
+<p>:   The current editor buffer is saved as though the system had just
+    crashed. This command is for use only in emergencies when a <em>write</em>
+    command has resulted in an error.</p>
+<p>( <strong>.</strong> , <strong>.</strong> ) <strong>print</strong> <em>count</em> abbr: <strong>p</strong> or <strong>P</strong></p>
+<p>:   Prints the specified lines with non-printing characters printed as
+    control characters `\^<em>x</em> \'; delete (octal 177) is represented as
+    `\^?\'. The current line is left at the last line printed.</p>
+<p>( <strong>.</strong> ) <strong>put</strong> <em>buffer</em> abbr: <strong>pu</strong></p>
+<p>:   Puts back previously <em>deleted</em> or <em>yanked</em> lines. Normally used with
+    <em>delete</em> to effect movement of lines, or with <em>yank</em> to effect
+    duplication of lines. If no <em>buffer</em> is specified, then the last
+    <em>deleted</em> or <em>yanked</em> text is restored. But no modifying commands
+    may intervene between the <em>delete</em> or <em>yank</em> and the <em>put,</em> nor may
+    lines be moved between files without using a named buffer. By using
+    a named buffer, text may be restored that was saved there at any
+    previous time.</p>
+<p><strong>quit</strong> abbr: <strong>q</strong></p>
+<p>:   Causes <em>ex</em> to terminate. No automatic write of the editor buffer to
+    a file is performed. However, <em>ex</em> issues a warning message if the
+    file has changed since the last <em>write</em> command was issued, and does
+    not <em>quit.</em> <em>Ex</em> will also issue a diagnostic if there are more
+    files in the argument list.</p>
+<p>Normally, the user will wish to save his changes, and he should give a
+<em>write</em> command; if he wishes to discard them, he should the <strong>q!</strong>
+command variant.</p>
+<p><strong>q!</strong></p>
+<p>:   Quits from the editor, discarding changes to the buffer without
+    complaint.</p>
+<p>( <strong>.</strong> ) <strong>read</strong> <em>file</em> abbr: <strong>r</strong></p>
+<p>:   Places a copy of the text of the given file in the editing buffer
+    after the specified line. If no <em>file</em> is given the current file
+    name is used. The current file name is not changed unless there is
+    none in which case <em>file</em> becomes the current name. The sensibility
+    restrictions for the <em>edit</em> command apply here also. If the file
+    buffer is empty and there is no current name then <em>ex</em> treats this
+    as an <em>edit</em> command.</p>
+<div class="highlight"><pre><span></span><code>Address \`0\&#39; is legal for this command and causes the file to be
+read at the beginning of the buffer. Statistics are given as for the
+*edit* command when the *read* successfully terminates. After a
+*read* the current line is the last line read. Within *open* and
+*visual* the current line is set to the first line read rather than
+the last.
+</code></pre></div>
+<p>( <strong>.</strong> ) <strong>read</strong> <strong>!</strong><em>command</em></p>
+<p>:   Reads the output of the command <em>command</em> into the buffer after the
+    specified line. This is not a variant form of the command, rather a
+    read specifying a <em>command</em> rather than a <em>filename;</em> a blank or tab
+    before the <strong>!</strong> is mandatory.</p>
+<p><strong>recover </strong><em>file</em></p>
+<p>:   Recovers <em>file</em> from the system save area. Used after a accidental
+    hangup of the phone or a system crash or <em>preserve</em> command. Except
+    when <em>preserve</em> is used, the user will be notified by mail when a
+    file is saved.</p>
+<p><strong>rewind</strong> abbr: <strong>rew</strong></p>
+<p>:   The argument list is rewound, and the first file in the list is
+    edited.</p>
+<p><strong>rew!</strong></p>
+<p>:   Rewinds the argument list discarding any changes made to the current
+    buffer.</p>
+<p><strong>set</strong> <em>parameter</em></p>
+<p>:   With no arguments, prints those options whose values have been
+    changed from their defaults; with parameter <em>all</em> it prints all of
+    the option values.</p>
+<div class="highlight"><pre><span></span><code>Giving an option name followed by a \`?\&#39; causes the current value
+of that option to be printed. The \`?\&#39; is unnecessary unless the
+option is Boolean valued. Boolean options are given values either by
+the form \`set *option*\&#39; to turn them on or \`set no*option*\&#39; to
+turn them off; string and numeric options are assigned via the form
+\`set *option*=value\&#39;.
+
+More than one parameter may be given to *set  ;* they are
+interpreted left-to-right.
+
+A list of options can be found below.
+</code></pre></div>
+<p><strong>shell</strong> abbr: <strong>sh</strong></p>
+<p>:   A new shell is created. When it terminates, editing resumes.</p>
+<p><strong>source</strong> <em>file</em> abbr: <strong>so</strong></p>
+<p>:   Reads and executes commands from the specified file. <em>Source</em>
+    commands may be nested.</p>
+<p>( <strong>.</strong> , <strong>.</strong> ) <strong>substitute</strong> /<em>pat</em> /<em>repl</em> / <em>options</em> <em>count</em>
+<em>flags</em></p>
+<blockquote>
+<p>abbr: <strong>s</strong>\</p>
+<p>On each specified line, the first instance of pattern <em>pat</em> is
+replaced by replacement pattern <em>repl.</em> If the <em>global</em> indicator
+option character `g\' appears, then all instances are substituted; if
+the <em>confirm</em> indication character `c\' appears, then before each
+substitution the line to be substituted is typed with the string to be
+substituted marked with `\^\' characters. By typing an `y\' one can
+cause the substitution to be performed, any other input causes no
+change to take place. After a <em>substitute</em> the current line is the
+last line substituted.</p>
+<p>Lines may be split by substituting new-line characters into them. The
+newline in <em>repl</em> must be escaped by preceding it with a `\\'. Other
+metacharacters available in <em>pat</em> and <em>repl</em> are described below.</p>
+</blockquote>
+<p><strong>stop</strong></p>
+<p>:   Suspends the editor, returning control to the top level shell. If
+    <em>autowrite</em> is set and there are unsaved changes, a write is done
+    first unless the form <strong>stop !</strong> is used. This commands is only
+    available where supported by the teletype driver, shell and
+    operating system.</p>
+<p>( <strong>.</strong> , <strong>.</strong> ) <strong>substitute</strong> <em>options</em> <em>count</em> <em>flags</em> abbr: <strong>s</strong></p>
+<p>:   If <em>pat</em> and <em>repl</em> are omitted, then the last substitution is
+    repeated. This is a synonym for the <strong>&amp;</strong> command.</p>
+<p>( <strong>.</strong> , <strong>.</strong> ) <strong>t</strong> <em>addr</em> <em>flags</em></p>
+<p>:   The <em>t</em> command is a synonym for <em>copy .</em></p>
+<p><strong>ta</strong> <em>tag</em></p>
+<p>:   The focus of editing switches to the location of <em>tag,</em> switching to
+    a different line in the current file where it is defined, or if
+    necessary to another file.</p>
+<div class="highlight"><pre><span></span><code>The tags file is normally created by a program such as *ctags,* and
+consists of a number of lines with three fields separated by blanks
+or tabs. The first field gives the name of the tag, the second the
+name of the file where the tag resides, and the third gives an
+addressing form which can be used by the editor to find the tag;
+this field is usually a contextual scan using \`/*pat*/\&#39; to be
+immune to minor changes in the file. Such scans are always performed
+as if *nomagic* was set.
+
+The tag names in the tags file must be sorted alphabetically.
+</code></pre></div>
+<p><strong>unabbreviate</strong> <em>word</em> abbr: <strong>una</strong></p>
+<p>:   Delete <em>word</em> from the list of abbreviations.</p>
+<p><strong>undo</strong> abbr: <strong>u</strong></p>
+<p>:   Reverses the changes made in the buffer by the last buffer editing
+    command. Note that <em>global</em> commands are considered a single command
+    for the purpose of <em>undo</em> (as are <em>open</em> and <em>visual.)</em> Also, the
+    commands <em>write</em> and <em>edit</em> which interact with the file system
+    cannot be undone. <em>Undo</em> is its own inverse.</p>
+<div class="highlight"><pre><span></span><code>*Undo* always marks the previous value of the current line \`**.**\&#39;
+as \`\&#39;\&#39;\&#39;. After an *undo* the current line is the first line
+restored or the line before the first line deleted if no lines were
+restored. For commands with more global effect such as *global* and
+*visual* the current line regains it\&#39;s pre-command value after an
+*undo.*
+</code></pre></div>
+<p><strong>unmap</strong>[<strong>!</strong>] <em>lhs</em></p>
+<p>:   The macro expansion associated by <em>map</em> for <em>lhs</em> is removed.</p>
+<p>( 1 , \$ ) <strong>v</strong> /<em>pat</em> / <em>cmds</em></p>
+<p>:   A synonym for the <em>global</em> command variant <strong>g!</strong>, running the
+    specified <em>cmds</em> on each line which does not match <em>pat</em>.</p>
+<p><strong>version</strong> abbr: <strong>ve</strong></p>
+<p>:   Prints the current version number of the editor as well as the date
+    the editor was last changed.</p>
+<p>( <strong>.</strong> ) <strong>visual</strong> <em>type</em> <em>count</em> <em>flags</em> abbr: <strong>vi</strong></p>
+<p>:   Enters visual mode at the specified line. <em>Type</em> is optional and may
+    be `-\' , `\^\' or `<strong>.</strong>\' as in the <em>z</em> command to specify the
+    placement of the specified line on the screen. By default, if <em>type</em>
+    is omitted, the specified line is placed as the first on the screen.
+    A <em>count</em> specifies an initial window size; the default is the value
+    of the option <em>window.</em> See the document <em>An Introduction to Display
+    Editing with Vi</em> for more details. To exit this mode, type Q.</p>
+<p><strong>visual</strong> file\
+<strong>visual</strong> +<em>n</em> file</p>
+<blockquote>
+<p>From visual mode, this command is the same as edit.</p>
+</blockquote>
+<p>( 1 , \$ ) <strong>write</strong> <em>file</em> abbr: <strong>w</strong></p>
+<p>:   Writes changes made back to <em>file</em>, printing the number of lines and
+    characters written. Normally <em>file</em> is omitted and the text goes
+    back where it came from. If a <em>file</em> is specified, then text will be
+    written to that file. If the file does not exist it is created. The
+    current file name is changed only if there is no current file name;
+    the current line is never changed.</p>
+<div class="highlight"><pre><span></span><code>If an error occurs while writing the current and *edited* file, the
+editor considers that there has been &quot;No write since last change&quot;
+even if the buffer had not previously been modified.
+</code></pre></div>
+<p>( 1 , \$ ) <strong>write&gt;&gt;</strong> <em>file</em> abbr: <strong>w&gt;&gt;</strong></p>
+<p>:   Writes the buffer contents at the end of an existing file.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>&lt;!-- --&gt;
+</code></pre></div>
+<p><strong>w!</strong> <em>name</em></p>
+<p>:   Overrides the checking of the normal <em>write</em> command, and will write
+    to any file which the system permits.</p>
+<p>( 1 , \$ ) <strong>w</strong> <strong>!</strong><em>command</em></p>
+<p>:   Writes the specified lines into <em>command.</em> Note the difference
+    between <strong>w!</strong> which overrides checks and <strong>w !</strong> which writes to a
+    command.</p>
+<p><strong>wq</strong> <em>name</em></p>
+<p>:   Like a <em>write</em> and then a <em>quit</em> command.</p>
+<p><strong>wq!</strong> <em>name</em></p>
+<p>:   The variant overrides checking on the sensibility of the <em>write</em>
+    command, as <strong>w!</strong> does.</p>
+<p><strong>xit</strong> <em>name</em></p>
+<p>:   If any changes have been made and not written to any file, writes
+    the buffer out. Then, in any case, quits.</p>
+<p>( <strong>.</strong> , <strong>.</strong> ) <strong>yank</strong> <em>buffer</em> <em>count</em> abbr: <strong>ya</strong></p>
+<p>:   Places the specified lines in the named <em>buffer,</em> for later
+    retrieval via <em>put.</em> If no buffer name is specified, the lines go to
+    a more volatile place; see the <em>put</em> command description.</p>
+<p>( <strong>.+1</strong> ) <strong>z</strong> <em>count</em></p>
+<p>:   Print the next <em>count</em> lines, default <em>window</em>.</p>
+<p>( <strong>.</strong> ) <strong>z</strong> <em>type</em> <em>count</em></p>
+<p>:   Prints a window of text with the specified line at the top. If
+    <em>type</em> is `-\' the line is placed at the bottom; a `<strong>.</strong>\' causes
+    the line to be placed in the center. A count gives the number of
+    lines to be displayed rather than double the number specified by the
+    <em>scroll</em> option. On a CRT the screen is cleared before display
+    begins unless a count which is less than the screen size is given.
+    The current line is left at the last line printed. Forms `z=\' and
+    `z\^\' also exist; `z=\' places the current line in the center,
+    surrounds it with lines of `-\' characters and leaves the current
+    line at this line. The form `z\^\' prints the window before `z-\'
+    would. The characters `+\', `\^\' and `-\' may be repeated for
+    cumulative effect.</p>
+<p><strong>!</strong> <em>command</em></p>
+<p>:   The remainder of the line after the `!\' character is sent to a
+    shell to be executed. Within the text of <em>command</em> the characters
+    `%\' and `#\' are expanded as in filenames and the character `!\'
+    is replaced with the text of the previous command. Thus, in
+    particular, `!!\' repeats the last such shell escape. If any such
+    expansion is performed, the expanded line will be echoed. The
+    current line is unchanged by this command.</p>
+<div class="highlight"><pre><span></span><code>If there has been &quot;\[No write\]&quot; of the buffer contents since the
+last change to the editing buffer, then a diagnostic will be printed
+before the command is executed as a warning. A single \`!\&#39; is
+printed when the command completes.
+</code></pre></div>
+<p>( <em>addr</em> , <em>addr</em> ) <strong>!</strong> <em>command</em></p>
+<p>:   Takes the specified address range and supplies it as standard input
+    to <em>command;</em> the resulting output then replaces the input lines.</p>
+<p>( \$ ) <strong>=</strong></p>
+<p>:   Prints the line number of the addressed line. The current line is
+    unchanged.</p>
+<p>( <strong>.</strong> , <strong>.</strong> ) <strong>&gt;</strong> <em>count</em> <em>flags</em>\
+( <strong>.</strong> , <strong>.</strong> ) <strong>\&lt;</strong> <em>count</em> <em>flags</em></p>
+<blockquote>
+<p>Perform intelligent shifting on the specified lines; <strong>\&lt;</strong> shifts
+left and <strong>&gt;</strong> shift right. The quantity of shift is determined by
+the <em>shiftwidth</em> option and the repetition of the specification
+character. Only white space (blanks and tabs) is shifted; no non-white
+characters are discarded in a left-shift. The current line becomes the
+last line which changed due to the shifting.</p>
+</blockquote>
+<p><strong>\^D</strong></p>
+<p>:   An end-of-file from a terminal input scrolls through the file. The
+    <em>scroll</em> option specifies the size of the scroll, normally a half
+    screen of text.</p>
+<p>( <strong>.</strong>+1 , <strong>.</strong>+1 )\
+( <strong>.</strong>+1 , <strong>.</strong>+1 ) |</p>
+<blockquote>
+<p>An address alone causes the addressed lines to be printed. A blank
+line prints the next line in the file.</p>
+</blockquote>
+<p>( <strong>.</strong> , <strong>.</strong> ) <strong>&amp;</strong> <em>options</em> <em>count</em> <em>flags</em></p>
+<p>:   Repeats the previous <em>substitute</em> command.</p>
+<p>( <strong>.</strong> , <strong>.</strong> ) <strong>\~</strong> <em>options</em> <em>count</em> <em>flags</em></p>
+<p>:   Replaces the previous regular expression with the previous
+    replacement pattern from a substitution.</p>
+<h2 id="regular-expressions">Regular expressions</h2>
+<p>A regular expression specifies a set of strings of characters. A member
+of this set of strings is said to be <em>matched</em> by the regular
+expression. <em>Ex</em> remembers two previous regular expressions: the
+previous regular expression used in a <em>substitute</em> command and the
+previous regular expression used elsewhere (referred to as the previous
+<em>scanning</em> regular expression.) The previous regular expression can
+always be referred to by a null <em>re</em>, e.g. `//\' or `??\'.</p>
+<p>The following basic constructs are used to construct <em>magic</em> mode
+regular expressions.</p>
+<p>char</p>
+<p>:   An ordinary character matches itself. The characters `<strong>\^</strong>\' at
+    the beginning of a line, `<strong>\$</strong>\' at the end of line, `<strong>*</strong>\'
+    as any character other than the first, `<strong>.</strong>\', `<strong>\</strong>\',
+    `<strong>[</strong>\', and `<strong>\~</strong>\' are not ordinary characters and must be
+    escaped (preceded) by `<strong>\</strong>\' to be treated as such.</p>
+<p>\^</p>
+<p>:   At the beginning of a pattern forces the match to succeed only at
+    the beginning of a line.</p>
+<p>\$</p>
+<p>:   At the end of a regular expression forces the match to succeed only
+    at the end of the line.</p>
+<p>.</p>
+<p>:   Matches any single character except the new-line character.</p>
+<p>\\&lt;</p>
+<p>:   Forces the match to occur only at the beginning of a "variable" or
+    "word"; that is, either at the beginning of a line, or just before a
+    letter, digit, or underline and after a character not one of these.</p>
+<p>\&gt;</p>
+<p>:   Similar to `\\&lt;\', but matching the end of a "variable" or "word",
+    i.e. either the end of the line or before character which is neither
+    a letter, nor a digit, nor the underline character.</p>
+<p>[string]</p>
+<p>:   Matches any (single) character in the class defined by <em>string.</em>
+    Most characters in <em>string</em> define themselves.\
+    A pair of characters separated by `<strong>-</strong>\' in <em>string</em> defines the
+    set of characters collating between the specified lower and upper
+    bounds, thus `[a-z]\' as a regular expression matches any
+    (single)</p>
+<p>lower-case letter.\
+If the sequence `<strong>[:</strong><em>class</em><strong>:]</strong>\' appears in <em>string</em>, where
+class is one of `<strong>alnum</strong>\', `<strong>alpha</strong>\', `<strong>blank</strong>\',
+`<strong>cntrl</strong>\', `<strong>digit</strong>\', `<strong>graph</strong>\', `<strong>lower</strong>\',
+`<strong>print</strong>\', `<strong>punct</strong>\', `<strong>space</strong>\', `<strong>upper</strong>\',
+`<strong>xdigit</strong>\', or a locale-specific character class, all characters
+that belong to the given class are matched. Thus `[[:lower:]]\'
+matches any lower-case letter, possibly including characters beyond the
+scope of</p>
+<p>\
+If the first character of <em>string</em> is an `<strong>\^</strong>\' then the construct
+matches those characters which it otherwise would not; thus
+`[\^a-z]\' matches anything but an</p>
+<p>lower-case letter (and of course a newline).\
+Backslash `\\' is interpreted as an escape character. To place a
+`\\' character in <em>string</em>, write it twice: `\\\'; to place any of
+the characters `\^\', `[\', or `-\' in <em>string</em>, you escape them
+with a preceding `\\'.\
+Characters also lose their special meaning by position: `\^\' is an
+ordinary character unless immediately following the initial `[\',
+`]\' is an ordinary character if immediately following the initial
+`[\' (or `\^\', if present), and `-\' is an ordinary character if
+placed immediately behind `[\' or `\^\', or before \']\'.</p>
+<p>The concatenation of two regular expressions matches the leftmost and
+then longest string which can be divided with the first piece matching
+the first regular expression and the second piece matching the second.</p>
+<p>A regular expression may be enclosed between the sequences `<strong>\(</strong>\'
+and `<strong>\)</strong>\', which matches whatever the enclosed expression matches.</p>
+<p>Any of the (single character matching) regular expressions mentioned
+above or a regular expression surrounded by `\(\' and \'\)\' may be
+followed by the character `<strong>*</strong>\' to form a regular expression which
+matches any number of adjacent occurrences (including 0) of characters
+matched by the regular expression it follows.</p>
+<p>A single character regular expression or a regular expression surrounded
+by `\(\' and \'\)\' followed by `<strong>\{</strong><em>m</em><strong>,</strong><em>n</em><strong>\}</strong>\' matches
+a sequence of <em>m</em> through <em>n</em> occurences, inclusive, of the single
+character expression. The values of <em>m</em> and <em>n</em> must be non-negative and
+smaller than 255. The form `<strong>\{</strong><em>m</em><strong>\}</strong>\' matches exactly <em>m</em>
+occurences, `<strong>\{</strong><em>m</em><strong>,\}</strong>\' matches at least <em>m</em> occurences.</p>
+<p>The character `<strong>\~</strong>\' may be used in a regular expression, and
+matches the text which defined the replacement part of the last
+<em>substitute</em> command.</p>
+<p>The sequence `<strong>\</strong><em>n</em>\' matches the text that was matched by the
+<em>n</em>-th regular subexpression enclosed between `\(\' and `\)\'
+earlier in the expression.</p>
+<h2 id="substitute-replacement-patterns">Substitute replacement patterns</h2>
+<p>The basic metacharacters for the replacement pattern are `<strong>&amp;</strong>\',
+`<strong>\~</strong>\', and `<strong>#</strong>\'; the first two of them are given as
+`<strong>\&amp;</strong>\' and `<strong>\\~</strong>\' when <em>nomagic</em> is set. Each instance of
+`<strong>&amp;</strong>\' is replaced by the characters which the regular expression
+matched. The metacharacter `<strong>\~</strong>\' stands, in the replacement
+pattern, for the defining text of the previous replacement pattern. If
+the entire replacement pattern is `<strong>#</strong>\', the defining text of the
+previous replacement pattern is used.</p>
+<p>Other metasequences possible in the replacement pattern are always
+introduced by the escaping character `<strong>\</strong>\'. The sequence
+`<strong>\</strong><em>n</em>\' is replaced by the text matched by the <em>n</em>-th regular
+subexpression enclosed between `\(\' and `\)\'. When nested,
+parenthesized subexpressions are present, <em>n</em> is determined by counting
+occurrences of `\(\' starting from the left. The sequences `<strong>\u</strong>\'
+and `<strong>\l</strong>\' cause the immediately following character in the
+replacement to be converted to upper- or lower-case respectively if this
+character is a letter. The sequences `<strong>\U</strong>\' and `<strong>\L</strong>\' turn
+such conversion on, either until `<strong>\E</strong>\' or `<strong>\e</strong>\' is
+encountered, or until the end of the replacement pattern.</p>
+<h2 id="option-descriptions">Option descriptions</h2>
+<p><strong>autoindent</strong>, <strong>ai</strong> default: noai</p>
+<p>:   Can be used to ease the preparation of structured program text. At
+    the beginning of each <em>append ,</em> <em>change</em> or <em>insert</em> command or
+    when a new line is <em>opened</em> or created by an <em>append ,</em> <em>change ,</em>
+    <em>insert ,</em> or <em>substitute</em> operation within <em>open</em> or <em>visual</em> mode,
+    <em>ex</em> looks at the line being appended after, the first line changed
+    or the line inserted before and calculates the amount of white space
+    at the start of the line. It then aligns the cursor at the level of
+    indentation so determined.</p>
+<div class="highlight"><pre><span></span><code>If the user then types lines of text in, they will continue to be
+justified at the displayed indenting level. If more white space is
+typed at the beginning of a line, the following line will start
+aligned with the first non-white character of the previous line. To
+back the cursor up to the preceding tab stop one can hit **\^D**.
+The tab stops going backwards are defined at multiples of the
+*shiftwidth* option. The user *cannot* backspace over the indent,
+except by sending an end-of-file with a **\^D**.
+
+Specially processed in this mode is a line with no characters added
+to it, which turns into a completely blank line (the white space
+provided for the *autoindent* is discarded.) Also specially
+processed in this mode are lines beginning with an \`\^\&#39; and
+immediately followed by a **\^D**. This causes the input to be
+repositioned at the beginning of the line, but retaining the
+previous indent for the next line. Similarly, a \`0\&#39; followed by a
+**\^D** repositions at the beginning but without retaining the
+previous indent.
+
+*Autoindent* doesn\&#39;t happen in *global* commands or when the input
+is not a terminal.
+</code></pre></div>
+<p><strong>autoprint</strong>, <strong>ap</strong> default: ap</p>
+<p>:   Causes the current line to be printed after each <em>delete ,</em> <em>copy ,</em>
+    <em>join ,</em> <em>move ,</em> <em>substitute ,</em> <em>t ,</em> <em>undo</em> or shift command. This
+    has the same effect as supplying a trailing `p\' to each such
+    command. <em>Autoprint</em> is suppressed in globals, and only applies to
+    the last of many commands on a line.</p>
+<p><strong>autowrite</strong>, <strong>aw</strong> default: noaw</p>
+<p>:   Causes the contents of the buffer to be written to the current file
+    if the user has modified it and gives a <em>next,</em> <em>rewind,</em> <em>stop,</em>
+    <em>tag,</em> or <em>!</em> command, or a <strong>\^\^</strong> (switch files) or <strong>\^]</strong> (tag
+    goto) command in <em>visual.</em> Note, that the <em>edit</em> and <em>ex</em> commands
+    do <strong>not</strong> autowrite. In each case, there is an equivalent way of
+    switching when autowrite is set to avoid the <em>autowrite</em> (<em>edit</em> for
+    <em>next ,</em> <em>rewind!</em> for .I rewind , <em>stop!</em> for <em>stop ,</em> <em>tag!</em> for
+    <em>tag ,</em> <em>shell</em> for <em>! ,</em> and <strong>:e #</strong> and a <strong>:ta!</strong> command from
+    within <em>visual).</em></p>
+<p><strong>beautify</strong>, <strong>bf</strong> default: nobeautify</p>
+<p>:   Causes all control characters except tab, newline and form-feed to
+    be discarded from the input. A complaint is registered the first
+    time a backspace character is discarded. <em>Beautify</em> does not apply
+    to command input.</p>
+<p><strong>directory</strong>, <strong>dir</strong> default: dir=/tmp</p>
+<p>:   Specifies the directory in which <em>ex</em> places its buffer file. If
+    this directory in not writable, then the editor will exit abruptly
+    when it fails to be able to create its buffer there.</p>
+<p><strong>edcompatible</strong> default: noedcompatible</p>
+<p>:   Causes the presence of absence of <strong>g</strong> and <strong>c</strong> suffixes on
+    substitute commands to be remembered, and to be toggled by repeating
+    the suffices. The suffix <strong>r</strong> makes the substitution be as in the
+    <em>\~</em> command, instead of like <em>&amp;.</em></p>
+<p><strong>errorbells</strong>, <strong>eb</strong> default: noeb</p>
+<p>:   Error messages are preceded by a bell. Bell ringing in <em>open</em> and
+    <em>visual</em> on errors is not suppressed by setting <em>noeb.</em> If possible
+    the editor always places the error message in a standout mode of the
+    terminal (such as inverse video) instead of ringing the bell.</p>
+<p><strong>exrc</strong> default: noexrc</p>
+<p>:   If set, the current directory is searched for a <em>.exrc</em> file on
+    startup. If this file is found, its content is treated as <em>ex</em>
+    commands and executed immediately after the contents of
+    <em>\$HOME/.exrc</em> on startup.</p>
+<p><strong>flash</strong>, <strong>fl</strong> default: flash</p>
+<p>:   If the terminal provides the "visual bell" capability, ex will use
+    it instead of the audible bell if <em>flash</em> is set.</p>
+<p><strong>hardtabs</strong>, <strong>ht</strong> default: ht=8</p>
+<p>:   Gives the boundaries on which terminal hardware tabs are set (or on
+    which the system expands tabs).</p>
+<p><strong>ignorecase</strong>, <strong>ic</strong> default: noic</p>
+<p>:   All upper case characters in the text are mapped to lower case in
+    regular expression matching. In addition, all upper case characters
+    in regular expressions are mapped to lower case except in character
+    class specifications.</p>
+<p><strong>lisp</strong> default: nolisp</p>
+<p>:   <em>Autoindent</em> indents appropriately for <em>lisp</em> code, and the <strong>( ) {
+    } [[</strong> and <strong>]]</strong> commands in <em>open</em> and <em>visual</em> are modified
+    to have meaning for <em>lisp</em>.</p>
+<p><strong>list</strong> default: nolist</p>
+<p>:   All printed lines will be displayed (more) unambiguously, showing
+    tabs and end-of-lines as in the <em>list</em> command.</p>
+<p><strong>magic</strong> default: magic for <em>ex</em> and <em>vi</em>, <em>Nomagic</em> for <em>edit</em>.</p>
+<p>:   If <em>nomagic</em> is set, the number of regular expression metacharacters
+    is greatly reduced, with only `\^\' and `\$\' having special
+    effects. In addition the metacharacters `\~\' and `&amp;\' of the
+    replacement pattern are treated as normal characters. All the normal
+    metacharacters may be made <em>magic</em> when <em>nomagic</em> is set by
+    preceding them with a `\\'.</p>
+<p><strong>mesg</strong> default: mesg</p>
+<p>:   Causes write permission to be turned off to the terminal while the
+    user is in visual mode, if <em>nomesg</em> is set.</p>
+<p><strong>modelines, ml</strong> default: nomodelines</p>
+<p>:   If <em>modelines</em> is set, then the first 5 lines and the last five
+    lines of the file will be checked for ex command lines and the
+    comands issued. To be recognized as a command line, the line must
+    have the string <strong>ex:</strong> or <strong>vi:</strong> in it. This string may be
+    anywhere in the line and anything after the <em>:</em> is interpeted as
+    editor commands. This option defaults to off because of unexpected
+    behavior when editting files such as <em>/etc/passwd.</em></p>
+<p><strong>number, nu</strong> default: nonumber</p>
+<p>:   Causes all output lines to be printed with their line numbers. In
+    addition each input line will be prompted for by supplying the line
+    number it will have.</p>
+<p><strong>open</strong> default: open</p>
+<p>:   If <em>noopen</em>, the commands <em>open</em> and <em>visual</em> are not permitted.</p>
+<p><strong>optimize, opt</strong> default: optimize</p>
+<p>:   Throughput of text is expedited by setting the terminal to not do
+    automatic carriage returns when printing more than one (logical)
+    line of output, greatly speeding output on terminals without
+    addressable cursors when text with leading white space is printed.</p>
+<p><strong>paragraphs, para</strong> default: para=IPLPPPQPP LIbp</p>
+<p>:   Specifies the paragraphs for the <strong>{</strong> and <strong>}</strong> operations in
+    <em>open</em> and <em>visual.</em> The pairs of characters in the option\'s value
+    are the names of the macros which start paragraphs.</p>
+<p><strong>prompt</strong> default: prompt</p>
+<p>:   Command mode input is prompted for with a `:\'.</p>
+<p><strong>redraw</strong> default: noredraw</p>
+<p>:   The editor simulates (using great amounts of output), an intelligent
+    terminal on a dumb terminal (e.g. during insertions in <em>visual</em> the
+    characters to the right of the cursor position are refreshed as each
+    input character is typed.) Useful only at very high speed.</p>
+<p><strong>remap</strong> default: remap</p>
+<p>:   If on, macros are repeatedly tried until they are unchanged. For
+    example, if <strong>o</strong> is mapped to <strong>O ,</strong> and <strong>O</strong> is mapped to <strong>I
+    ,</strong> then if <em>remap</em> is set, <strong>o</strong> will map to <strong>I ,</strong> but if
+    <em>noremap</em> is set, it will map to <strong>O .</strong></p>
+<p><strong>report</strong> default: report=5, 2 for <em>edit</em>.</p>
+<p>:   Specifies a threshold for feedback from commands. Any command which
+    modifies more than the specified number of lines will provide
+    feedback as to the scope of its changes. For commands such as
+    <em>global ,</em> <em>open ,</em> <em>undo ,</em> and <em>visual</em> which have potentially
+    more far reaching scope, the net change in the number of lines in
+    the buffer is presented at the end of the command, subject to this
+    same threshold. Thus notification is suppressed during a <em>global</em>
+    command on the individual commands performed.</p>
+<p><strong>scroll</strong> default: scroll=½ window</p>
+<p>:   Determines the number of logical lines scrolled when an end-of-file
+    is received from a terminal input in command mode, and the number of
+    lines printed by a command mode <em>z</em> command (double the value of
+    <em>scroll ).</em></p>
+<p><strong>sections</strong> default: sections=SHNHH HU</p>
+<p>:   Specifies the section macros for the <strong>[[</strong> and <strong>]]</strong>
+    operations in <em>open</em> and <em>visual.</em> The pairs of characters in the
+    options\'s value are the names of the macros which start paragraphs.</p>
+<p><strong>shell</strong>, <strong>sh</strong> default: sh=/bin/sh</p>
+<p>:   Gives the path name of the shell forked for the shell escape command
+    `!\', and by the <em>shell</em> command. The default is taken from SHELL
+    in the environment, if present.</p>
+<p><strong>shiftwidth</strong>, <strong>sw</strong> default: sw=8</p>
+<p>:   Gives the width a software tab stop, used in reverse tabbing with
+    <strong>\^D</strong> when using <em>autoindent</em> to append text, and by the shift
+    commands.</p>
+<p><strong>showmatch, sm</strong> default: nosm</p>
+<p>:   In <em>open</em> and <em>visual</em> mode, when a <strong>)</strong> or <strong>}</strong> is typed, move
+    the cursor to the matching <strong>(</strong> or <strong>{</strong> for one second if this
+    matching character is on the screen. Extremely useful with <em>lisp.</em></p>
+<p><strong>showmode, smd</strong> default: nosmd</p>
+<p>:   In <em>visual</em> mode, show a description of the current editing mode in
+    the window\'s lower right corner.</p>
+<p><strong>slowopen, slow</strong> terminal dependent</p>
+<p>:   Affects the display algorithm used in <em>visual</em> mode, holding off
+    display updating during input of new text to improve throughput when
+    the terminal in use is both slow and unintelligent. See <em>An
+    Introduction to Display Editing with Vi</em> for more details.</p>
+<p><strong>tabstop, ts</strong> default: ts=8</p>
+<p>:   The editor expands tabs in the input file to be on <em>tabstop</em>
+    boundaries for the purposes of display.</p>
+<p><strong>taglength, tl</strong> default: tl=0</p>
+<p>:   Tags are not significant beyond this many characters. A value of
+    zero (the default) means that all characters are significant.</p>
+<p><strong>tags</strong> default: tags=tags /usr/lib/tags</p>
+<p>:   A path of files to be used as tag files for the <em>tag</em> command. A
+    requested tag is searched for in the specified files, sequentially.
+    By default, files called <strong>tags</strong> are searched for in the current
+    directory and in /usr/lib (a master file for the entire system).</p>
+<p><strong>term</strong> from environment TERM</p>
+<p>:   The terminal type of the output device.</p>
+<p><strong>terse</strong> default: noterse</p>
+<p>:   Shorter error diagnostics are produced for the experienced user.</p>
+<p><strong>warn</strong> default: warn</p>
+<p>:   Warn if there has been `[No write since last change]\' before a
+    `!\' command escape.</p>
+<p><strong>window</strong> default: window=speed dependent</p>
+<p>:   The number of lines in a text window in the <em>visual</em> command. The
+    default is 8 at slow speeds (600 baud or less), 16 at medium speed
+    (1200 baud), and the full screen (minus one line) at higher speeds.</p>
+<p><strong>w300, w1200, w9600</strong></p>
+<p>:   These are not true options but set <strong>window</strong> only if the speed is
+    slow (300), medium (1200), or high (9600), respectively. They are
+    suitable for an EXINIT and make it easy to change the 8/16/full
+    screen rule.</p>
+<p><strong>wrapscan</strong>, <strong>ws</strong> default: ws</p>
+<p>:   Searches using the regular expressions in addressing will wrap
+    around past the end of the file.</p>
+<p><strong>wrapmargin</strong>, <strong>wm</strong> default: wm=0</p>
+<p>:   Defines a margin for automatic wrapover of text during input in
+    <em>open</em> and <em>visual</em> modes. See <em>An Introduction to Text Editing with
+    Vi</em> for details.</p>
+<p><strong>writeany</strong>, <strong>wa</strong> default: nowa</p>
+<p>:   </p>
+<div class="highlight"><pre><span></span><code>Inhibit the checks normally made before *write* commands, allowing a
+write to any file which the system protection mechanism will allow.
+</code></pre></div>
+<h1 id="environment-variables">ENVIRONMENT VARIABLES</h1>
+<p>The following environment variables affect the behaviour of ex:</p>
+<p><strong>COLUMNS</strong></p>
+<p>:   Overrides the system-supplied number of terminal columns.</p>
+<p><strong>EXINIT</strong></p>
+<p>:   Contains commands to execute at editor startup. If this variable is
+    present, the <em>.exrc</em> file in the user\'s home directory is ignored.</p>
+<p><strong>HOME</strong></p>
+<p>:   Used to locate the editor startup file.</p>
+<p><strong>LANG</strong>, <strong>LC_ALL</strong></p>
+<p>:   See <em>locale</em>(7).</p>
+<p><strong>LC_CTYPE</strong></p>
+<p>:   Determines the mapping of bytes to characters, types of characters,
+    case conversion and composition of character classes in regular
+    expressions.</p>
+<p><strong>LC_MESSAGES</strong></p>
+<p>:   Sets the language used for diagnostic and informal messages.</p>
+<p><strong>LINES</strong></p>
+<p>:   Overrides the system-supplied number of terminal lines.</p>
+<p><strong>NLSPATH</strong></p>
+<p>:   See <em>catopen</em>(3).</p>
+<p><strong>SHELL</strong></p>
+<p>:   The program file used to execute external commands.</p>
+<p><strong>TERM</strong></p>
+<p>:   Determines the terminal type.</p>
+<h1 id="files">FILES</h1>
+<p><strong>/usr/libexec/expreserve</strong></p>
+<p>:   preserve command</p>
+<p><strong>/usr/libexec/exrecover</strong></p>
+<p>:   recover command</p>
+<p><strong>/etc/termcap</strong></p>
+<p>:   describes capabilities of terminals</p>
+<p><strong>\$HOME/.exrc</strong></p>
+<p>:   editor startup file</p>
+<p><strong>/var/tmp/Ex<em>nnnnnnnnnn</em></strong></p>
+<p>:   editor temporary</p>
+<p><strong>/var/tmp/Rx<em>nnnnnnnnnn</em></strong></p>
+<p>:   named buffer temporary</p>
+<p><strong>/var/preserve</strong></p>
+<p>:   preservation directory</p>
+<h1 id="documentation">DOCUMENTATION</h1>
+<p>The document <em>Edit: A tutorial</em> (USD:14) provides a comprehensive
+introduction to <em>edit</em> assuming no previous knowledge of computers or
+the</p>
+<p>system.</p>
+<p>The <em>Ex Reference Manual -- Version 3.7</em> (USD:16) is a comprehensive and
+complete manual for the command mode features of <em>ex.</em> The</p>
+<p>section of this page is taken from the manual. For an introduction to
+more advanced forms of editing using the command mode of <em>ex</em> see the
+editing documents written by Brian Kernighan for the editor <em>ed;</em> the
+material in the introductory and advanced documents works also with
+<em>ex.</em></p>
+<p><em>An Introduction to Display Editing with Vi</em> (USD:15) introduces the
+display editor <em>vi</em> and provides reference material on <em>vi.</em> (This
+reference now forms the <em>vi</em>(1) manual page). In addition, the <em>Vi Quick
+Reference</em> card summarizes the commands of <em>vi</em> in a useful, functional
+way, and is useful with the <em>Introduction.</em></p>
+<h1 id="see-also">SEE ALSO</h1>
+<p>awk(1), ed(1), grep(1), sed(1), grep(1), vi(1), catopen(3), termcap(5),
+environ(7), locale(7), regex(7)</p>
+<h1 id="author">AUTHOR</h1>
+<p>Originally written by William Joy.</p>
+<p>Mark Horton has maintained the editor since version 2.7, adding macros,
+support for many unusual terminals, and other features such as word
+abbreviation mode.</p>
+<p>This version incorporates changes by Gunnar Ritter.</p>
+<h1 id="notes">NOTES</h1>
+<p><em>Undo</em> never clears the buffer modified condition.</p>
+<p>The <em>z</em> command prints a number of logical rather than physical lines.
+More than a screen full of output may result if long lines are present.</p>
+<p>File input/output errors don\'t print a name if the command line
+<strong>`-\'</strong> option is used.</p>
+<p>The editor does not warn if text is placed in named buffers and not used
+before exiting the editor.</p>
+<p>Null (00) characters are converted to 0200 characters when reading input
+files, and cannot appear in resultant files.</p>
+<p>LC_COLLATE locales are ignored; collating symbols `[.c.]\' and
+equivalence classes `[=c=]\' in bracket expressions are recognized
+but useless since `c\' is restricted to a single character and is the
+only character matched; range expressions `[a-m]\' are always
+evaluated in byte order.</p>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime">2023-08-14 10:05:46</span>
+      
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright (c) 2023 <a href="https://github.com/maroph">Manfred Rosenboom</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "content.action.edit", "content.action.view", "content.code.copy", "navigation.footer", "navigation.indexes", "navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+    
+  </body>
+</html>

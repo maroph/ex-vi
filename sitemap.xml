@@ -2,27 +2,62 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://maroph.github.io/ex-vi/index.html</loc>
-         <lastmod>2023-08-12</lastmod>
+         <lastmod>2023-08-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://maroph.github.io/ex-vi/documentation.html</loc>
+         <lastmod>2023-08-14</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://maroph.github.io/ex-vi/info/about.html</loc>
-         <lastmod>2023-08-12</lastmod>
+         <lastmod>2023-08-14</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://maroph.github.io/ex-vi/info/gdpr.html</loc>
-         <lastmod>2023-08-12</lastmod>
+         <lastmod>2023-08-14</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://maroph.github.io/ex-vi/info/license.html</loc>
-         <lastmod>2023-08-12</lastmod>
+         <lastmod>2023-08-14</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://maroph.github.io/ex-vi/info/resources.html</loc>
-         <lastmod>2023-08-12</lastmod>
+         <lastmod>2023-08-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://maroph.github.io/ex-vi/software/ex-1.1.html</loc>
+         <lastmod>2023-08-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://maroph.github.io/ex-vi/software/ex-vi.html</loc>
+         <lastmod>2023-08-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://maroph.github.io/ex-vi/software/ex.1.html</loc>
+         <lastmod>2023-08-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://maroph.github.io/ex-vi/software/heirloom-ex-vi.html</loc>
+         <lastmod>2023-08-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://maroph.github.io/ex-vi/software/termcap.html</loc>
+         <lastmod>2023-08-14</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://maroph.github.io/ex-vi/software/vi.1.html</loc>
+         <lastmod>2023-08-14</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>

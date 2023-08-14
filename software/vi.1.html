@@ -1,0 +1,1247 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Dedicated to Bill Joy's vi Implementation">
+      
+      
+        <meta name="author" content="Manfred Rosenboom (maroph)">
+      
+      
+        <link rel="canonical" href="https://maroph.github.io/ex-vi/software/vi.1.html">
+      
+      
+      
+      <link rel="icon" href="../assets/Vi_logo.ico">
+      <meta name="generator" content="mkdocs-1.5.2, mkdocs-material-9.1.21">
+    
+    
+      
+        <title>NAME - My vi Site</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.eebd395e.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ecc896b0.min.css">
+      
+      
+
+    
+    
+    
+      
+    
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#name" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="My vi Site" class="md-header__button md-logo" aria-label="My vi Site" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            My vi Site
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              NAME
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/maroph/ex-vi" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    maroph/ex-vi
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+    
+      
+<nav class="md-tabs" aria-label="Tabs" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../index.html" class="md-tabs__link">
+      Home
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  <li class="md-tabs__item">
+    <a href="../documentation.html" class="md-tabs__link">
+      Documentation
+    </a>
+  </li>
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="heirloom-ex-vi.html" class="md-tabs__link">
+        Software
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+
+
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../info/about.html" class="md-tabs__link">
+        Info
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+    
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="My vi Site" class="md-nav__button md-logo" aria-label="My vi Site" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    My vi Site
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/maroph/ex-vi" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.4.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2023 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    maroph/ex-vi
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../index.html" class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../documentation.html" class="md-nav__link">
+        Documentation
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          Software
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_3">
+          <span class="md-nav__icon md-icon"></span>
+          Software
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="heirloom-ex-vi.html" class="md-nav__link">
+        heirloom-ex-vi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ex-vi.html" class="md-nav__link">
+        ex-vi
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="ex-1.1.html" class="md-nav__link">
+        Ex 1.1
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="termcap.html" class="md-nav__link">
+        Termcap
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+      
+      
+      <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+      
+      
+        
+          
+        
+          
+        
+          
+        
+          
+        
+      
+      
+        <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+          Info
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+        <label class="md-nav__title" for="__nav_4">
+          <span class="md-nav__icon md-icon"></span>
+          Info
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../info/about.html" class="md-nav__link">
+        About
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../info/gdpr.html" class="md-nav__link">
+        GDPR/DSGVO
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../info/license.html" class="md-nav__link">
+        License
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../info/resources.html" class="md-nav__link">
+        Resources
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+  
+    <a href="https://github.com/maroph/ex-vi/edit/main/docs/software/vi.1.md" title="Edit this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20.71 7.04c.39-.39.39-1.04 0-1.41l-2.34-2.34c-.37-.39-1.02-.39-1.41 0l-1.84 1.83 3.75 3.75M3 17.25V21h3.75L17.81 9.93l-3.75-3.75L3 17.25Z"/></svg>
+    </a>
+  
+  
+    
+      
+    
+    <a href="https://github.com/maroph/ex-vi/raw/main/docs/software/vi.1.md" title="View source of this page" class="md-content__button md-icon">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0 8a5 5 0 0 1-5-5 5 5 0 0 1 5-5 5 5 0 0 1 5 5 5 5 0 0 1-5 5m0-12.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5Z"/></svg>
+    </a>
+  
+
+
+<h1 id="name">NAME</h1>
+<p>vi, view, vedit - screen oriented (visual) display editor based on ex</p>
+<h1 id="synopsis">SYNOPSIS</h1>
+<p><strong>vi</strong> [<strong>-c</strong><em> command</em>|<strong>+</strong><em>command</em>] [<strong>-r</strong> [<em>filename</em>]]
+[<strong>-s</strong>|<strong>-</strong>] [<strong>-t</strong><em> tagstring</em>] [<strong>-w</strong><em> size</em>] [<strong>-lLRV</strong>]
+[<em>file</em> ...]</p>
+<p><strong>view</strong> [<strong>-c</strong><em> command</em>|<strong>+</strong><em>command</em>] [<strong>-r</strong> [<em>filename</em>]]
+[<strong>-s</strong>|<strong>-</strong>] [<strong>-t</strong><em> tagstring</em>] [<strong>-w</strong><em> size</em>] [<strong>-lLRV</strong>]
+[<em>file</em> ...]</p>
+<p><strong>vedit</strong> [<strong>-c</strong><em> command</em>|<strong>+</strong><em>command</em>] [<strong>-r</strong> [<em>filename</em>]]
+[<strong>-s</strong>|<strong>-</strong>] [<strong>-t</strong><em> tagstring</em>] [<strong>-w</strong><em> size</em>] [<strong>-lLRV</strong>]
+[<em>file</em> ...]\</p>
+<h1 id="description">DESCRIPTION</h1>
+<p><em>Vi</em> (visual) is a display oriented text editor based on <em>ex</em>(1). <em>Ex</em>
+and <em>vi</em> run the same code; it is possible to get to the command mode of
+<em>ex</em> from within <em>vi</em> and vice-versa.</p>
+<p>The <em>view</em> command is identical to <em>vi</em> except that files are opened
+read-only. The <em>vedit</em> command is also identical, but sets some options
+to values more useful for novices.</p>
+<p>The following options are accepted:</p>
+<p><strong>-c</strong><em> command</em> or <strong>+</strong><em>command</em></p>
+<p>:   Execute <em>command</em> when editing begins.</p>
+<p><strong>-l</strong></p>
+<p>:   Start in a special mode useful for the <em>Lisp</em> programming language.</p>
+<p><strong>-r</strong><em> [filename]</em> or <strong>-L</strong></p>
+<p>:   When no argument is supplied with this option, all files to be
+    recovered are listed and the editor exits immediately. If a
+    <em>filename</em> is specified, the corresponding temporary file is opened
+    in recovery mode.</p>
+<p><strong>-R</strong></p>
+<p>:   Files are opened read-only when this option is given.</p>
+<p><strong>-s</strong> or <strong>-</strong></p>
+<p>:   Script mode; all feedback for interactive editing is disabled.</p>
+<p>and <em>.exrc</em> files are not processed.</p>
+<p><strong>-t</strong><em> tagstring</em></p>
+<p>:   Read the <em>tags</em> file, then choose the file and position specified by
+    <em>tagstring</em> for editing.</p>
+<p><strong>-V</strong></p>
+<p>:   Echo command input to standard error, unless it originates from a
+    terminal.</p>
+<p><strong>-w</strong><em> size</em></p>
+<p>:   Specify the size of the editing window for visual mode.</p>
+<p>The <em>Introduction to Display Editing with Vi</em> provides full details on
+using <em>vi.</em></p>
+<p>Most of the <em>ex</em> commands are available in <em>visual</em> mode when prefixed
+by a <strong>:</strong> character. See <strong>ex</strong>(1) for a description of them.</p>
+<p>The following gives the uses the editor makes of each character. The
+characters are presented in their order in the ASCII character set:
+Control characters come first, then most special characters, then the
+digits, upper and then lower case characters.</p>
+<p>For each character we tell a meaning it has as a command and any meaning
+it has during an insert. If it has only meaning as a command, then only
+this is discussed. Section numbers in parentheses indicate where the
+character is discussed in "An Introduction to Display Editing with Vi";
+a `f\' after the section number means that the character is mentioned
+in a footnote.</p>
+<p><strong>\^@</strong></p>
+<p>:   Not a command character. If typed as the first character of an
+    insertion it is replaced with the last text inserted, and the insert
+    terminates. Only 128 characters are saved from the last insert; if
+    more characters were inserted the mechanism is not available. A
+    <strong>\^@</strong> cannot be part of the file due to the editor implementation
+    (7.5f).</p>
+<p><strong>\^A</strong></p>
+<p>:   Unused.</p>
+<p><strong>\^B</strong></p>
+<p>:   Backward window. A count specifies repetition. Two lines of
+    continuity are kept if possible (2.1, 6.1, 7.2).</p>
+<p><strong>\^C</strong></p>
+<p>:   Unused.</p>
+<p><strong>\^D</strong></p>
+<p>:   As a command, scrolls down a half-window of text. A count gives the
+    number of (logical) lines to scroll, and is remembered for future
+    <strong>\^D</strong> and <strong>\^U</strong> commands (2.1, 7.2). During an insert, backtabs
+    over <em>autoindent</em> white space at the beginning of a line (6.6, 7.5);
+    this white space cannot be backspaced over.</p>
+<p><strong>\^E</strong></p>
+<p>:   Exposes one more line below the current screen in the file, leaving
+    the cursor where it is if possible.</p>
+<p><strong>\^F</strong></p>
+<p>:   Forward window. A count specifies repetition. Two lines of
+    continuity are kept if possible (2.1, 6.1, 7.2).</p>
+<p><strong>\^G</strong></p>
+<p>:   Equivalent to <strong>:f</strong>CR, printing the current file, whether it has
+    been modified, the current line number and the number of lines in
+    the file, and the percentage of the way through the file.</p>
+<p><strong>\^H (</strong>BS<strong>)</strong></p>
+<p>:   Same as <strong>left arrow</strong>. (See <strong>h</strong>). During an insert, eliminates
+    the last input character, backing over it but not erasing it; it
+    remains so the user can see what he typed if he wishes to type
+    something only slightly different (3.1, 7.5).</p>
+<p><strong>\^I (</strong>TAB<strong>)</strong></p>
+<p>:   Not a command character. When inserted it prints as some number of
+    spaces. When the cursor is at a tab character it rests at the last
+    of the spaces which represent the tab. The spacing of tabstops is
+    controlled by the <em>tabstop</em> option (4.1, 6.6).</p>
+<p><strong>\^J (</strong>LF<strong>)</strong></p>
+<p>:   Same as <strong>down arrow</strong> (see <strong>j</strong>).</p>
+<p><strong>\^K</strong></p>
+<p>:   Unused.</p>
+<p><strong>\^L</strong></p>
+<p>:   The ASCII formfeed character, this causes the screen to be cleared
+    and redrawn. This is useful after a transmission error, if
+    characters typed by a program other than the editor scramble the
+    screen, or after output is stopped by an interrupt (5.4, 7.2f).</p>
+<p><strong>\^M (</strong>CR<strong>)</strong></p>
+<p>:   A carriage return advances to the next line, at the first non-white
+    position in the line. Given a count, it advances that many lines
+    (2.3). During an insert, a CR causes the insert to continue onto
+    another line (3.1).</p>
+<p><strong>\^N</strong></p>
+<p>:   Same as <strong>down arrow</strong> (see <strong>j</strong>).</p>
+<p><strong>\^O</strong></p>
+<p>:   Unused.</p>
+<p><strong>\^P</strong></p>
+<p>:   Same as <strong>up arrow</strong> (see <strong>k</strong>).</p>
+<p><strong>\^Q</strong></p>
+<p>:   Not a command character. In input mode, <strong>\^Q</strong> quotes the next
+    character, the same as <strong>\^V ,</strong> except that some teletype drivers
+    will eat the <strong>\^Q</strong> so that the editor never sees it.</p>
+<p><strong>\^R</strong></p>
+<p>:   Redraws the current screen, eliminating logical lines not
+    corresponding to physical lines (lines with only a single @
+    character on them). On hardcopy terminals in <em>open</em> mode, retypes
+    the current line (5.4, 7.2, 7.8).</p>
+<p><strong>\^S</strong></p>
+<p>:   Unused. Some teletype drivers use <strong>\^S</strong> to suspend output until
+    <strong>\^Q is pressed.</strong></p>
+<p><strong>\^T</strong></p>
+<p>:   Not a command character. During an insert, with <em>autoindent</em> set and
+    at the beginning of the line, inserts <em>shiftwidth</em> white space.</p>
+<p><strong>\^U</strong></p>
+<p>:   Scrolls the screen up, inverting <strong>\^D</strong> which scrolls down. Counts
+    work as they do for <strong>\^D</strong>, and the previous scroll amount is
+    common to both. On a dumb terminal, <strong>\^U</strong> will often necessitate
+    clearing and redrawing the screen further back in the file (2.1,
+    7.2).</p>
+<p><strong>\^V</strong></p>
+<p>:   Not a command character. In input mode, quotes the next character so
+    that it is possible to insert non-printing and special characters
+    into the file (4.2, 7.5).</p>
+<p><strong>\^W</strong></p>
+<p>:   Not a command character. During an insert, backs up as <strong>b</strong> would
+    in command mode; the deleted characters remain on the display (see
+    <strong>\^H</strong>) (7.5).</p>
+<p><strong>\^X</strong></p>
+<p>:   Unused.</p>
+<p><strong>\^Y</strong></p>
+<p>:   Exposes one more line above the current screen, leaving the cursor
+    where it is if possible. (No mnemonic value for this key; however,
+    it is next to <strong>\^U</strong> which scrolls up a bunch.)</p>
+<p><strong>\^Z</strong></p>
+<p>:   If supported by the Unix system, stops the editor, exiting to the
+    top level shell. Same as <strong>:stop</strong>CR. Otherwise, unused.</p>
+<p><strong>\^[ (</strong>ESC<strong>)</strong></p>
+<p>:   Cancels a partially formed command, such as a <strong>z</strong> when no
+    following character has yet been given; terminates inputs on the
+    last line (read by commands such as <strong>: /</strong> and <strong>?</strong>); ends
+    insertions of new text into the buffer. If an ESC is given when
+    quiescent in command state, the editor rings the bell or flashes the
+    screen. The user can thus hit ESC if he doesn\'t know what is
+    happening till the editor rings the bell. If the user doesn\'t know
+    whether he is in insert mode he can type ESC<strong>a</strong>, and then material
+    to be input; the material will be inserted correctly whether or not
+    he was in insert mode when he started (1.6, 3.1, 7.5).</p>
+<p><strong>\^\</strong></p>
+<p>:   Unused.</p>
+<p><strong>\^]</strong></p>
+<p>:   Searches for the word which is after the cursor as a tag. Equivalent
+    to typing <strong>:ta</strong>, this word, and then a CR. Mnemonically, this
+    command is " right to" (7.3).</p>
+<p><strong>\^\^</strong></p>
+<p>:   Equivalent to <strong>:e #</strong>CR, returning to the previous position in the
+    last edited file, or editing a file which the user specified if he
+    got a `No write since last change diagnostic\' and does not want to
+    have to type the file name again (7.3). (The user has to do a <strong>:w</strong>
+    before <strong>\^\^</strong> will work in this case. If he does not wish to write
+    the file he should do <strong>:e! #</strong>CR instead.)</p>
+<p><strong>\^_</strong></p>
+<p>:   Unused. Reserved as the command character for the Tektronix 4025 and
+    4027 terminal.</p>
+<p>SPACE</p>
+<p>:   Same as <strong>right arrow</strong> (see <strong>l</strong>).</p>
+<p><strong>!</strong></p>
+<p>:   An operator, which processes lines from the buffer with reformatting
+    commands. Follow <strong>!</strong> with the object to be processed, and then the
+    command name terminated by CR. Doubling <strong>!</strong> and preceding it by a
+    count causes count lines to be filtered; otherwise the count is
+    passed on to the object after the <strong>!</strong>. Thus <strong>2!}</strong><em>fmt</em>CR
+    reformats the next two paragraphs by running them through the
+    program <em>fmt</em>. If working on LISP, the command <strong>!%</strong><em>grind</em>CR,
+    given at the beginning of a function, will run the text of the
+    function through the LISP grinder (6.7, 7.3). To read a file or the
+    output of a command into the buffer <strong>:r</strong> (7.3) can be used. To
+    simply execute a command, <strong>:!</strong> (7.3).</p>
+<p>Precedes a named buffer specification. There are named buffers <strong>1-9</strong>
+used for saving deleted text and named buffers <strong>a-z</strong> into which the
+user can place text (4.3, 6.3)</p>
+<p><strong>#</strong></p>
+<p>:   The macro character which, when followed by a number, will
+    substitute for a function key on terminals without function keys
+    (6.9). In input mode, if this is the erase character, it will delete
+    the last character typed in input mode, and must be preceded with a
+    <strong>\</strong> to insert it, since it normally backs over the last input
+    character.</p>
+<p><strong>\$</strong></p>
+<p>:   Moves to the end of the current line. If the <strong>list</strong> option is set,
+    then the end of each line will be shown by printing a <strong>\$</strong> after
+    the end of the displayed text in the line. Given a count, advances
+    to the count\'th following end of line; thus <strong>2\$</strong> advances to the
+    end of the following line.</p>
+<p><strong>%</strong></p>
+<p>:   Moves to the parenthesis or brace <strong>{ }</strong> which balances the
+    parenthesis or brace at the current cursor position.</p>
+<p><strong>&amp;</strong></p>
+<p>:   A synonym for <strong>:&amp;</strong>CR, by analogy with the <em>ex</em> <strong>&amp;</strong> command.</p>
+<p><strong>´</strong></p>
+<p>:   When followed by a <strong>´</strong> returns to the previous context at the
+    beginning of a line. The previous context is set whenever the
+    current line is moved in a non-relative way. When followed by a
+    letter <strong>a</strong>-<strong>z</strong>, returns to the line which was marked with this
+    letter with a <strong>m</strong> command, at the first non-white character in the
+    line. (2.2, 5.3). When used with an operator such as <strong>d</strong>, the
+    operation takes place over complete lines; if <strong>`</strong> is used, the
+    operation takes place from the exact marked place to the current
+    cursor position within the line.</p>
+<p><strong>(</strong></p>
+<p>:   Retreats to the beginning of a sentence, or to the beginning of a
+    LISP s-expression if the <em>lisp</em> option is set. A sentence ends at a
+    <strong>. !</strong> or <strong>?</strong> which is followed by either the end of a line or by
+    two spaces. Any number of closing <strong>) ] \"</strong> and <strong>´</strong> characters
+    may appear after the <strong>. !</strong> or <strong>?</strong>, and before the spaces or end
+    of line. Sentences also begin at paragraph and section boundaries
+    (see <strong>{</strong> and <strong>[[</strong> below). A count advances that many sentences
+    (4.2, 6.8).</p>
+<p><strong>)</strong></p>
+<p>:   Advances to the beginning of a sentence. A count repeats the effect.
+    See <strong>(</strong> above for the definition of a sentence (4.2, 6.8).</p>
+<p><strong>*</strong></p>
+<p>:   Unused.</p>
+<p><strong>+</strong></p>
+<p>:   Same as CR when used as a command.</p>
+<p><strong>,</strong></p>
+<p>:   Reverse of the last <strong>f F t</strong> or <strong>T</strong> command, looking the other
+    way in the current line. Especially useful after hitting too many
+    <strong>;</strong> characters. A count repeats the search.</p>
+<p><strong>-</strong></p>
+<p>:   Retreats to the previous line at the first non-white character. This
+    is the inverse of <strong>+</strong> and RETURN. If the line moved to is not on
+    the screen, the screen is scrolled, or cleared and redrawn if this
+    is not possible. If a large amount of scrolling would be required
+    the screen is also cleared and redrawn, with the current line at the
+    center (2.3).</p>
+<p><strong>.</strong></p>
+<p>:   Repeats the last command which changed the buffer. Especially useful
+    when deleting words or lines; the user can delete some words/lines
+    and then hit <strong>.</strong> to delete more and more words/lines. Given a
+    count, it passes it on to the command being repeated. Thus after a
+    <strong>2dw</strong>, <strong>3.</strong> deletes three words (3.3, 6.3, 7.2, 7.4).</p>
+<p><strong>/</strong></p>
+<p>:   Reads a string from the last line on the screen, and scans forward
+    for the next occurrence of this string. The normal input editing
+    sequences may be used during the input on the bottom line; an
+    returns to command state without ever searching. The search begins
+    when the user hits CR to terminate the pattern; the cursor moves to
+    the beginning of the last line to indicate that the search is in
+    progress; the search may then be terminated with a DEL or RUB, or by
+    backspacing when at the beginning of the bottom line, returning the
+    cursor to its initial position. Searches normally wrap end-around to
+    find a string anywhere in the buffer.</p>
+<div class="highlight"><pre><span></span><code>When used with an operator the enclosed region is normally affected.
+By mentioning an offset from the line matched by the pattern the
+user can force whole lines to be affected. To do this a pattern with
+a closing a closing **/** and then an offset **+***n* or **-***n*
+must be given.
+
+To include the character **/** in the search string, it must be
+escaped with a preceding **\\**. A **\^** at the beginning of the
+pattern forces the match to occur at the beginning of a line only;
+this speeds the search. A **\$** at the end of the pattern forces
+the match to occur at the end of a line only. More extended pattern
+matching is available, see section 7.4; unless **nomagic** ist set
+in the *.exrc* file the user will have to preceed the characters **.
+\[ \*** and **\~** in the search pattern with a **\\** to get them
+to work as one would naively expect (1.6, 2.2, 6.1, 7.2, 7.4).
+</code></pre></div>
+<p><strong>0</strong></p>
+<p>:   Moves to the first character on the current line. Also used, in
+    forming numbers, after an initial <strong>1</strong>-<strong>9</strong>.</p>
+<p><strong>1-9</strong></p>
+<p>:   Used to form numeric arguments to commands (2.3, 7.2).</p>
+<p><strong>:</strong></p>
+<p>:   A prefix to a set of commands for file and option manipulation and
+    escapes to the system. Input is given on the bottom line and
+    terminated with an CR, and the command then executed. The user can
+    return to where he was by hitting DEL or RUB if he hit <strong>:</strong>
+    accidentally (see <strong>ex</strong>(1) and primarily 6.2 and 7.3).</p>
+<p><strong>;</strong></p>
+<p>:   Repeats the last single character find which used <strong>f F t</strong> or
+    <strong>T</strong>. A count iterates the basic scan (4.1).</p>
+<p><strong>\&lt;</strong></p>
+<p>:   An operator which shifts lines left one <em>shiftwidth</em>, normally 8
+    spaces. Like all operators, affects lines when repeated, as in
+    <strong>\&lt;\&lt;</strong>. Counts are passed through to the basic object, thus
+    <strong>3\&lt;\&lt;</strong> shifts three lines (6.6, 7.2).</p>
+<p><strong>=</strong></p>
+<p>:   Reindents line for LISP, as though they were typed in with <em>lisp</em>
+    and <em>autoindent</em> set (6.8).</p>
+<p><strong>&gt;</strong></p>
+<p>:   An operator which shifts lines right one <em>shiftwidth</em>, normally 8
+    spaces. Affects lines when repeated as in <strong>&gt;&gt;</strong>. Counts repeat
+    the basic object (6.6, 7.2).</p>
+<p><strong>?</strong></p>
+<p>:   Scans backwards, the opposite of <strong>/</strong>. See the <strong>/</strong> description
+    above for details on scanning (2.2, 6.1, 7.4).</p>
+<p><strong>@</strong></p>
+<p>:   A macro character (6.9). If this is the kill character, it must be
+    escaped with a \ to type it in during input mode, as it normally
+    backs over the input given on the current line (3.1, 3.4, 7.5).</p>
+<p><strong>A</strong></p>
+<p>:   Appends at the end of line, a synonym for <strong>\$a</strong> (7.2).</p>
+<p><strong>B</strong></p>
+<p>:   Backs up a word, where words are composed of non-blank sequences,
+    placing the cursor at the beginning of the word. A count repeats the
+    effect (2.4).</p>
+<p><strong>C</strong></p>
+<p>:   Changes the rest of the text on the current line; a synonym for
+    <strong>c\$</strong>.</p>
+<p><strong>D</strong></p>
+<p>:   Deletes the rest of the text on the current line; a synonym for
+    <strong>d\$</strong>.</p>
+<p><strong>E</strong></p>
+<p>:   Moves forward to the end of a word, defined as blanks and
+    non-blanks, like <strong>B</strong> and <strong>W</strong>. A count repeats the effect.</p>
+<p><strong>F</strong></p>
+<p>:   Finds a single following character, backwards in the current line. A
+    count repeats this search that many times (4.1).</p>
+<p><strong>G</strong></p>
+<p>:   Goes to the line number given as preceding argument, or the end of
+    the file if no preceding count is given. The screen is redrawn with
+    the new current line in the center if necessary (7.2).</p>
+<p><strong>H</strong></p>
+<p>:   <strong>Home arrow</strong>. Homes the cursor to the top line on the screen. If a
+    count is given, then the cursor is moved to the count\'th line on
+    the screen. In any case the cursor is moved to the first non-white
+    character on the line. If used as the target of an operator, full
+    lines are affected (2.3, 3.2).</p>
+<p><strong>I</strong></p>
+<p>:   Inserts at the beginning of a line; a synonym for <strong>\^i</strong>.</p>
+<p><strong>J</strong></p>
+<p>:   Joins together lines, supplying appropriate white space: one space
+    between words, two spaces after a <strong>.</strong>, and no spaces at all if the
+    first character of the joined on line is <strong>)</strong>. A count causes that
+    many lines to be joined rather than the default two (6.5, 7.1f).</p>
+<p><strong>K</strong></p>
+<p>:   Unused.</p>
+<p><strong>L</strong></p>
+<p>:   Moves the cursor to the first non-white character of the last line
+    on the screen. With a count, to the first non-white of the count\'th
+    line from the bottom. Operators affect whole lines when used with
+    <strong>L</strong> (2.3).</p>
+<p><strong>M</strong></p>
+<p>:   Moves the cursor to the middle line on the screen, at the first
+    non-white position on the line (2.3).</p>
+<p><strong>N</strong></p>
+<p>:   Scans for the next match of the last pattern given to <strong>/</strong> or
+    <strong>?</strong>, but in the reverse direction; this is the reverse of <strong>n</strong>.</p>
+<p><strong>O</strong></p>
+<p>:   Opens a new line above the current line and inputs text there up to
+    an ESC. A count can be used on dumb terminals to specify a number of
+    lines to be opened; this is generally obsolete, as the <em>slowopen</em>
+    option works better (3.1).</p>
+<p><strong>P</strong></p>
+<p>:   Puts the last deleted text back before/above the cursor. The text
+    goes back as whole lines above the cursor if it was deleted as whole
+    lines. Otherwise the text is inserted between the characters before
+    and at the cursor. May be preceded by a named buffer specification
+    <strong>\"</strong><em>x</em> to retrieve the contents of the buffer; buffers
+    <strong>1</strong>-<strong>9</strong> contain deleted material, buffers <strong>a</strong>-<strong>z</strong> are
+    available for general use (6.3).</p>
+<p><strong>Q</strong></p>
+<p>:   Quits from <em>vi</em> to <em>ex</em> command mode. In this mode, whole lines form
+    commands, ending with a RETURN. One can give all the <strong>:</strong> commands;
+    the editor supplies the <strong>:</strong> as a prompt (7.7).</p>
+<p><strong>R</strong></p>
+<p>:   Replaces characters on the screen with characters typed (overlay
+    fashion). Terminates with an ESC.</p>
+<p><strong>S</strong></p>
+<p>:   Changes whole lines, a synonym for <strong>cc</strong>. A count substitutes for
+    that many lines. The lines are saved in the numeric buffers, and
+    erased on the screen before the substitution begins.</p>
+<p><strong>T</strong></p>
+<p>:   Takes a single following character, locates the character before the
+    cursor in the current line, and places the cursor just after that
+    character. A count repeats the effect. Most useful with operators
+    such as <strong>d</strong> (4.1).</p>
+<p><strong>U</strong></p>
+<p>:   Restores the current line to its state before the user started
+    changing it (3.5).</p>
+<p><strong>V</strong></p>
+<p>:   Unused.</p>
+<p><strong>W</strong></p>
+<p>:   Moves forward to the beginning of a word in the current line, where
+    words are defined as sequences of blank/non-blank characters. A
+    count repeats the effect (2.4).</p>
+<p><strong>X</strong></p>
+<p>:   Deletes the character before the cursor. A count repeats the effect,
+    but only characters on the current line are deleted.</p>
+<p><strong>Y</strong></p>
+<p>:   Yanks a copy of the current line into the unnamed buffer, to be put
+    back by a later <strong>p</strong> or <strong>P</strong>; a very useful synonym for <strong>yy</strong>. A
+    count yanks that many lines. May be preceded by a buffer name to put
+    lines in that buffer (7.4).</p>
+<p><strong>ZZ</strong></p>
+<p>:   Exits the editor. (Same as <strong>:x</strong>CR.) If any changes have been made,
+    the buffer is written out to the current file. Then the editor
+    quits.</p>
+<p><strong>[[</strong></p>
+<p>:   Backs up to the previous section boundary. A section begins at each
+    macro in the <em>sections</em> option, normally a `.NH\' or `.SH\' and
+    also at lines which which start with a formfeed <strong>\^L</strong>. Lines
+    beginning with <strong>{</strong> also stop <strong>[[</strong>; this makes it useful for
+    looking backwards, a function at a time, in C programs. If the
+    option <em>lisp</em> is set, stops at each <strong>(</strong> at the beginning of a
+    line, and is thus useful for moving backwards at the top level LISP
+    objects. (4.2, 6.1, 6.6, 7.2).</p>
+<p><strong>\</strong></p>
+<p>:   Unused.</p>
+<p><strong>]]</strong></p>
+<p>:   Forward to a section boundary, see <strong>[[</strong> for a definition (4.2,
+    6.1, 6.6, 7.2).</p>
+<p><strong>\^</strong></p>
+<p>:   Moves to the first non-white position on the current line (4.4).</p>
+<p><strong>_</strong></p>
+<p>:   Unused.</p>
+<p><strong>`</strong></p>
+<p>:   When followed by a <strong>`</strong> returns to the previous context. The
+    previous context is set whenever the current line is moved in a
+    non-relative way. When followed by a letter <strong>a</strong>-<strong>z</strong>, returns to
+    the position which was marked with this letter with a <strong>m</strong> command.
+    When used with an operator such as <strong>d</strong>, the operation takes place
+    from the exact marked place to the current position within the line;
+    if using <strong>´</strong>, the operation takes place over complete lines (2.2,
+    5.3).</p>
+<p><strong>a</strong></p>
+<p>:   Appends arbitrary text after the current cursor position; the insert
+    can continue onto multiple lines by using RETURN within the insert.
+    A count causes the inserted text to be replicated, but only if the
+    inserted text is all on one line. The insertion terminates with an
+    ESC (3.1, 7.2).</p>
+<p><strong>b</strong></p>
+<p>:   Backs up to the beginning of a word in the current line. A word is a
+    sequence of alphanumerics, or a sequence of special characters. A
+    count repeats the effect (2.4).</p>
+<p><strong>c</strong></p>
+<p>:   An operator which changes the following object, replacing it with
+    the following input text up to an ESC. If more than part of a single
+    line is affected, the text which is changed away is saved in the
+    numeric named buffers. If only part of the current line is affected,
+    then the last character to be changed away is marked with a <strong>\$</strong>.
+    A count causes that many objects to be affected, thus both <strong>3c)</strong>
+    and <strong>c3)</strong> change the following three sentences (7.4).</p>
+<p><strong>d</strong></p>
+<p>:   An operator which deletes the following object. If more than part of
+    a line is affected, the text is saved in the numeric buffers. A
+    count causes that many objects to be affected; thus <strong>3dw</strong> is the
+    same as <strong>d3w</strong> (3.3, 3.4, 4.1, 7.4).</p>
+<p><strong>e</strong></p>
+<p>:   Advances to the end of the next word, defined as for <strong>b</strong> and
+    <strong>w</strong>. A count repeats the effect (2.4, 3.1).</p>
+<p><strong>f</strong></p>
+<p>:   Finds the first instance of the next character following the cursor
+    on the current line. A count repeats the find (4.1).</p>
+<p><strong>g</strong></p>
+<p>:   Unused.</p>
+<p>Arrow keys <strong>h</strong>, <strong>j</strong>, <strong>k</strong>, <strong>l</strong>, and <strong>H</strong>.</p>
+<p><strong>h</strong></p>
+<p>:   <strong>Left arrow .</strong> Moves the cursor one character to the left. Like
+    the other arrow keys, either <strong>h</strong>, the <strong>left arrow</strong> key, or one
+    of the synonyms (<strong>\^H</strong>) has the same effect. A count repeats the
+    effect (3.1, 7.5).</p>
+<p><strong>i</strong></p>
+<p>:   Inserts text before the cursor, otherwise like <strong>a</strong> (7.2).</p>
+<p><strong>j</strong></p>
+<p>:   <strong>Down arrow .</strong> Moves the cursor one line down in the same column.
+    If the position does not exist, <em>vi</em> comes as close as possible to
+    the same column. Synonyms include <strong>\^J</strong> (linefeed) and <strong>\^N .</strong></p>
+<p><strong>k</strong></p>
+<p>:   <strong>Up arrow .</strong> Moves the cursor one line up. <strong>\^P</strong> is a synonym.</p>
+<p><strong>l</strong></p>
+<p>:   <strong>Right arrow .</strong> Moves the cursor one character to the right. SPACE
+    is a synonym.</p>
+<p><strong>m</strong></p>
+<p>:   Marks the current position of the cursor in the mark register which
+    is specified by the next character <strong>a</strong>-<strong>z</strong>. The user can return
+    to this position or use it with an operator using <strong>`</strong> or <strong>´</strong>
+    (5.3).</p>
+<p><strong>n</strong></p>
+<p>:   Repeats the last <strong>/</strong> or <strong>?</strong> scanning commands (2.2).</p>
+<p><strong>o</strong></p>
+<p>:   Opens new lines below the current line; otherwise like <strong>O</strong> (3.1).</p>
+<p><strong>p</strong></p>
+<p>:   Puts text after/below the cursor; otherwise like <strong>P</strong> (6.3).</p>
+<p><strong>q</strong></p>
+<p>:   Unused.</p>
+<p><strong>r</strong></p>
+<p>:   Replaces the single character at the cursor with a single character
+    typed. The new character may be a RETURN; this is the easiest way to
+    split lines. A count replaces each of the following count characters
+    with the single character given; see <strong>R</strong> above which is the more
+    usually useful iteration of <strong>r</strong> (3.2).</p>
+<p><strong>s</strong></p>
+<p>:   Changes the single character under the cursor to the text which
+    follows up to an ESC; given a count, that many characters from the
+    current line are changed. The last character to be changed is marked
+    with <strong>\$</strong> as in <strong>c</strong> (3.2).</p>
+<p><strong>t</strong></p>
+<p>:   Advances the cursor upto the character before the next character
+    typed. Most useful with operators such as <strong>d</strong> and <strong>c</strong> to delete
+    the characters up to a following character. One can use <strong>.</strong> to
+    delete more if this doesn\'t delete enough the first time (4.1).</p>
+<p><strong>u</strong></p>
+<p>:   Undoes the last change made to the current buffer. If repeated, will
+    alternate between these two states, thus is its own inverse. When
+    used after an insert which inserted text on more than one line, the
+    lines are saved in the numeric named buffers (3.5).</p>
+<p><strong>v</strong></p>
+<p>:   Unused.</p>
+<p><strong>w</strong></p>
+<p>:   Advances to the beginning of the next word, as defined by <strong>b</strong>
+    (2.4).</p>
+<p><strong>x</strong></p>
+<p>:   Deletes the single character under the cursor. With a count deletes
+    deletes that many characters forward from the cursor position, but
+    only on the current line (6.5).</p>
+<p><strong>y</strong></p>
+<p>:   An operator, yanks the following object into the unnamed temporary
+    buffer. If preceded by a named buffer specification, <strong>\"</strong><em>x</em>, the
+    text is placed in that buffer also. Text can be recovered by a later
+    <strong>p</strong> or <strong>P</strong> (7.4).</p>
+<p><strong>z</strong></p>
+<p>:   Redraws the screen with the current line placed as specified by the
+    following character: RETURN specifies the top of the screen, <strong>.</strong>
+    the center of the screen, and <strong>-</strong> at the bottom of the screen. A
+    count may be given after the <strong>z</strong> and before the following
+    character to specify the new screen size for the redraw. A count
+    before the <strong>z</strong> gives the number of the line to place in the center
+    of the screen instead of the default current line. (5.4)</p>
+<p><strong>{</strong></p>
+<p>:   Retreats to the beginning of the beginning of the preceding
+    paragraph. A paragraph begins at each macro in the <em>paragraphs</em>
+    option, normally `.IP\', `.LP\', `.PP\', `.QP\' and `.bp\'. A
+    paragraph also begins after a completely empty line, and at each
+    section boundary (see <strong>[[</strong> above) (4.2, 6.8, 7.6).</p>
+<p><strong>|</strong></p>
+<p>:   Places the cursor on the character in the column specified by the
+    count (7.1, 7.2).</p>
+<p><strong>}</strong></p>
+<p>:   Advances to the beginning of the next paragraph. See <strong>{</strong> for the
+    definition of paragraph (4.2, 6.8, 7.6).</p>
+<p><strong>\~</strong></p>
+<p>:   Switches the case of the given count of characters starting from the
+    current cursor position to the end of the current line.
+    Non-alphabetic characters remain unchanged.</p>
+<p><strong>\^? (</strong>DEL<strong>)</strong></p>
+<p>:   Interrupts the editor, returning it to command accepting state (1.6,
+    7.5).</p>
+<h1 id="environment-variables">ENVIRONMENT VARIABLES</h1>
+<p>The following environment variables affect the behaviour of vi:</p>
+<p><strong>COLUMNS</strong></p>
+<p>:   Overrides the system-supplied number of terminal columns.</p>
+<p><strong>EXINIT</strong></p>
+<p>:   Contains commands to execute at editor startup. If this variable is
+    present, the <em>.exrc</em> file in the user\'s home directory is ignored.</p>
+<p><strong>HOME</strong></p>
+<p>:   Used to locate the editor startup file.</p>
+<p><strong>LANG</strong>, <strong>LC_ALL</strong></p>
+<p>:   See <em>locale</em>(7).</p>
+<p><strong>LC_CTYPE</strong></p>
+<p>:   Determines the mapping of bytes to characters, types of characters,
+    case conversion and composition of character classes in regular
+    expressions.</p>
+<p><strong>LC_MESSAGES</strong></p>
+<p>:   Sets the language used for diagnostic and informal messages.</p>
+<p><strong>LINES</strong></p>
+<p>:   Overrides the system-supplied number of terminal lines.</p>
+<p><strong>NLSPATH</strong></p>
+<p>:   See <em>catopen</em>(3).</p>
+<p><strong>SHELL</strong></p>
+<p>:   The program file used to execute external commands.</p>
+<p><strong>TERM</strong></p>
+<p>:   Determines the terminal type.</p>
+<h1 id="files">FILES</h1>
+<p><strong>/usr/libexec/expreserve</strong></p>
+<p>:   preserve command</p>
+<p><strong>/usr/libexec/exrecover</strong></p>
+<p>:   recover command</p>
+<p><strong>/etc/termcap</strong></p>
+<p>:   describes capabilities of terminals</p>
+<p><strong>\$HOME/.exrc</strong></p>
+<p>:   editor startup file</p>
+<p><strong>/var/tmp/Ex<em>nnnnnnnnnn</em></strong></p>
+<p>:   editor temporary</p>
+<p><strong>/var/tmp/Rx<em>nnnnnnnnnn</em></strong></p>
+<p>:   named buffer temporary</p>
+<p><strong>/var/preserve</strong></p>
+<p>:   preservation directory</p>
+<h1 id="see-also">SEE ALSO</h1>
+<p>ex(1), edit(1), "Vi Quick Reference" card, "An Introduction to Display
+Editing with Vi".</p>
+<h1 id="author">AUTHOR</h1>
+<p>William Joy.</p>
+<p>Mark Horton added macros to <em>visual</em> mode and was maintaining version 3.</p>
+<p>This version incorporates changes by Gunnar Ritter.</p>
+<h1 id="notes">NOTES</h1>
+<p>Software tabs using <strong>\^T</strong> work only immediately after the
+<em>autoindent.</em></p>
+<p>Left and right shifts on intelligent terminals don\'t make use of insert
+and delete character operations in the terminal.</p>
+<p>The <em>wrapmargin</em> option can be fooled since it looks at output columns
+when blanks are typed. If a long word passes through the margin and onto
+the next line without a break, then the line won\'t be broken.</p>
+<p>Insert/delete within a line can be slow if tabs are present on
+intelligent terminals, since the terminals need help in doing this
+correctly.</p>
+<p>The <em>source</em> command does not work when executed as <strong>:source</strong>; there
+is no way to use the <strong>:append</strong>, <strong>:change</strong>, and <strong>:insert</strong> commands,
+since it is not possible to give more than one line of input to a <strong>:</strong>
+escape. To use these on a <strong>:global</strong> one must <strong>Q</strong> to <em>ex</em> command
+mode, execute them, and then reenter the screen editor with <em>vi</em> or
+<em>open.</em></p>
+
+  <hr>
+<div class="md-source-file">
+  <small>
+    
+      Last update:
+      <span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-iso_datetime">2023-08-14 10:05:46</span>
+      
+    
+  </small>
+</div>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright (c) 2023 <a href="https://github.com/maroph">Manfred Rosenboom</a>
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["header.autohide", "content.action.edit", "content.action.view", "content.code.copy", "navigation.footer", "navigation.indexes", "navigation.instant", "navigation.tracking", "navigation.tabs", "navigation.tabs.sticky", "search.suggest", "search.highlight"], "search": "../assets/javascripts/workers/search.74e28a9f.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.220ee61c.min.js"></script>
+      
+    
+  </body>
+</html>
