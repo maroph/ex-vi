@@ -51,6 +51,9 @@ nav:
         - License: info/license.md
         - Resources: info/resources.md
 
+not_in_nav:
+    /software/*.1.md
+
 docs_dir: docs
 site_dir: site
 
