@@ -3,12 +3,19 @@
 * text=auto
 #
 build.bash text eol=lf
+makefile text
 #
-*.1  text
-*.md  text
-*.yml text
+*.1    text
+*.css  text
+*.html text
+*.md   text
+*.ms   text
+*.ps   text
+*.toml text
+*.yml  text
 #
 *.bz2 binary
 *.gz  binary
 *.ico binary
+*.pdf binary
 *.png binary

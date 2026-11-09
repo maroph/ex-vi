@@ -1,4 +1,6 @@
+.cache/
 .idea/
+__pycache__/
+reproduction/
 site/
 venv/
-mkdocs.shut
